@@ -112,3 +112,7 @@ for i in graph.nodes:
             graph, source=i, target=j, weight="weight"))
         distances.append(nx.shortest_path_length(graph, i, j, weight="weight"))
 
+# Reshape distances into a square array.
+distances = np.reshape(distances, newshape=(len(all_cards), len(all_cards)))
+
+
