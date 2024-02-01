@@ -356,3 +356,15 @@ def calculate_route():
     print("\n\nTime taken to calculate route/s:")
     print(time_taken, "seconds\n")
     
+def run_program():
+    validate_inputs()
+    print_cards()
+    if check_cards():
+        if too_many_cards():
+            calculate_route()
+        else:
+            run_program()
+    else:
+        run_program()
+    
+run_program()
