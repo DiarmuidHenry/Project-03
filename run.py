@@ -119,3 +119,17 @@ distances = np.reshape(distances, newshape=(len(all_cards), len(all_cards)))
 assigned_entry_cards = [2, 4, 6, 8, 10, 14, 23, 37]
 assigned_town_cards = [5, 31]
 
+def print_cards():
+    global dealt_hand, assigned_town_cards, assigned_entry_cards
+    
+    print("\nAssigned Town Cards are:")
+    print(assigned_town_cards)
+
+    print("\nAssigned Entry Cards are:")
+    print(assigned_entry_cards)
+    
+    dealt_hand = np.hstack((assigned_entry_cards, assigned_town_cards))
+
+    # Combining the above to give the dealt hand
+    print("\nDealt hand is:")
+    print(dealt_hand)
