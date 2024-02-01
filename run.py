@@ -127,6 +127,9 @@ This gives you the best chance of finishing before your opponent/s!
 In order to use the solver, simply follow the prompts that appear on screen.
 The optimal route/s will be calculated and printed clearly for you.
 
+Entry/Exit cards: 5, 9, 31, 39, 47, 50
+Town cards: All other numbers from 1 to 52
+
 Enjoy, and good luck!
 """
 
@@ -157,7 +160,7 @@ def validate_inputs():
     global assigned_town_cards, assigned_entry_cards
     # Get input from the user as a space-separated string
     input_entry = input(
-        "\n\nPlease enter your assigned Entry/Exit Cards, separated by a space: ")
+        "\nPlease enter your assigned Entry/Exit Cards, separated by a space: ")
 
     while True:
         # CHECK INPUT MAKES SENSE
