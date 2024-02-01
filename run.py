@@ -141,27 +141,36 @@ yes_inputs = ["yes", "ye", "y"];
 no_inputs = ["no", "n"]
 
 # Get input from the user as a space-separated string
-input_entry = input("Please enter your assigned Entry/Exit Cards: ")
-
-# CHECK INPUT MAKES SENSE: exactly 2, must be in entry_cards. Return relevant error message
-# if necessary
-
 input_town = input("Please enter your assigned Town Cards: ")
 
-# CHECK INPUT MAKES SENSE: no duplicates, must be in town_cards. Return relevant error message
-# if necessary
+while True:
+    # CHECK INPUT MAKES SENSE: no duplicates, must be in town_cards. Return relevant error message if necessary
+    input_town = input_town.split()
+    assigned_town_cards = [int(element) for element in input_town]
 
-# Split the input string into a list of strings
-input_entry = input_entry.split()
+    if len(set(assigned_town_cards)) == len(assigned_town_cards) and all(card in town_cards for card in assigned_town_cards):
+        break
+    else:
+        print("Invalid input. Please enter non-duplicate town cards from the provided list.")
+        input_town = input("Please enter your assigned Town Cards, separated by a space: ")
 
-# Convert the list of strings to a list of integers
-assigned_entry_cards = [int(element) for element in input_entry]
 
-# Split the input string into a list of strings
-input_town = input_town.split()
+input_entry = input("Please enter your assigned Entry/Exit Cards, separated by a space: ")
 
-# Convert the list of strings to a list of integers
-assigned_town_cards = [int(element) for element in input_town]
+while True:
+    # CHECK INPUT MAKES SENSE: exactly 2, must be in entry_cards. Return relevant error message if necessary
+    try:
+        input_entry = input_entry.split()
+        assigned_entry_cards = [int(card) for card in input_entry]
+
+        if len(assigned_entry_cards) == 2 and all(card in entry_cards for card in assigned_entry_cards):
+            break
+        else:
+            print("Invalid input. Players must have exactly 2 Entry/Exit cards.")
+    except:
+        print("Invalid input. Please enter numbers only")
+        input_entry = input("Please enter your assigned Entry/Exit Cards, separated by a space: ")
+        continue  # This will go back to the beginning of the loop
 
 def print_cards():
     global dealt_hand, assigned_town_cards, assigned_entry_cards
