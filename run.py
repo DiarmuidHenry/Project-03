@@ -2,6 +2,9 @@ import gspread
 from google.oauth2.service_account import Credentials
 import numpy as np
 import networkx as nx
+from timeit import default_timer as timer
+import itertools
+from itertools import permutations
 
 # Setting up API from Google Sheet
 SCOPE = [
@@ -133,3 +136,22 @@ def print_cards():
     # Combining the above to give the dealt hand
     print("\nDealt hand is:")
     print(dealt_hand)
+    
+def calculate_route():
+    # Start timer
+    start = timer()
+    
+    
+    
+    
+    end = timer()
+
+    # Time taken shown in seconds to 5sf
+    time_taken = round((end - start), 5)
+
+    print("\n\nTime taken to calculate route/s:")
+    print(time_taken, "seconds\n")
+    
+    
+    
+    
