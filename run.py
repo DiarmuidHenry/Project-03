@@ -351,10 +351,11 @@ def calculate_route():
         print("\n\nRoute", i + 1, "\n")
         for j in range(len(lists[i])):
             if j == 0 or j == (len(lists[i]) - 1) or (lists[i][j] in assigned_town_cards_copy):
-                print("**** ", lists[i][j], ":", town_names[lists[i][j]-1])
+                print("****  {:>2} : {}".format(lists[i][j], town_names[lists[i][j]-1]))
+                # print("**** ", lists[i][j], ":", town_names[lists[i][j]-1])
                 assigned_town_cards_copy = [card for card in assigned_town_cards_copy if card != lists[i][j]]
             else:
-                print("     ",lists[i][j], ":", town_names[lists[i][j]-1])
+                print("      {:>2} : {}".format(lists[i][j], town_names[lists[i][j]-1]))
 
     end = timer()
 
