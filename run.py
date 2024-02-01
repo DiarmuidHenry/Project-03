@@ -103,5 +103,12 @@ graph = nx.from_numpy_array(edge_weights_matrix)
 # Reindexing so that town number matches index
 graph = nx.convert_node_labels_to_integers(graph, 1)
 
-
+# Lists all pairs of nodes; length of path between them; route taken.
+distances = []
+all_shortest_paths = []
+for i in graph.nodes:
+    for j in graph.nodes:
+        all_shortest_paths.append(nx.shortest_path(
+            graph, source=i, target=j, weight="weight"))
+        distances.append(nx.shortest_path_length(graph, i, j, weight="weight"))
 
