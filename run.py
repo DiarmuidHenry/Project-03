@@ -356,7 +356,21 @@ def calculate_route():
     print("\n\nTime taken to calculate route/s:")
     print(time_taken, "seconds\n")
     
+def print_map():
+    map = open('ireland-map.txt', 'r')
+    map_image = map.read()
+    print (map_image)
+    map.close()
+    
+def print_banner():
+    banner = open('banner-text.txt', 'r')
+    banner_image = banner.read()
+    print (banner_image)
+    banner.close()
+    
 def run_program():
+    print_map()
+    print_banner()
     validate_inputs()
     print_cards()
     if check_cards():
@@ -366,5 +380,5 @@ def run_program():
             run_program()
     else:
         run_program()
-    
+
 run_program()
