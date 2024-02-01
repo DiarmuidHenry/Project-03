@@ -270,10 +270,7 @@ def too_many_cards():
     if len(assigned_town_cards) == 10:
         print("\n\nEstimated running time: 45 seconds")
         return True
-    if len(assigned_town_cards) == 11:
-        print("\n\nEstimated running time: 6 minutes")
-        return True
-    if len(assigned_town_cards) > 11:
+    if len(assigned_town_cards) > 10:
         while True:
             too_many_cards_check = input(
                 f"\nYou have entered {len(assigned_town_cards)} town cards. This may lead to a run time of several hours and/or the program terminating due to lack of memory.\nDo you wish to continue?\nPlease type YES or NO:  ")
@@ -352,7 +349,7 @@ def calculate_route():
 
     print("\nOptimal route/s for dealt cards:")
     for i in range(len(lists)):
-        print("\n\n\nRoute ", i + 1, "\n")
+        print("\n\nRoute", i + 1, "\n")
         # print(routes_to_take[i], ":", lists[i], "\n")
         for j in range(len(lists[i])):
             assigned_town_cards_copy = assigned_town_cards.copy()
@@ -361,7 +358,6 @@ def calculate_route():
                 assigned_town_cards_copy = [card for card in assigned_town_cards_copy if card != lists[i][j]]
             else:
                 print("     ",lists[i][j], ":", town_names[lists[i][j]-1])
-                
 
     end = timer()
 
@@ -369,7 +365,8 @@ def calculate_route():
     time_taken = round((end - start), 5)
 
     print("\n\nTime taken to calculate route/s:")
-    print(time_taken, "seconds\n")
+    print(time_taken, "seconds")
+    print("\nEnjoy your game!")
     
 def print_map():
     map = open('ireland-map.txt', 'r')
@@ -402,19 +399,24 @@ def instructions_prompt():
                 "\n\nPlease type YES or NO: ")
             continue  # Back to beginning of loop
         
-        
-def run_program():
+def setup():
     print_map()
     print_banner()
     instructions_prompt()
+    
+def solver():
     validate_inputs()
     print_cards()
     if check_cards():
         if too_many_cards():
             calculate_route()
         else:
-            run_program()
+            solver()
     else:
-        run_program()
+        solver()
+
+def run_program():
+    setup()
+    solver()
 
 run_program()
