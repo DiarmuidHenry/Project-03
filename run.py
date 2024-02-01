@@ -116,9 +116,11 @@ During the game, players can use/move their roadblocks according to the rules st
 There are also Chance cards, which when landed on, often send a player or their opponent to another place on the board.
 Since it is (practically) impossible to predict how the Chance cards and roadblocks can/will be used, these will be ignored in this solver.
 
-The purpose of this solver is to find the shortest possible route to visit every card you have been dealt, thereby giving you the best chance of reaching your final destination before your opponent/s!
+The purpose of this solver is to find the shortest possible route to visit every card you have been dealt.
+This gives you the best chance of reaching your final destination before your opponent/s!
 
 In order to use the solver, simply follow the prompts that appear on screen, and the optimal route/s will be calculated and printed clearly for you.
+
 Enjoy, and good luck in your next game!
 """
 
@@ -241,7 +243,7 @@ def print_cards():
 def check_cards():
     while True:
         input_check = input(
-            "\nIs the above information correct?\nPlease type YES or NO:")
+            "\nIs the above information correct?\nPlease type YES or NO: ")
         if input_check.lower() in yes_inputs:
             return True
         elif input_check.lower() in no_inputs:
@@ -265,7 +267,7 @@ def too_many_cards():
     if len(assigned_town_cards) > 11:
         while True:
             too_many_cards_check = input(
-                f"\nYou have entered {len(assigned_town_cards)} town cards. This may lead to a run time of several hours and/or the program terminating due to lack of memory.\nDo you wish to continue?\nPlease type YES or NO: ")
+                f"\nYou have entered {len(assigned_town_cards)} town cards. This may lead to a run time of several hours and/or the program terminating due to lack of memory.\nDo you wish to continue?\nPlease type YES or NO:  ")
             if too_many_cards_check.lower() in yes_inputs:
                 return True
             elif too_many_cards_check.lower() in no_inputs:
@@ -375,7 +377,9 @@ def print_banner():
 def instructions_prompt():
     global instructions
     while True:
-        instructions_check = input("\nWelcome to the Discovering Ireland solver!\nWould you like to read the instructions? Please type YES or NO:")
+        instructions_check = input(
+            """Welcome to the Discovering Ireland solver!
+            Would you like to read the instructions? Please type YES or NO: """)
         if instructions_check.lower() in yes_inputs:
             print(instructions)
             break
