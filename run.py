@@ -176,7 +176,7 @@ def validate_inputs():
 
             if (not all(card in entry_cards for card in assigned_entry_cards)) and all(card in all_cards for card in assigned_entry_cards):
                 print(
-                    "\nInvalid input. Please enter only your Entry/Exit cards. Do not include any Town cards.")
+                    "\nInvalid input. Please enter only your Entry/Exit cards.\nDo not include any Town cards.")
                 raise ValueError(
                     "Town cards entered instead of Entry/Exit cards")
 
@@ -211,7 +211,7 @@ def validate_inputs():
 
             if (not all(card in town_cards for card in assigned_town_cards)) and all(card in all_cards for card in assigned_town_cards):
                 print(
-                    "\nInvalid input. Please enter only your Town cards. Do not include any Entry/Exit cards.")
+                    "\nInvalid input. Please enter only your Town cards.\nDo not include any Entry/Exit cards.")
                 raise ValueError(
                     "Entry/Exit cards entered instead of Town cards")
 
@@ -249,7 +249,7 @@ def print_cards():
 def check_cards():
     while True:
         input_check = input(
-            "\nIs the above information correct?\nPlease type YES or NO: ")
+            "\nIs the above information correct? Please type YES or NO: ")
         if input_check.lower() in yes_inputs:
             return True
         elif input_check.lower() in no_inputs:
@@ -270,7 +270,7 @@ def too_many_cards():
     if len(assigned_town_cards) > 10:
         while True:
             too_many_cards_check = input(
-                f"\nYou have entered {len(assigned_town_cards)} town cards. This may lead to a run time of several hours and/or the program terminating due to lack of memory.\nDo you wish to continue?\nPlease type YES or NO:  ")
+                f"\nYou have entered {len(assigned_town_cards)} town cards.\nMay result in hours-long runtime or program termination due to memory issues.\nDo you wish to continue?\nPlease type YES or NO: ")
             if too_many_cards_check.lower() in yes_inputs:
                 return True
             elif too_many_cards_check.lower() in no_inputs:
@@ -344,14 +344,14 @@ def calculate_route():
                 del lists[i]
                 break
 
-    print("\nOptimal route/s for dealt cards:")
+    print("\nOptimal route/s for dealt cards: ")
     
     for i in range(len(lists)):
         assigned_town_cards_copy = assigned_town_cards.copy()
         print("\n\nRoute", i + 1, "\n")
         for j in range(len(lists[i])):
             if j == 0 or j == (len(lists[i]) - 1) or (lists[i][j] in assigned_town_cards_copy):
-                print("**** ", lists[i][j], ":", town_names[lists[i][j]-1],)
+                print("**** ", lists[i][j], ":", town_names[lists[i][j]-1])
                 assigned_town_cards_copy = [card for card in assigned_town_cards_copy if card != lists[i][j]]
             else:
                 print("     ",lists[i][j], ":", town_names[lists[i][j]-1])
