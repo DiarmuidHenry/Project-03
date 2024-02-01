@@ -97,4 +97,11 @@ assigned_town_cards = []
 assigned_entry_cards = []
 dealt_hand = []
 
+# Nodes: town_cards, entry_cards. Edge weights: counted_distances.csv
+graph = nx.from_numpy_array(edge_weights_matrix)
+
+# Reindexing so that town number matches index
+graph = nx.convert_node_labels_to_integers(graph, 1)
+
+
 
