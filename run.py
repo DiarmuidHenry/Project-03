@@ -136,14 +136,16 @@ number_of_town_cards = random.randint(min_town_cards, max_town_cards);
 # Fix entry cards when testing
 # assigned_entry_cards = [31, 39]
 
-# List acceptable inputs when YES or NO should be provided. Both upper and lower case will be accepted.
-yes_inputs = ["yes", "ye", "y"];
+# List acceptable inputs when YES or NO should be provided.
+yes_inputs = ["yes", "ye", "y"]
 no_inputs = ["no", "n"]
 
 def validate_inputs():
+
     global assigned_town_cards, assigned_entry_cards
     # Get input from the user as a space-separated string
-    input_entry = input("\n\nPlease enter your assigned Entry/Exit Cards, separated by a space: ")
+    input_entry = input(
+        "\n\nPlease enter your assigned Entry/Exit Cards, separated by a space: ")
 
     while True:
         # CHECK INPUT MAKES SENSE
@@ -153,29 +155,32 @@ def validate_inputs():
                 assigned_entry_cards = [int(card) for card in input_entry]
             else:
                 print("\nInvalid input. Input must only contain spaces and integers.")
-                raise ValueError("Invalid input format")  
+                raise ValueError("Invalid input format")
 
             if not all(card in all_cards for card in assigned_entry_cards):
-                print("\nInvalid input. Entry/Exit cards must be between 5 and 50 (inclusive).")
-                raise ValueError("Entry/Exit cards out of range") 
+                print(
+                    "\nInvalid input. Entry/Exit cards must be between {} and {} (inclusive).".format(min(entry_cards), max(entry_cards)))
+                raise ValueError("Entry/Exit cards out of range")
 
             if (not all(card in entry_cards for card in assigned_entry_cards)) and all(card in all_cards for card in assigned_entry_cards):
-                print("\nInvalid input. Please enter only your Entry/Exit cards. Do not include any Town cards.")
-                raise ValueError("Town cards entered instead of Entry/Exit cards")  
+                print(
+                    "\nInvalid input. Please enter only your Entry/Exit cards. Do not include any Town cards.")
+                raise ValueError(
+                    "Town cards entered instead of Entry/Exit cards")
 
             if len(assigned_entry_cards) != 2:
                 print("\nInvalid input. Players must have exactly 2 Entry/Exit cards.")
-                raise ValueError("Incorrect number of Entry/Exit cards")  
-
-            # If input passes all of the above, will break out of loop
-            break 
+                raise ValueError("Incorrect number of Entry/Exit cards")
+            break
 
         except ValueError:
-            input_entry = input("\n\nPlease enter your assigned Entry/Exit Cards, separated by a space: ")
-            continue  # Back to the beginning of loop
+            input_entry = input(
+                "\n\nPlease enter your assigned Entry/Exit Cards, separated by a space: ")
+            continue  # Back to beginning of loop
 
     # Get input from the user as a space-separated string
-    input_town = input("\nPlease enter your assigned Town Cards, separated by a space: ")
+    input_town = input(
+        "\nPlease enter your assigned Town Cards, separated by a space: ")
 
     while True:
         # CHECK INPUT MAKES SENSE
@@ -185,46 +190,62 @@ def validate_inputs():
                 assigned_town_cards = [int(card) for card in input_town]
             else:
                 print("\nInvalid input. Input must only contain spaces and integers.")
-                raise ValueError("Invalid input format")  
+                raise ValueError("Invalid input format")
 
             if not all(card in all_cards for card in assigned_town_cards):
-                print("\nInvalid input. Town cards must be between 1 and 52 (inclusive).")
-                raise ValueError("Town cards out of range") 
+                print(
+                    "\nInvalid input. Town cards must be between {} and {} (inclusive).".format(min(town_cards), max(town_cards)))
+                raise ValueError("Town cards out of range")
 
             if (not all(card in town_cards for card in assigned_town_cards)) and all(card in all_cards for card in assigned_town_cards):
-                print("\nInvalid input. Please enter only your Town cards. Do not include any Entry/Exit cards.")
-                raise ValueError("Entry/Exit cards entered instead of Town cards")  
+                print(
+                    "\nInvalid input. Please enter only your Town cards. Do not include any Entry/Exit cards.")
+                raise ValueError(
+                    "Entry/Exit cards entered instead of Town cards")
 
-            if len(assigned_town_cards) not in range(1,47):
+            if len(assigned_town_cards) not in range(1, 47):
                 print("\nInvalid input. Players must have at least 1 Town card.")
                 raise ValueError("Incorrect number of Entry/Exit cards")
 
             if len(input_town) != len(set(input_town)):
                 print("\nInvalid input, duplicates found.")
                 raise ValueError("Duplicate cards found")
-
-            # If input passes all of the above, break out of loop
-            break 
+            break
 
         except ValueError:
-            input_town = input("\n\nPlease enter your assigned Town Cards, separated by a space: ")
-            continue  # Back to beginning of the loop
+            input_town = input(
+                "\n\nPlease enter your assigned Town Cards, separated by a space: ")
+            continue  # Back to beginning of loop
+
 
 def print_cards():
     global dealt_hand, assigned_town_cards, assigned_entry_cards
-    
+
+    dealt_hand = np.hstack((assigned_entry_cards, assigned_town_cards))
+
     print("\nAssigned Town Cards are:")
     print(assigned_town_cards)
 
     print("\nAssigned Entry Cards are:")
     print(assigned_entry_cards)
-    
-    dealt_hand = np.hstack((assigned_entry_cards, assigned_town_cards))
 
     # Combining the above to give the dealt hand
     print("\nDealt hand is:")
     print(dealt_hand)
-    
+
+
+def check_cards():
+    while True:
+        input_check = input(
+            "\nIs the above information correct?\nPlease type YES or NO:")
+        if input_check.lower() in yes_inputs:
+            return True
+        elif input_check.lower() in no_inputs:
+            return False
+        else:
+            continue
+
+
 def too_many_cards():
     if len(assigned_town_cards) < 9:
         return True
@@ -247,14 +268,17 @@ def too_many_cards():
                 return False
             else:
                 continue
-    
+
+
 def calculate_route():
     # Start timer
     start = timer()
-    
+
+    print("\n\nCalculating route...")
+
     # List all permutations of assigned_town_cards
     possible_town_routes = list(permutations(assigned_town_cards))
-    
+
     # Create start and end card arrays,
     start_entry = np.full((len(possible_town_routes), 1),
                           assigned_entry_cards[0])
@@ -264,21 +288,21 @@ def calculate_route():
     # Stacking the previous to get all possible valid routes.
     all_possible_routes = np.hstack(
         (start_entry, possible_town_routes, end_entry))
-    
+
     # Calculate total route length for each route.
     route_lengths = []
     for i in range(all_possible_routes.shape[0]):
         for j in range(all_possible_routes.shape[1]-1):
             route_lengths.append(
                 distances[all_possible_routes[i, j]-1, all_possible_routes[i,(j+1)]-1])
-            
+
     # Reshaping route lengths into an array, one row for each route.
     route_lengths = np.reshape(route_lengths, newshape=(
         (all_possible_routes.shape[0]), all_possible_routes.shape[1]-1))
 
     # Summing each row to get route length for each route
     route_lengths = np.sum(route_lengths, axis=1)
-    
+
     # Finding the minimum route length, and its corresponding index
     min_length = np.min(route_lengths)
     min_indices = [i for i, x in enumerate(route_lengths) if x == min_length]
@@ -290,10 +314,10 @@ def calculate_route():
 
     routes_to_take = np.asarray(routes_to_take)
 
-    # Printing the route length for the route/s.
+    # Printing the route length for the/se route/s.
     print("\n\nOptimal route length:")
     print(route_lengths[min_indices[0]])
-    
+
     # Compile all towns visited from all_shortest_paths and routes_to_take.
     lists = [[assigned_entry_cards[0]] for _ in range(len(min_indices))]
     for i in range(len(min_indices)):
@@ -303,19 +327,27 @@ def calculate_route():
                 routes_to_take[i][j] - 1)*len(all_cards) + routes_to_take[i][j+1] - 1].copy()
             next.pop(0)
             lists[i] += next
-            
-    # Removing duplicate lists, in the instance that 2 different ways of visiting town cards ends in the same detailed route. E.g. 39,40,45,33 and 39,45,40,33
+
+    # Remove instances where card order is different but route is same.
     for i in range(len(lists)-1, -0, -1):
         for j in range(len(lists)-2, -1, -1):
-            if (i>j and lists[i]==lists[j]):
+            if (i > j and lists[i] == lists[j]):
                 del lists[i]
-                break;   
+                break
 
-    print("\nOptimal order/s for dealt cards, with corresponding detailed route/s:")
+    print("\nOptimal route/s for dealt cards:")
     for i in range(len(lists)):
-        print(routes_to_take[i], ":", lists[i], "\n")
-    
-    
+        print("\n\n\nRoute ", i + 1, "\n")
+        # print(routes_to_take[i], ":", lists[i], "\n")
+        for j in range(len(lists[i])):
+            assigned_town_cards_copy = assigned_town_cards.copy()
+            if j == 0 or j == (len(lists[i]) - 1) or (lists[i][j] in assigned_town_cards_copy):
+                print("**** ", lists[i][j], ":", town_names[lists[i][j]-1],)
+                assigned_town_cards_copy = [card for card in assigned_town_cards_copy if card != lists[i][j]]
+            else:
+                print("     ",lists[i][j], ":", town_names[lists[i][j]-1])
+                
+
     end = timer()
 
     # Time taken shown in seconds to 5sf
@@ -323,6 +355,4 @@ def calculate_route():
 
     print("\n\nTime taken to calculate route/s:")
     print(time_taken, "seconds\n")
-    
-    
     
