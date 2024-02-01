@@ -115,4 +115,7 @@ for i in graph.nodes:
 # Reshape distances into a square array.
 distances = np.reshape(distances, newshape=(len(all_cards), len(all_cards)))
 
+# Create placeholders to work with now. Will be replaced by user input later
+assigned_entry_cards = [2, 4, 6, 8, 10, 14, 23, 37]
+assigned_town_cards = [5, 31]
 
