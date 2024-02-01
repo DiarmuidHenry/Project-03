@@ -101,6 +101,9 @@ assigned_town_cards = []
 assigned_entry_cards = []
 dealt_hand = []
 
+# Written instructions to be printed if necessary
+instructions = f"The game consists of a board with {number_of_towns} towns, each given a number from 1 to {number_of_towns}."
+
 # Nodes: town_cards, entry_cards. Edge weights: counted_distances.csv
 graph = nx.from_numpy_array(edge_weights_matrix)
 
@@ -159,7 +162,7 @@ def validate_inputs():
 
             if not all(card in all_cards for card in assigned_entry_cards):
                 print(
-                    "\nInvalid input. Entry/Exit cards must be between {} and {} (inclusive).".format(min(entry_cards), max(entry_cards)))
+                    f"\nInvalid input. Entry/Exit cards must be between {min(entry_cards)} and {max(entry_cards)} (inclusive).")
                 raise ValueError("Entry/Exit cards out of range")
 
             if (not all(card in entry_cards for card in assigned_entry_cards)) and all(card in all_cards for card in assigned_entry_cards):
@@ -194,7 +197,7 @@ def validate_inputs():
 
             if not all(card in all_cards for card in assigned_town_cards):
                 print(
-                    "\nInvalid input. Town cards must be between {} and {} (inclusive).".format(min(town_cards), max(town_cards)))
+                    f"\nInvalid input. Town cards must be between {min(town_cards)} and {max(town_cards)} (inclusive).")
                 raise ValueError("Town cards out of range")
 
             if (not all(card in town_cards for card in assigned_town_cards)) and all(card in all_cards for card in assigned_town_cards):
@@ -261,7 +264,7 @@ def too_many_cards():
     if len(assigned_town_cards) > 11:
         while True:
             too_many_cards_check = input(
-                "\nYou have entered {} town cards. This may lead to a run time of several hours and/or the program terminating due to lack of memory.\nDo you wish to continue?\nPlease type YES or NO: ".format(len(assigned_town_cards)))
+                f"\nYou have entered {len(assigned_town_cards)} town cards. This may lead to a run time of several hours and/or the program terminating due to lack of memory.\nDo you wish to continue?\nPlease type YES or NO: ")
             if too_many_cards_check.lower() in yes_inputs:
                 return True
             elif too_many_cards_check.lower() in no_inputs:
@@ -368,9 +371,21 @@ def print_banner():
     print (banner_image)
     banner.close()
     
+def instructions_prompt():
+    global instructions
+    while True:
+        instructions_check = input("\nWelcome to the Discovering Ireland solver!\nWould you like to read the instructions? Please type YES or NO:")
+        if instructions_check.lower() in yes_inputs:
+            print(instructions)
+        elif instructions_check.lower() in no_inputs:
+            break
+        else:
+            continue
+    
 def run_program():
     print_map()
     print_banner()
+    instructions_prompt()
     validate_inputs()
     print_cards()
     if check_cards():
