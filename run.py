@@ -102,7 +102,18 @@ assigned_entry_cards = []
 dealt_hand = []
 
 # Written instructions to be printed if necessary
-instructions = f"The game consists of a board with {number_of_towns} towns, each given a number from 1 to {number_of_towns}."
+instructions = f"The game consists of a board with {number_of_towns} towns spread over Ireland, each given a number from 1 to {number_of_towns}.
+\nEach player is dealt a number of cards representing these towns (called Entry/Exit Cards and Town Cards).
+\nEach player is given 2 Entry/Exit cards, where they must respectively start and finish their route.
+Players are usually dealt between 4 and 8 Town Cards, depending on how long they wish the game to last.
+\nThey must also visit EVERY town for which they have been dealt a Town card. These may be visited in ANY order.
+\nThe winner is the first person to visit all of their Town cards and to arrive at their final Entry/Exit card.
+\nDuring the game, players can use/move their roadblocks according to the rules stated in the rulebook.
+There are also Chance cards, which when landed on, often send a player or their opponent to another place on the board.
+\nSince it is (practically) impossible to predict how the Chance cards and roadblocks can/will be used, these will be ignored in this solver.
+\n\n\nThe purpose of this solver is to find the shortest possible route to visit every card you have been dealt, thereby giving you the best chance of reaching your final destination before your opponent/s!
+\n\nIn order to use the solver, simply follow the prompts that appear on screen, and the optimal route/s will be calculated and printed clearly for you.
+\nEnjoy, and good luck in your next game!"
 
 # Nodes: town_cards, entry_cards. Edge weights: counted_distances.csv
 graph = nx.from_numpy_array(edge_weights_matrix)
@@ -121,23 +132,6 @@ for i in graph.nodes:
 
 # Reshape distances into a square array.
 distances = np.reshape(distances, newshape=(len(all_cards), len(all_cards)))
-
- # Setting range of number of town cards
-min_town_cards = 5
-max_town_cards = 9
-
-# Randomly choosing number of town cards from given range
-number_of_town_cards = random.randint(min_town_cards, max_town_cards);
-
-# Assigning town cards
-# assigned_town_cards = random.sample(town_cards, number_of_town_cards);
-# Fix town cards when testing
-# assigned_town_cards = [23, 51, 35, 7, 49, 18, 34, 40, 2, 24]
-
-# Assigning entry/exit cards, allowing for both to be the same
-# assigned_entry_cards = random.choices(entry_cards, k=2);
-# Fix entry cards when testing
-# assigned_entry_cards = [31, 39]
 
 # List acceptable inputs when YES or NO should be provided.
 yes_inputs = ["yes", "ye", "y"]
