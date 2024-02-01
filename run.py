@@ -154,7 +154,13 @@ def calculate_route():
     all_possible_routes = np.hstack(
         (start_entry, possible_town_routes, end_entry))
     
-    
+    # Calculate total route length for each route.
+    route_lengths = []
+    for i in range(all_possible_routes.shape[0]):
+        for j in range(all_possible_routes.shape[1]-1):
+            route_lengths.append(
+                distances[all_possible_routes[i, j]-1, all_possible_routes[i,(j+1)]-1])
+
     
     end = timer()
 
