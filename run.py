@@ -12,7 +12,7 @@ SCOPE = [
     "https://www.googleapis.com/auth/spreadsheets",
     "https://www.googleapis.com/auth/drive.file",
     "https://www.googleapis.com/auth/drive"
-    ]
+]
 
 CREDS = Credentials.from_service_account_file("creds.json")
 SCOPED_CREDS = CREDS.with_scopes(SCOPE)
@@ -155,12 +155,13 @@ distances = np.reshape(distances, newshape=(len(all_cards), len(all_cards)))
 yes_inputs = ["yes", "ye", "y"]
 no_inputs = ["no", "n"]
 
+
 def validate_inputs():
 
     global assigned_town_cards, assigned_entry_cards
     # Get input from the user as a space-separated string
     input_entry = input(
-        "\nPlease enter your assigned Entry/Exit Cards, separated by a space: ")
+        "\n\nPlease enter your assigned Entry/Exit Cards, separated by a space: ")
 
     while True:
         # CHECK INPUT MAKES SENSE
@@ -178,8 +179,7 @@ def validate_inputs():
                 raise ValueError("Entry/Exit cards out of range")
 
             if (not all(card in entry_cards for card in assigned_entry_cards)) and all(card in all_cards for card in assigned_entry_cards):
-                print(
-                    "\nInvalid input. Please enter only your Entry/Exit cards.\nDo not include any Town cards.")
+                print("\nInvalid input. Please enter only your Entry/Exit cards.\nDo not include any Town cards.")
                 raise ValueError(
                     "Town cards entered instead of Entry/Exit cards")
 
@@ -195,7 +195,7 @@ def validate_inputs():
 
     # Get input from the user as a space-separated string
     input_town = input(
-        "\nPlease enter your assigned Town Cards, separated by a space: ")
+        "\n\nPlease enter your assigned Town Cards, separated by a space: ")
 
     while True:
         # CHECK INPUT MAKES SENSE
@@ -213,8 +213,7 @@ def validate_inputs():
                 raise ValueError("Town cards out of range")
 
             if (not all(card in town_cards for card in assigned_town_cards)) and all(card in all_cards for card in assigned_town_cards):
-                print(
-                    "\nInvalid input. Please enter only your Town cards.\nDo not include any Entry/Exit cards.")
+                print("\nInvalid input. Please enter only your Town cards.\nDo not include any Entry/Exit cards.")
                 raise ValueError(
                     "Entry/Exit cards entered instead of Town cards")
 
@@ -306,7 +305,7 @@ def calculate_route():
     for i in range(all_possible_routes.shape[0]):
         for j in range(all_possible_routes.shape[1]-1):
             route_lengths.append(
-                distances[all_possible_routes[i, j]-1, all_possible_routes[i,(j+1)]-1])
+                distances[all_possible_routes[i, j]-1, all_possible_routes[i, (j+1)]-1])
 
     # Reshaping route lengths into an array, one row for each route.
     route_lengths = np.reshape(route_lengths, newshape=(
@@ -348,16 +347,19 @@ def calculate_route():
                 break
 
     print("\nOptimal route/s for dealt cards: ")
-    
+
     for i in range(len(lists)):
         assigned_town_cards_copy = assigned_town_cards.copy()
         print("\n\nRoute", i + 1, "\n")
         for j in range(len(lists[i])):
             if j == 0 or j == (len(lists[i]) - 1) or (lists[i][j] in assigned_town_cards_copy):
-                print("****  {:>2} : {}".format(lists[i][j], town_names[lists[i][j]-1]))
-                assigned_town_cards_copy = [card for card in assigned_town_cards_copy if card != lists[i][j]]
+                print(
+                    "****  {:>2} : {}".format(lists[i][j], town_names[lists[i][j]-1]))
+                assigned_town_cards_copy = [
+                    card for card in assigned_town_cards_copy if card != lists[i][j]]
             else:
-                print("      {:>2} : {}".format(lists[i][j], town_names[lists[i][j]-1]))
+                print("      {:>2} : {}".format(
+                    lists[i][j], town_names[lists[i][j]-1]))
 
     end = timer()
 
@@ -367,18 +369,20 @@ def calculate_route():
     print("\n\nTime taken to calculate route/s:")
     print(time_taken, "seconds")
     print("\nEnjoy your game!")
-    
+
+
 def print_banner():
     banner = open('banner-text.txt', 'r')
     banner_image = banner.read()
-    print (banner_image)
+    print(banner_image)
     banner.close()
-    
+
+
 def instructions_prompt():
     global instructions, welcome_message
     instructions_check = input(welcome_message)
-    
-    while True: 
+
+    while True:
         try:
             if instructions_check.lower() in yes_inputs:
                 print(instructions)
@@ -392,11 +396,13 @@ def instructions_prompt():
             instructions_check = input(
                 "\n\nPlease type YES or NO: ")
             continue  # Back to beginning of loop
-        
+
+
 def setup():
     print_banner()
     instructions_prompt()
-    
+
+
 def solver():
     validate_inputs()
     print_cards()
@@ -408,8 +414,10 @@ def solver():
     else:
         solver()
 
+
 def run_program():
     setup()
     solver()
+
 
 run_program()
