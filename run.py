@@ -101,14 +101,23 @@ assigned_town_cards = []
 assigned_entry_cards = []
 dealt_hand = []
 
+# Welcome message greeting user at start of program
+welcome_message = """
+Welcome to the Discovering Ireland solver!
+            
+Would you like to read the instructions?
+            
+Please type YES or NO: """
+
 # Written instructions to be printed if necessary
 instructions = f"""
-The game consists of a board with {number_of_towns} towns spread over Ireland, each given a number from 1 to {number_of_towns}.
+
+Discovering Ireland is a board game that consists of a playing board with {number_of_towns} towns spread over Ireland, each given a number from 1 to {number_of_towns}.
 
 Each player is dealt a number of cards representing these towns (called Entry/Exit Cards and Town Cards).
 Each player is given 2 Entry/Exit cards, where they must respectively start and finish their route.
-Players are usually dealt between 4 and 8 Town Cards, depending on how long they wish the game to last.
 Each player must also visit EVERY town for which they have been dealt a Town card. These may be visited in ANY order.
+Players are usually dealt between 4 and 8 Town Cards, depending on how long they wish the game to last.
 
 The winner is the first person to visit all of their Town cards and to arrive at their final Entry/Exit card.
 
@@ -121,7 +130,7 @@ This gives you the best chance of reaching your final destination before your op
 
 In order to use the solver, simply follow the prompts that appear on screen, and the optimal route/s will be calculated and printed clearly for you.
 
-Enjoy, and good luck in your next game!
+Enjoy, and good luck!
 """
 
 # Nodes: town_cards, entry_cards. Edge weights: counted_distances.csv
@@ -375,19 +384,25 @@ def print_banner():
     banner.close()
     
 def instructions_prompt():
-    global instructions
-    while True:
-        instructions_check = input(
-            """Welcome to the Discovering Ireland solver!
-            Would you like to read the instructions? Please type YES or NO: """)
-        if instructions_check.lower() in yes_inputs:
-            print(instructions)
-            break
-        elif instructions_check.lower() in no_inputs:
-            break
-        else:
-            continue
+    global instructions, welcome_message
+    instructions_check = input(welcome_message)
     
+    while True: 
+        try:
+            if instructions_check.lower() in yes_inputs:
+                print(instructions)
+                break
+            elif instructions_check.lower() in no_inputs:
+                break
+            else:
+                print("\nInvalid input.")
+                raise ValueError("Invalid input")
+        except:
+            instructions_check = input(
+                "\n\nPlease type YES or NO: ")
+            continue  # Back to beginning of loop
+        
+        
 def run_program():
     print_map()
     print_banner()
