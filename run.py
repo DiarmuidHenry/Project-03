@@ -116,7 +116,7 @@ Discovering Ireland is a board game that consists of a playing board with
 Each player is given 2 Entry/Exit cards; where they start & finish their route.
 
 They also receive 4 - 8 Town Cards. These may be visited in ANY order, but
-each player MUST also visit EVERY town for which they have a Town card. 
+each player MUST visit EVERY town for which they have a Town card. 
 
 The winner is the first person to visit all of their Town cards and 
 to arrive at their final Entry/Exit card.
@@ -352,7 +352,6 @@ def calculate_route():
         for j in range(len(lists[i])):
             if j == 0 or j == (len(lists[i]) - 1) or (lists[i][j] in assigned_town_cards_copy):
                 print("****  {:>2} : {}".format(lists[i][j], town_names[lists[i][j]-1]))
-                # print("**** ", lists[i][j], ":", town_names[lists[i][j]-1])
                 assigned_town_cards_copy = [card for card in assigned_town_cards_copy if card != lists[i][j]]
             else:
                 print("      {:>2} : {}".format(lists[i][j], town_names[lists[i][j]-1]))
@@ -365,12 +364,6 @@ def calculate_route():
     print("\n\nTime taken to calculate route/s:")
     print(time_taken, "seconds")
     print("\nEnjoy your game!")
-    
-def print_map():
-    map = open('ireland-map.txt', 'r')
-    map_image = map.read()
-    print (map_image)
-    map.close()
     
 def print_banner():
     banner = open('banner-text.txt', 'r')
@@ -398,7 +391,6 @@ def instructions_prompt():
             continue  # Back to beginning of loop
         
 def setup():
-    # print_map()
     print_banner()
     instructions_prompt()
     
