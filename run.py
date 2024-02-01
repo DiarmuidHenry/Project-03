@@ -183,6 +183,16 @@ def calculate_route():
     print("\n\nOptimal route length:")
     print(route_lengths[min_indices[0]])
     
+    # Compile all towns visited from all_shortest_paths and routes_to_take.
+    calculated_shortest_routes = [[assigned_entry_cards[0]] for _ in range(len(min_indices))]
+    for i in range(len(min_indices)):
+        for j in range(len(routes_to_take[i])-1):
+            # .copy() is used here so that no changes are made to all_shortest_paths.
+            next = all_shortest_paths[(
+                routes_to_take[i][j] - 1)*len(all_cards) + routes_to_take[i][j+1] - 1].copy()
+            next.pop(0)
+            calculated_shortest_routes[i] += next
+    
     
     end = timer()
 
