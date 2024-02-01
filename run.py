@@ -1,6 +1,7 @@
 import gspread
 from google.oauth2.service_account import Credentials
 import numpy as np
+import networkx as nx
 
 # Setting up API from Google Sheet
 SCOPE = [
@@ -21,12 +22,6 @@ counted_distances = data.get_all_values()
 
 # Convert the values from counted_distances to a NumPy array with integer values
 edge_weights_matrix = np.array(counted_distances, dtype=np.int32)
-
-print(edge_weights_matrix)
-print(edge_weights_matrix[0][1])
-print(type(edge_weights_matrix[0][1]))
-print(type(edge_weights_matrix))
-
 
 # List of town names, in oder
 town_names = [
@@ -101,9 +96,5 @@ town_cards = [i for i in all_cards if i not in entry_cards]
 assigned_town_cards = []
 assigned_entry_cards = []
 dealt_hand = []
-
-
-
-
 
 
