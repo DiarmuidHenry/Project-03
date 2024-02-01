@@ -102,18 +102,25 @@ assigned_entry_cards = []
 dealt_hand = []
 
 # Written instructions to be printed if necessary
-instructions = f"The game consists of a board with {number_of_towns} towns spread over Ireland, each given a number from 1 to {number_of_towns}.
-\nEach player is dealt a number of cards representing these towns (called Entry/Exit Cards and Town Cards).
-\nEach player is given 2 Entry/Exit cards, where they must respectively start and finish their route.
+instructions = f"""
+The game consists of a board with {number_of_towns} towns spread over Ireland, each given a number from 1 to {number_of_towns}.
+
+Each player is dealt a number of cards representing these towns (called Entry/Exit Cards and Town Cards).
+Each player is given 2 Entry/Exit cards, where they must respectively start and finish their route.
 Players are usually dealt between 4 and 8 Town Cards, depending on how long they wish the game to last.
-\nThey must also visit EVERY town for which they have been dealt a Town card. These may be visited in ANY order.
-\nThe winner is the first person to visit all of their Town cards and to arrive at their final Entry/Exit card.
-\nDuring the game, players can use/move their roadblocks according to the rules stated in the rulebook.
+Each player must also visit EVERY town for which they have been dealt a Town card. These may be visited in ANY order.
+
+The winner is the first person to visit all of their Town cards and to arrive at their final Entry/Exit card.
+
+During the game, players can use/move their roadblocks according to the rules stated in the rulebook.
 There are also Chance cards, which when landed on, often send a player or their opponent to another place on the board.
-\nSince it is (practically) impossible to predict how the Chance cards and roadblocks can/will be used, these will be ignored in this solver.
-\n\n\nThe purpose of this solver is to find the shortest possible route to visit every card you have been dealt, thereby giving you the best chance of reaching your final destination before your opponent/s!
-\n\nIn order to use the solver, simply follow the prompts that appear on screen, and the optimal route/s will be calculated and printed clearly for you.
-\nEnjoy, and good luck in your next game!"
+Since it is (practically) impossible to predict how the Chance cards and roadblocks can/will be used, these will be ignored in this solver.
+
+The purpose of this solver is to find the shortest possible route to visit every card you have been dealt, thereby giving you the best chance of reaching your final destination before your opponent/s!
+
+In order to use the solver, simply follow the prompts that appear on screen, and the optimal route/s will be calculated and printed clearly for you.
+Enjoy, and good luck in your next game!
+"""
 
 # Nodes: town_cards, entry_cards. Edge weights: counted_distances.csv
 graph = nx.from_numpy_array(edge_weights_matrix)
@@ -371,6 +378,7 @@ def instructions_prompt():
         instructions_check = input("\nWelcome to the Discovering Ireland solver!\nWould you like to read the instructions? Please type YES or NO:")
         if instructions_check.lower() in yes_inputs:
             print(instructions)
+            break
         elif instructions_check.lower() in no_inputs:
             break
         else:
