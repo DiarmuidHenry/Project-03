@@ -194,14 +194,15 @@ def calculate_route():
             lists[i] += next
             
     # Removing duplicate lists, in the instance that 2 different ways of visiting town cards ends in the same detailed route. E.g. 39,40,45,33 and 39,45,40,33
-    for i in range(0, len(min_indices)-1):
-        for j in range(0, len(min_indices)-1):
-            if i!=j and lists[i]==lists[j]:
-                lists.remove(lists[i])
+    for i in range(len(lists)-1, -0, -1):
+        for j in range(len(lists)-2, -1, -1):
+            if (i>j and lists[i]==lists[j]):
+                del lists[i]
+                break;   
 
-    print("Corresponding detailed route/s:")
-    for i in range(0, len(lists)):
-        print(lists[i])
+    print("\nOptimal order/s for dealt cards, with corresponding detailed route/s:")
+    for i in range(len(lists)):
+        print(routes_to_take[i], ":", lists[i], "\n")
     
     
     end = timer()
