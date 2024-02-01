@@ -127,14 +127,41 @@ max_town_cards = 9
 number_of_town_cards = random.randint(min_town_cards, max_town_cards);
 
 # Assigning town cards
-assigned_town_cards = random.sample(town_cards, number_of_town_cards);
+# assigned_town_cards = random.sample(town_cards, number_of_town_cards);
 # Fix town cards when testing
 # assigned_town_cards = [23, 51, 35, 7, 49, 18, 34, 40, 2, 24]
 
 # Assigning entry/exit cards, allowing for both to be the same
-assigned_entry_cards = random.choices(entry_cards, k=2);
+# assigned_entry_cards = random.choices(entry_cards, k=2);
 # Fix entry cards when testing
 # assigned_entry_cards = [31, 39]
+
+# List acceptable inputs when YES or NO should be provided. Both upper and lower case will be accepted.
+yes_inputs = ["yes", "ye", "y"];
+no_inputs = ["no", "n"]
+
+# Get input from the user as a space-separated string
+input_entry = input("Please enter your assigned Entry/Exit Cards: ")
+
+# CHECK INPUT MAKES SENSE: exactly 2, must be in entry_cards. Return relevant error message
+# if necessary
+
+input_town = input("Please enter your assigned Town Cards: ")
+
+# CHECK INPUT MAKES SENSE: no duplicates, must be in town_cards. Return relevant error message
+# if necessary
+
+# Split the input string into a list of strings
+input_entry = input_entry.split()
+
+# Convert the list of strings to a list of integers
+assigned_entry_cards = [int(element) for element in input_entry]
+
+# Split the input string into a list of strings
+input_town = input_town.split()
+
+# Convert the list of strings to a list of integers
+assigned_town_cards = [int(element) for element in input_town]
 
 def print_cards():
     global dealt_hand, assigned_town_cards, assigned_entry_cards
@@ -226,7 +253,6 @@ def calculate_route():
 
     print("\n\nTime taken to calculate route/s:")
     print(time_taken, "seconds\n")
-    
     
     
     
