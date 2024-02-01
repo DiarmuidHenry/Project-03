@@ -140,37 +140,75 @@ number_of_town_cards = random.randint(min_town_cards, max_town_cards);
 yes_inputs = ["yes", "ye", "y"];
 no_inputs = ["no", "n"]
 
-# Get input from the user as a space-separated string
-input_town = input("Please enter your assigned Town Cards: ")
+def validate_inputs():
+    global assigned_town_cards, assigned_entry_cards
+    # Get input from the user as a space-separated string
+    input_entry = input("\n\nPlease enter your assigned Entry/Exit Cards, separated by a space: ")
 
-while True:
-    # CHECK INPUT MAKES SENSE: no duplicates, must be in town_cards. Return relevant error message if necessary
-    input_town = input_town.split()
-    assigned_town_cards = [int(element) for element in input_town]
+    while True:
+        # CHECK INPUT MAKES SENSE
+        try:
+            input_entry = input_entry.split()
+            if all(value.isdigit() for value in input_entry):
+                assigned_entry_cards = [int(card) for card in input_entry]
+            else:
+                print("\nInvalid input. Input must only contain spaces and integers.")
+                raise ValueError("Invalid input format")  
 
-    if len(set(assigned_town_cards)) == len(assigned_town_cards) and all(card in town_cards for card in assigned_town_cards):
-        break
-    else:
-        print("Invalid input. Please enter non-duplicate town cards from the provided list.")
-        input_town = input("Please enter your assigned Town Cards, separated by a space: ")
+            if not all(card in all_cards for card in assigned_entry_cards):
+                print("\nInvalid input. Entry/Exit cards must be between 5 and 50 (inclusive).")
+                raise ValueError("Entry/Exit cards out of range") 
 
+            if (not all(card in entry_cards for card in assigned_entry_cards)) and all(card in all_cards for card in assigned_entry_cards):
+                print("\nInvalid input. Please enter only your Entry/Exit cards. Do not include any Town cards.")
+                raise ValueError("Town cards entered instead of Entry/Exit cards")  
 
-input_entry = input("Please enter your assigned Entry/Exit Cards, separated by a space: ")
+            if len(assigned_entry_cards) != 2:
+                print("\nInvalid input. Players must have exactly 2 Entry/Exit cards.")
+                raise ValueError("Incorrect number of Entry/Exit cards")  
 
-while True:
-    # CHECK INPUT MAKES SENSE: exactly 2, must be in entry_cards. Return relevant error message if necessary
-    try:
-        input_entry = input_entry.split()
-        assigned_entry_cards = [int(card) for card in input_entry]
+            # If input passes all of the above, will break out of loop
+            break 
 
-        if len(assigned_entry_cards) == 2 and all(card in entry_cards for card in assigned_entry_cards):
-            break
-        else:
-            print("Invalid input. Players must have exactly 2 Entry/Exit cards.")
-    except:
-        print("Invalid input. Please enter numbers only")
-        input_entry = input("Please enter your assigned Entry/Exit Cards, separated by a space: ")
-        continue  # This will go back to the beginning of the loop
+        except ValueError:
+            input_entry = input("\n\nPlease enter your assigned Entry/Exit Cards, separated by a space: ")
+            continue  # Back to the beginning of loop
+
+    # Get input from the user as a space-separated string
+    input_town = input("\nPlease enter your assigned Town Cards, separated by a space: ")
+
+    while True:
+        # CHECK INPUT MAKES SENSE
+        try:
+            input_town = input_town.split()
+            if all(value.isdigit() for value in input_town):
+                assigned_town_cards = [int(card) for card in input_town]
+            else:
+                print("\nInvalid input. Input must only contain spaces and integers.")
+                raise ValueError("Invalid input format")  
+
+            if not all(card in all_cards for card in assigned_town_cards):
+                print("\nInvalid input. Town cards must be between 1 and 52 (inclusive).")
+                raise ValueError("Town cards out of range") 
+
+            if (not all(card in town_cards for card in assigned_town_cards)) and all(card in all_cards for card in assigned_town_cards):
+                print("\nInvalid input. Please enter only your Town cards. Do not include any Entry/Exit cards.")
+                raise ValueError("Entry/Exit cards entered instead of Town cards")  
+
+            if len(assigned_town_cards) not in range(1,47):
+                print("\nInvalid input. Players must have at least 1 Town card.")
+                raise ValueError("Incorrect number of Entry/Exit cards")
+
+            if len(input_town) != len(set(input_town)):
+                print("\nInvalid input, duplicates found.")
+                raise ValueError("Duplicate cards found")
+
+            # If input passes all of the above, break out of loop
+            break 
+
+        except ValueError:
+            input_town = input("\n\nPlease enter your assigned Town Cards, separated by a space: ")
+            continue  # Back to beginning of the loop
 
 def print_cards():
     global dealt_hand, assigned_town_cards, assigned_entry_cards
