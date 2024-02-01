@@ -184,14 +184,24 @@ def calculate_route():
     print(route_lengths[min_indices[0]])
     
     # Compile all towns visited from all_shortest_paths and routes_to_take.
-    calculated_shortest_routes = [[assigned_entry_cards[0]] for _ in range(len(min_indices))]
+    lists = [[assigned_entry_cards[0]] for _ in range(len(min_indices))]
     for i in range(len(min_indices)):
         for j in range(len(routes_to_take[i])-1):
             # .copy() is used here so that no changes are made to all_shortest_paths.
             next = all_shortest_paths[(
                 routes_to_take[i][j] - 1)*len(all_cards) + routes_to_take[i][j+1] - 1].copy()
             next.pop(0)
-            calculated_shortest_routes[i] += next
+            lists[i] += next
+            
+    # Removing duplicate lists, in the instance that 2 different ways of visiting town cards ends in the same detailed route. E.g. 39,40,45,33 and 39,45,40,33
+    for i in range(0, len(min_indices)-1):
+        for j in range(0, len(min_indices)-1):
+            if i!=j and lists[i]==lists[j]:
+                lists.remove(lists[i])
+
+    print("Corresponding detailed route/s:")
+    for i in range(0, len(lists)):
+        print(lists[i])
     
     
     end = timer()
