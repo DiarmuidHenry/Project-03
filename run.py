@@ -225,6 +225,29 @@ def print_cards():
     print("\nDealt hand is:")
     print(dealt_hand)
     
+def too_many_cards():
+    if len(assigned_town_cards) < 9:
+        return True
+    if len(assigned_town_cards) == 9:
+        print("\n\nEstimated running time: 4 seconds")
+        return True
+    if len(assigned_town_cards) == 10:
+        print("\n\nEstimated running time: 45 seconds")
+        return True
+    if len(assigned_town_cards) == 11:
+        print("\n\nEstimated running time: 6 minutes")
+        return True
+    if len(assigned_town_cards) > 11:
+        while True:
+            too_many_cards_check = input(
+                "\nYou have entered {} town cards. This may lead to a run time of several hours and/or the program terminating due to lack of memory.\nDo you wish to continue?\nPlease type YES or NO: ".format(len(assigned_town_cards)))
+            if too_many_cards_check.lower() in yes_inputs:
+                return True
+            elif too_many_cards_check.lower() in no_inputs:
+                return False
+            else:
+                continue
+    
 def calculate_route():
     # Start timer
     start = timer()
