@@ -141,6 +141,18 @@ def calculate_route():
     # Start timer
     start = timer()
     
+    # List all permutations of assigned_town_cards
+    possible_town_routes = list(permutations(assigned_town_cards))
+    
+    # Create start and end card arrays,
+    start_entry = np.full((len(possible_town_routes), 1),
+                          assigned_entry_cards[0])
+    end_entry = np.full((len(possible_town_routes), 1),
+                        assigned_entry_cards[1])
+
+    # Stacking the previous to get all possible valid routes.
+    all_possible_routes = np.hstack(
+        (start_entry, possible_town_routes, end_entry))
     
     
     
