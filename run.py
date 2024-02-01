@@ -5,6 +5,7 @@ import networkx as nx
 from timeit import default_timer as timer
 import itertools
 from itertools import permutations
+import random
 
 # Setting up API from Google Sheet
 SCOPE = [
@@ -118,9 +119,22 @@ for i in graph.nodes:
 # Reshape distances into a square array.
 distances = np.reshape(distances, newshape=(len(all_cards), len(all_cards)))
 
-# Create placeholders to work with now. Will be replaced by user input later
-assigned_entry_cards = [2, 4, 6, 8, 10, 14, 23, 37]
-assigned_town_cards = [5, 31]
+ # Setting range of number of town cards
+min_town_cards = 5
+max_town_cards = 9
+
+# Randomly choosing number of town cards from given range
+number_of_town_cards = random.randint(min_town_cards, max_town_cards);
+
+# Assigning town cards
+assigned_town_cards = random.sample(town_cards, number_of_town_cards);
+# Fix town cards when testing
+# assigned_town_cards = [23, 51, 35, 7, 49, 18, 34, 40, 2, 24]
+
+# Assigning entry/exit cards, allowing for both to be the same
+assigned_entry_cards = random.choices(entry_cards, k=2);
+# Fix entry cards when testing
+# assigned_entry_cards = [31, 39]
 
 def print_cards():
     global dealt_hand, assigned_town_cards, assigned_entry_cards
