@@ -160,7 +160,29 @@ def calculate_route():
         for j in range(all_possible_routes.shape[1]-1):
             route_lengths.append(
                 distances[all_possible_routes[i, j]-1, all_possible_routes[i,(j+1)]-1])
+            
+    # Reshaping route lengths into an array, one row for each route.
+    route_lengths = np.reshape(route_lengths, newshape=(
+        (all_possible_routes.shape[0]), all_possible_routes.shape[1]-1))
 
+    # Summing each row to get route length for each route
+    route_lengths = np.sum(route_lengths, axis=1)
+    
+    # Finding the minimum route length, and its corresponding index
+    min_length = np.min(route_lengths)
+    min_indices = [i for i, x in enumerate(route_lengths) if x == min_length]
+
+    # Find shortest route/s in all_possible_routes using min_indicies.
+    routes_to_take = []
+    for i in range(0, (len(min_indices))):
+        routes_to_take.append(all_possible_routes[min_indices[i]])
+
+    routes_to_take = np.asarray(routes_to_take)
+
+    # Printing the route length for the route/s.
+    print("\n\nOptimal route length:")
+    print(route_lengths[min_indices[0]])
+    
     
     end = timer()
 
