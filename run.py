@@ -190,12 +190,12 @@ def validate_inputs():
 
         except ValueError:
             input_entry = input(
-                "\n\nPlease enter your assigned Entry/Exit Cards, separated by a space: ")
+                "\nPlease enter your assigned Entry/Exit Cards, separated by a space: ")
             continue  # Back to beginning of loop
 
     # Get input from the user as a space-separated string
     input_town = input(
-        "\n\nPlease enter your assigned Town Cards, separated by a space: ")
+        "\nPlease enter your assigned Town Cards, separated by a space: ")
 
     while True:
         # CHECK INPUT MAKES SENSE
@@ -228,7 +228,7 @@ def validate_inputs():
 
         except ValueError:
             input_town = input(
-                "\n\nPlease enter your assigned Town Cards, separated by a space: ")
+                "\nPlease enter your assigned Town Cards, separated by a space: ")
             continue  # Back to beginning of loop
 
 
