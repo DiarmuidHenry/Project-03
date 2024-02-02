@@ -161,7 +161,7 @@ def validate_inputs():
     global assigned_town_cards, assigned_entry_cards
     # Get input from the user as a space-separated string
     input_entry = input(
-        "\n\nPlease enter your assigned Entry/Exit Cards, separated by a space: ")
+        "\nPlease enter your assigned Entry/Exit Cards, separated by a space: ")
 
     while True:
         # CHECK INPUT MAKES SENSE
