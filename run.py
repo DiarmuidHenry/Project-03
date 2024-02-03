@@ -132,8 +132,8 @@ dealt_hand = []
 # Welcome message greeting user at start of program
 welcome_message = """
 Welcome to the Discovering Ireland solver!
-            
-Would you like to read the instructions? Please type YES or NO: """
+Would you like to read the instructions? Please type YES or NO:
+"""
 
 # Written instructions to be printed if necessary
 instructions = f"""
@@ -142,8 +142,7 @@ Discovering Ireland is a board game that consists of a playing board with
 {number_of_towns} towns spread over Ireland, each given a number from 1 to {number_of_towns}.
 
 Each player is given 2 Entry/Exit cards; where they start & finish their route.
-
-They also receive 4 - 8 Town Cards. These may be visited in ANY order, but
+They also receive 4-8 Town Cards. These may be visited in ANY order, but
 each player MUST visit EVERY town for which they have a Town card. 
 
 The winner is the first person to visit all of their Town cards and 
@@ -189,7 +188,7 @@ def validate_inputs():
     global assigned_town_cards, assigned_entry_cards
     # Get input from the user as a space-separated string
     input_entry = input(
-        "\nPlease enter your assigned Entry/Exit Cards, separated by a space: ")
+        "\nPlease enter your assigned Entry/Exit Cards, separated by a space:\n")
 
     while True:
         # CHECK INPUT MAKES SENSE
@@ -218,12 +217,12 @@ def validate_inputs():
 
         except ValueError:
             input_entry = input(
-                "\nPlease enter your assigned Entry/Exit Cards, separated by a space: ")
+                "\nPlease enter your assigned Entry/Exit Cards, separated by a space:\n")
             continue  # Back to beginning of loop
 
     # Get input from the user as a space-separated string
     input_town = input(
-        "\nPlease enter your assigned Town Cards, separated by a space: ")
+        "\nPlease enter your assigned Town Cards, separated by a space:\n")
 
     while True:
         # CHECK INPUT MAKES SENSE
@@ -256,7 +255,7 @@ def validate_inputs():
 
         except ValueError:
             input_town = input(
-                "\nPlease enter your assigned Town Cards, separated by a space: ")
+                "\nPlease enter your assigned Town Cards, separated by a space:\n")
             continue  # Back to beginning of loop
 
 
@@ -279,7 +278,7 @@ def print_cards():
 def check_cards():
     while True:
         input_check = input(
-            "\nIs the above information correct? Please type YES or NO: ")
+            "\nIs the above information correct? Please type YES or NO:\n")
         if input_check.lower() in yes_inputs:
             return True
         elif input_check.lower() in no_inputs:
@@ -298,7 +297,7 @@ def too_many_cards():
         while True:
             line_1 = f"\nYou have entered {len(assigned_town_cards)} town cards.\n"
             line_2 = "This may result in program termination/malfunction due to memory issues.\n"
-            line_3 = "Do you wish to continue anyway? Please type YES or NO: "
+            line_3 = "Do you wish to continue anyway? Please type YES or NO:\n"
             too_many_cards_check = input(line_1 + line_2 + line_3)
             if too_many_cards_check.lower() in yes_inputs:
                 return True
