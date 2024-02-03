@@ -13,24 +13,25 @@ import threading
 # Define global varibale used in loading_animation
 solver_ready = False
 
+
 # Cycles between 1, 2 and 3 dots printed after word
 def loading_dots(word):
     print()
     print()
-    for dots in itertools.cycle(
-        ["       ", " .     ", " . .   ", " . . . "]):
+    for dots in itertools.cycle(["       ", " .     ", " . .   ", " . . . "]):
         if solver_ready:
             break
         sys.stdout.write(f"\r{word}" + dots)
         sys.stdout.flush()
         time.sleep(0.3)
-        
+
 
 # Animation happens concurrent with rest of code loading/thinking
 def play_loading_animation(word):
     loading_animation = threading.Thread(target=loading_dots, args=(word,))
     loading_animation.start()
     return loading_animation
+
 
 # Loading prints on program startup
 loading_animation = play_loading_animation("Loading")
@@ -52,7 +53,7 @@ data = SHEET.worksheet("counted_distances")
 
 counted_distances = data.get_all_values()
 
-# Convert the values from counted_distances to a NumPy array with integer values
+# Convert values from counted_distances to a NumPy array with integer values
 edge_weights_matrix = np.array(counted_distances, dtype=np.int32)
 
 # List of town names, in oder
@@ -136,16 +137,16 @@ Would you like to read the instructions? Please type YES or NO:
 """
 
 # Written instructions to be printed if necessary
-instructions = f"""
+instructions = """
 
 Discovering Ireland is a board game that consists of a playing board with
-{number_of_towns} towns spread over Ireland, each given a number from 1 to {number_of_towns}.
+52 towns spread over Ireland, each given a number from 1 to 52.
 
 Each player is given 2 Entry/Exit cards; where they start & finish their route.
 They also receive at least 5 Town Cards. These may be visited in ANY order, but
-each player MUST visit EVERY town for which they have a Town card. 
+each player MUST visit EVERY town for which they have a Town card.
 
-The winner is the first person to visit all of their Town cards and 
+The winner is the first person to visit all of their Town cards and
 to arrive at their final Entry/Exit card.
 
 This solver finds the shortest possible route to visit all your dealt cards.
@@ -188,7 +189,7 @@ def validate_inputs():
     global assigned_town_cards, assigned_entry_cards
     # Get input from the user as a space-separated string
     input_entry = input(
-        "\nPlease enter your assigned Entry/Exit Cards, separated by a space:\n")
+        "\nPlease enter your Entry/Exit Cards, separated by a space:\n")
 
     while True:
         # CHECK INPUT MAKES SENSE
@@ -206,7 +207,8 @@ def validate_inputs():
                 raise ValueError("Entry/Exit cards out of range")
 
             if (not all(card in entry_cards for card in assigned_entry_cards)) and all(card in all_cards for card in assigned_entry_cards):
-                print("\nInvalid input. Please enter only your Entry/Exit cards.\nDo not include any Town cards.")
+                print(
+                    "\nInvalid input. Please enter only your Entry/Exit cards.\nDo not include any Town cards.")
                 raise ValueError(
                     "Town cards entered instead of Entry/Exit cards")
 
@@ -240,7 +242,8 @@ def validate_inputs():
                 raise ValueError("Town cards out of range")
 
             if (not all(card in town_cards for card in assigned_town_cards)) and all(card in all_cards for card in assigned_town_cards):
-                print("\nInvalid input. Please enter only your Town cards.\nDo not include any Entry/Exit cards.")
+                print(
+                    "\nInvalid input. Please enter only your Town cards.\nDo not include any Entry/Exit cards.")
                 raise ValueError(
                     "Entry/Exit cards entered instead of Town cards")
 
@@ -305,7 +308,8 @@ def too_many_cards():
                 return False
             else:
                 continue
-            
+
+
 """
 Alternative: alter too_many_cards to only allow
 a maximum of 9 cards. Hosted app crashes with
@@ -317,8 +321,8 @@ def calculate_route():
     global solver_ready
     # Start timer
     start = timer()
-    
-    solver_ready = False    
+
+    solver_ready = False
     loading_animation = play_loading_animation("Calculating route/s")
 
     # List all permutations of assigned_town_cards
@@ -358,7 +362,7 @@ def calculate_route():
         routes_to_take.append(all_possible_routes[min_indices[i]])
 
     routes_to_take = np.asarray(routes_to_take)
-    
+
     # Stop loading_animation
     solver_ready = True
 
@@ -415,12 +419,13 @@ def print_banner():
     print(banner_image)
     banner.close()
 
+
 def instructions_prompt():
     global instructions, welcome_message, solver_ready
 
     # Stop loading_animation
     solver_ready = True
-    
+
     instructions_check = input(welcome_message)
     while True:
         try:
@@ -432,10 +437,11 @@ def instructions_prompt():
             else:
                 print("\nInvalid input.")
                 raise ValueError("Invalid input")
-        except:
+        except Exception:
             instructions_check = input(
                 "\n\nPlease type YES or NO: ")
             continue  # Back to beginning of loop
+
 
 def setup():
     print_banner()
