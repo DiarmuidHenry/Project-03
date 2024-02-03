@@ -4,7 +4,6 @@ import numpy as np
 import networkx as nx
 from timeit import default_timer as timer
 import itertools
-from itertools import permutations
 import sys
 import time
 import threading
@@ -360,7 +359,7 @@ def calculate_route():
     loading_animation = play_loading_animation("Calculating route/s")
 
     # List all permutations of assigned_town_cards
-    possible_town_routes = list(permutations(assigned_town_cards))
+    possible_town_routes = list(itertools.permutations(assigned_town_cards))
 
     # Create start and end card arrays,
     start_entry = np.full((len(possible_town_routes), 1),
