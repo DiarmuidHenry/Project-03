@@ -6,6 +6,12 @@ from timeit import default_timer as timer
 import itertools
 from itertools import permutations
 import random
+import sys
+import time
+
+print("\n\nLoading . . .\n\n")
+
+
 
 # Setting up API from Google Sheet
 SCOPE = [
@@ -266,26 +272,31 @@ def too_many_cards():
     if len(assigned_town_cards) == 9:
         print("\n\nEstimated running time: 4 seconds")
         return True
-    if len(assigned_town_cards) == 10:
-        print("\n\nEstimated running time: 45 seconds")
-        return True
-    if len(assigned_town_cards) > 10:
+    if len(assigned_town_cards) > 9:
         while True:
-            too_many_cards_check = input(
-                f"\nYou have entered {len(assigned_town_cards)} town cards.\nMay result in hours-long runtime or program termination due to memory issues.\nDo you wish to continue?\nPlease type YES or NO: ")
+            line_1 = f"\nYou have entered {len(assigned_town_cards)} town cards.\n"
+            line_2 = "This may result in program termination/malfunction due to memory issues.\n"
+            line_3 = "Do you wish to continue anyway? Please type YES or NO: "
+            too_many_cards_check = input(line_1 + line_2 + line_3)
             if too_many_cards_check.lower() in yes_inputs:
                 return True
             elif too_many_cards_check.lower() in no_inputs:
                 return False
             else:
                 continue
+            
+"""
+Alternative: alter too_many_cards to only allow
+a maximum of 9 cards. Hosted app crashes with
+10+ town cards due to lack of memory.
+"""
 
 
 def calculate_route():
     # Start timer
     start = timer()
 
-    print("\n\nCalculating route...")
+    print("\n\nCalculating route/s . . .")
 
     # List all permutations of assigned_town_cards
     possible_town_routes = list(permutations(assigned_town_cards))
@@ -350,7 +361,7 @@ def calculate_route():
 
     for i in range(len(lists)):
         assigned_town_cards_copy = assigned_town_cards.copy()
-        print("\n\nRoute", i + 1, "\n")
+        print("\n\n     Route", i + 1, "\n")
         for j in range(len(lists[i])):
             if j == 0 or j == (len(lists[i]) - 1) or (lists[i][j] in assigned_town_cards_copy):
                 print(
@@ -368,7 +379,7 @@ def calculate_route():
 
     print("\n\nTime taken to calculate route/s:")
     print(time_taken, "seconds")
-    print("\nEnjoy your game!")
+    print("\nEnjoy your game!\n")
 
 
 def print_banner():
@@ -376,7 +387,6 @@ def print_banner():
     banner_image = banner.read()
     print(banner_image)
     banner.close()
-
 
 def instructions_prompt():
     global instructions, welcome_message
@@ -396,6 +406,20 @@ def instructions_prompt():
             instructions_check = input(
                 "\n\nPlease type YES or NO: ")
             continue  # Back to beginning of loop
+
+def thinking_dots(word):
+    while True:
+        sys.stdout.write(f"\r{word} .    ")
+        sys.stdout.flush()
+        time.sleep(0.3)
+        
+        sys.stdout.write(f"\r{word} . .  ")
+        sys.stdout.flush()
+        time.sleep(0.3)
+        
+        sys.stdout.write(f"\r{word} . . .")
+        sys.stdout.flush()
+        time.sleep(0.3)
 
 
 def setup():
