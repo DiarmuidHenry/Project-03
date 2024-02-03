@@ -5,7 +5,6 @@ import networkx as nx
 from timeit import default_timer as timer
 import itertools
 from itertools import permutations
-import random
 import sys
 import time
 import threading
