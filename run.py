@@ -56,7 +56,7 @@ counted_distances = data.get_all_values()
 # Convert values from counted_distances to a NumPy array with integer values
 edge_weights_matrix = np.array(counted_distances, dtype=np.int32)
 
-# List of town names, in oder
+# List of town names, in order
 town_names = [
     "Ballycastle",
     "Coleraine",
@@ -188,7 +188,6 @@ min_entry = min(entry_cards)
 max_entry = max(entry_cards)
 min_town = min(town_cards)
 max_town = max(town_cards)
-
 please_enter_entry = """
 Please enter your Entry/Exit Cards, separated by a space:
 """
@@ -333,10 +332,7 @@ Do you wish to continue anyway? Please type YES or NO:"
 
 
 def too_many_cards():
-    if len(assigned_town_cards) < 9:
-        return True
-    if len(assigned_town_cards) == 9:
-        print("\n\nEstimated running time: 4 seconds")
+    if len(assigned_town_cards) <= 9:
         return True
     if len(assigned_town_cards) > 9:
         while True:
