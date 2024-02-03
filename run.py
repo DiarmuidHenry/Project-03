@@ -367,36 +367,36 @@ def calculate_route():
     print(route_lengths[min_indices[0]])
 
     # Compile all towns visited from all_shortest_paths and routes_to_take.
-    lists = [[assigned_entry_cards[0]] for _ in range(len(min_indices))]
+    results_list = [[assigned_entry_cards[0]] for _ in range(len(min_indices))]
     for i in range(len(min_indices)):
         for j in range(len(routes_to_take[i])-1):
             # .copy() is used here so that no changes are made to all_shortest_paths.
             next = all_shortest_paths[(
                 routes_to_take[i][j] - 1)*len(all_cards) + routes_to_take[i][j+1] - 1].copy()
             next.pop(0)
-            lists[i] += next
+            results_list[i] += next
 
     # Remove instances where card order is different but route is same.
-    for i in range(len(lists)-1, 0, -1):
-        for j in range(len(lists)-2, -1, -1):
-            if (i > j and lists[i] == lists[j]):
-                del lists[i]
+    for i in range(len(results_list)-1, 0, -1):
+        for j in range(len(results_list)-2, -1, -1):
+            if (i > j and results_list[i] == results_list[j]):
+                del results_list[i]
                 break
 
     print("\nOptimal route/s for dealt cards: ")
 
-    for i in range(len(lists)):
+    for i in range(len(results_list)):
         assigned_town_cards_copy = assigned_town_cards.copy()
         print("\n\n     Route", i + 1, "\n")
-        for j in range(len(lists[i])):
-            if j == 0 or j == (len(lists[i]) - 1) or (lists[i][j] in assigned_town_cards_copy):
+        for j in range(len(results_list[i])):
+            if j == 0 or j == (len(results_list[i]) - 1) or (results_list[i][j] in assigned_town_cards_copy):
                 print(
-                    "****  {:>2} : {}".format(lists[i][j], town_names[lists[i][j]-1]))
+                    "****  {:>2} : {}".format(results_list[i][j], town_names[results_list[i][j]-1]))
                 assigned_town_cards_copy = [
-                    card for card in assigned_town_cards_copy if card != lists[i][j]]
+                    card for card in assigned_town_cards_copy if card != results_list[i][j]]
             else:
                 print("      {:>2} : {}".format(
-                    lists[i][j], town_names[lists[i][j]-1]))
+                    results_list[i][j], town_names[results_list[i][j]-1]))
 
     end = timer()
 
