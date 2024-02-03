@@ -432,14 +432,15 @@ def calculate_route():
     print("\nOptimal route/s for dealt cards: ")
 
     for i in range(len(results_list)):
-        assigned_town_cards_copy = assigned_town_cards.copy()
+        a_copy = assigned_town_cards.copy()
         print("\n\n     Route", i + 1, "\n")
         for j in range(len(results_list[i])):
-            if j == 0 or j == (len(results_list[i]) - 1) or (results_list[i][j] in assigned_town_cards_copy):
+            town = results_list[i][j]
+            if j == 0 or j == (len(results_list[i]) - 1) or (town in a_copy):
                 print(
-                    "****  {:>2} : {}".format(results_list[i][j], town_names[results_list[i][j]-1]))
-                assigned_town_cards_copy = [
-                    card for card in assigned_town_cards_copy if card != results_list[i][j]]
+                    "****  {:>2} : {}".format(town, town_names[town - 1]))
+                a_copy = [
+                    card for card in a_copy if card != town]
             else:
                 print("      {:>2} : {}".format(
                     results_list[i][j], town_names[results_list[i][j]-1]))
