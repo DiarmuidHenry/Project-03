@@ -404,7 +404,7 @@ def calculate_route():
 
     print("\nTime taken to calculate route/s:")
     print(time_taken, "seconds")
-    print("Scroll up to see your optimal route/s")
+    print("\nScroll up to see your optimal route/s")
     print("\nEnjoy your game!\n")
 
 
