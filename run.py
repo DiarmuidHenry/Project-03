@@ -17,12 +17,14 @@ solver_ready = False
 def loading_dots(word):
     print()
     print()
-    for dots in itertools.cycle(["", " .", " . .", " . . ."]):
+    for dots in itertools.cycle(
+        ["       ", " .     ", " . .   ", " . . . "]):
         if solver_ready:
             break
         sys.stdout.write(f"\r{word}" + dots)
         sys.stdout.flush()
         time.sleep(0.3)
+        
 
 # Animation happens concurrent with rest of code loading/thinking
 def play_loading_animation(word):
