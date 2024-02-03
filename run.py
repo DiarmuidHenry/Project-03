@@ -183,13 +183,44 @@ distances = np.reshape(distances, newshape=(len(all_cards), len(all_cards)))
 yes_inputs = ["yes", "ye", "y"]
 no_inputs = ["no", "n"]
 
+# Possible error messages. Written here due to exceeding line length
+min_entry = min(entry_cards)
+max_entry = max(entry_cards)
+min_town = min(town_cards)
+max_town = max(town_cards)
+
+please_enter_entry = """
+Please enter your Entry/Exit Cards, separated by a space:
+"""
+please_enter_town = """
+Please enter your Town Cards, separated by a space:
+"""
+invalid_spaces_intergers = """
+Invalid input. Input must only contain spaces and integers."""
+invalid_entry_between = f"""
+Invalid input. Must be between {min_entry} and {max_entry} (inclusive)."""
+invalid_town_between = f"""
+Invalid input. Must be between {min_town} and {max_town} (inclusive)."""
+invalid_entry_not_town = """
+Invalid input. Please enter only your Entry/Exit cards.
+Do not include any Town cards."""
+invalid_town_not_entry = """
+Invalid input. Please enter only your Town cards.
+Do not include any Entry/Exit cards."""
+invalid_exactly_two = """
+Invalid input. Players must have exactly 2 Entry/Exit cards."""
+invalid_at_least_one = """
+Invalid input. Players must have at least 1 Town card."""
+invalid_duplicates = """
+Invalid input, duplicates found."""
+
 
 def validate_inputs():
 
     global assigned_town_cards, assigned_entry_cards
+
     # Get input from the user as a space-separated string
-    input_entry = input(
-        "\nPlease enter your Entry/Exit Cards, separated by a space:\n")
+    input_entry = input(please_enter_entry)
 
     while True:
         # CHECK INPUT MAKES SENSE
@@ -197,34 +228,41 @@ def validate_inputs():
             input_entry = input_entry.split()
             if all(value.isdigit() for value in input_entry):
                 assigned_entry_cards = [int(card) for card in input_entry]
+                card_is_entry = all(
+                    c in entry_cards for c in assigned_entry_cards)
+                card_is_town = all(
+                    c in entry_cards for c in assigned_entry_cards)
+                valid_entry = all(
+                    c in all_cards for c in assigned_entry_cards)
+                valid_town = all(
+                    c in all_cards for c in assigned_town_cards)
             else:
-                print("\nInvalid input. Input must only contain spaces and integers.")
-                raise ValueError("Invalid input format")
+                print(invalid_spaces_intergers)
+                raise ValueError(
+                    "Invalid input format")
 
-            if not all(card in all_cards for card in assigned_entry_cards):
-                print(
-                    f"\nInvalid input. Entry/Exit cards must be between {min(entry_cards)} and {max(entry_cards)} (inclusive).")
-                raise ValueError("Entry/Exit cards out of range")
+            if not valid_entry:
+                print(invalid_entry_between)
+                raise ValueError(
+                    "Entry/Exit cards out of range")
 
-            if (not all(card in entry_cards for card in assigned_entry_cards)) and all(card in all_cards for card in assigned_entry_cards):
-                print(
-                    "\nInvalid input. Please enter only your Entry/Exit cards.\nDo not include any Town cards.")
+            if (not (card_is_entry)) and valid_entry:
+                print(invalid_entry_not_town)
                 raise ValueError(
                     "Town cards entered instead of Entry/Exit cards")
 
             if len(assigned_entry_cards) != 2:
-                print("\nInvalid input. Players must have exactly 2 Entry/Exit cards.")
-                raise ValueError("Incorrect number of Entry/Exit cards")
+                print(invalid_exactly_two)
+                raise ValueError(
+                    "Incorrect number of Entry/Exit cards")
             break
 
         except ValueError:
-            input_entry = input(
-                "\nPlease enter your assigned Entry/Exit Cards, separated by a space:\n")
+            input_entry = input(please_enter_entry)
             continue  # Back to beginning of loop
 
     # Get input from the user as a space-separated string
-    input_town = input(
-        "\nPlease enter your assigned Town Cards, separated by a space:\n")
+    input_town = input(please_enter_town)
 
     while True:
         # CHECK INPUT MAKES SENSE
@@ -233,32 +271,29 @@ def validate_inputs():
             if all(value.isdigit() for value in input_town):
                 assigned_town_cards = [int(card) for card in input_town]
             else:
-                print("\nInvalid input. Input must only contain spaces and integers.")
+                print(invalid_spaces_intergers)
                 raise ValueError("Invalid input format")
 
-            if not all(card in all_cards for card in assigned_town_cards):
-                print(
-                    f"\nInvalid input. Town cards must be between {min(town_cards)} and {max(town_cards)} (inclusive).")
+            if not valid_town:
+                print(invalid_town_between)
                 raise ValueError("Town cards out of range")
 
-            if (not all(card in town_cards for card in assigned_town_cards)) and all(card in all_cards for card in assigned_town_cards):
-                print(
-                    "\nInvalid input. Please enter only your Town cards.\nDo not include any Entry/Exit cards.")
+            if (not (card_is_town)) and valid_town:
+                print(invalid_town_not_entry)
                 raise ValueError(
                     "Entry/Exit cards entered instead of Town cards")
 
             if len(assigned_town_cards) not in range(1, 47):
-                print("\nInvalid input. Players must have at least 1 Town card.")
+                print(invalid_at_least_one)
                 raise ValueError("Incorrect number of Entry/Exit cards")
 
             if len(input_town) != len(set(input_town)):
-                print("\nInvalid input, duplicates found.")
+                print(invalid_duplicates)
                 raise ValueError("Duplicate cards found")
             break
 
         except ValueError:
-            input_town = input(
-                "\nPlease enter your assigned Town Cards, separated by a space:\n")
+            input_town = input(please_enter_town)
             continue  # Back to beginning of loop
 
 
@@ -290,6 +325,13 @@ def check_cards():
             continue
 
 
+too_many_cards_warning = f"""
+You have entered {len(assigned_town_cards)} town cards.
+This may result in program termination/malfunction due to memory issues.
+Do you wish to continue anyway? Please type YES or NO:"
+"""
+
+
 def too_many_cards():
     if len(assigned_town_cards) < 9:
         return True
@@ -298,10 +340,7 @@ def too_many_cards():
         return True
     if len(assigned_town_cards) > 9:
         while True:
-            line_1 = f"\nYou have entered {len(assigned_town_cards)} town cards.\n"
-            line_2 = "This may result in program termination/malfunction due to memory issues.\n"
-            line_3 = "Do you wish to continue anyway? Please type YES or NO:\n"
-            too_many_cards_check = input(line_1 + line_2 + line_3)
+            too_many_cards_check = input(too_many_cards_warning)
             if too_many_cards_check.lower() in yes_inputs:
                 return True
             elif too_many_cards_check.lower() in no_inputs:
@@ -335,19 +374,19 @@ def calculate_route():
                         assigned_entry_cards[1])
 
     # Stacking the previous to get all possible valid routes.
-    all_possible_routes = np.hstack(
+    all_routes = np.hstack(
         (start_entry, possible_town_routes, end_entry))
 
     # Calculate total route length for each route.
     route_lengths = []
-    for i in range(all_possible_routes.shape[0]):
-        for j in range(all_possible_routes.shape[1]-1):
+    for i in range(all_routes.shape[0]):
+        for j in range(all_routes.shape[1]-1):
             route_lengths.append(
-                distances[all_possible_routes[i, j]-1, all_possible_routes[i, (j+1)]-1])
+                distances[all_routes[i, j]-1, all_routes[i, (j+1)]-1])
 
     # Reshaping route lengths into an array, one row for each route.
     route_lengths = np.reshape(route_lengths, newshape=(
-        (all_possible_routes.shape[0]), all_possible_routes.shape[1]-1))
+        (all_routes.shape[0]), all_routes.shape[1]-1))
 
     # Summing each row to get route length for each route
     route_lengths = np.sum(route_lengths, axis=1)
@@ -356,10 +395,10 @@ def calculate_route():
     min_length = np.min(route_lengths)
     min_indices = [i for i, x in enumerate(route_lengths) if x == min_length]
 
-    # Find shortest route/s in all_possible_routes using min_indicies.
+    # Find shortest route/s in all_routes using min_indicies.
     routes_to_take = []
     for i in range(0, (len(min_indices))):
-        routes_to_take.append(all_possible_routes[min_indices[i]])
+        routes_to_take.append(all_routes[min_indices[i]])
 
     routes_to_take = np.asarray(routes_to_take)
 
@@ -374,9 +413,12 @@ def calculate_route():
     results_list = [[assigned_entry_cards[0]] for _ in range(len(min_indices))]
     for i in range(len(min_indices)):
         for j in range(len(routes_to_take[i])-1):
-            # .copy() is used here so that no changes are made to all_shortest_paths.
-            next = all_shortest_paths[(
-                routes_to_take[i][j] - 1)*len(all_cards) + routes_to_take[i][j+1] - 1].copy()
+            # Variables declared only to shorten line length
+            a = routes_to_take[i][j] - 1
+            b = len(all_cards)
+            c = routes_to_take[i][j+1]
+            # .copy() so no changes are made to all_shortest_paths.
+            next = all_shortest_paths[(a * b) + c - 1].copy()
             next.pop(0)
             results_list[i] += next
 
