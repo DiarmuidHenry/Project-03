@@ -8,10 +8,30 @@ from itertools import permutations
 import random
 import sys
 import time
+import threading
 
-print("\n\nLoading . . .\n\n")
+# Define global varibale used in loading_animation
+solver_ready = False
 
+# Cycles between 1, 2 and 3 dots printed after word
+def loading_dots(word):
+    print()
+    print()
+    for dots in itertools.cycle(["", " .", " . .", " . . ."]):
+        if solver_ready:
+            break
+        sys.stdout.write(f"\r{word}" + dots)
+        sys.stdout.flush()
+        time.sleep(0.3)
 
+# Animation happens concurrent with rest of code loading/thinking
+def play_loading_animation(word):
+    loading_animation = threading.Thread(target=loading_dots, args=(word,))
+    loading_animation.start()
+    return loading_animation
+
+# Loading prints on program startup
+loading_animation = play_loading_animation("Loading")
 
 # Setting up API from Google Sheet
 SCOPE = [
@@ -293,10 +313,12 @@ a maximum of 9 cards. Hosted app crashes with
 
 
 def calculate_route():
+    global solver_ready
     # Start timer
     start = timer()
-
-    print("\n\nCalculating route/s . . .")
+    
+    solver_ready = False    
+    loading_animation = play_loading_animation("Calculating route/s")
 
     # List all permutations of assigned_town_cards
     possible_town_routes = list(permutations(assigned_town_cards))
@@ -335,9 +357,12 @@ def calculate_route():
         routes_to_take.append(all_possible_routes[min_indices[i]])
 
     routes_to_take = np.asarray(routes_to_take)
+    
+    # Stop loading_animation
+    solver_ready = True
 
     # Printing the route length for the/se route/s.
-    print("\n\nOptimal route length:")
+    print("\n\n\nOptimal route length:")
     print(route_lengths[min_indices[0]])
 
     # Compile all towns visited from all_shortest_paths and routes_to_take.
@@ -377,8 +402,9 @@ def calculate_route():
     # Time taken shown in seconds to 5sf
     time_taken = round((end - start), 5)
 
-    print("\n\nTime taken to calculate route/s:")
+    print("\nTime taken to calculate route/s:")
     print(time_taken, "seconds")
+    print("Scroll up to see your optimal route/s")
     print("\nEnjoy your game!\n")
 
 
@@ -389,9 +415,12 @@ def print_banner():
     banner.close()
 
 def instructions_prompt():
-    global instructions, welcome_message
-    instructions_check = input(welcome_message)
+    global instructions, welcome_message, solver_ready
 
+    # Stop loading_animation
+    solver_ready = True
+    
+    instructions_check = input(welcome_message)
     while True:
         try:
             if instructions_check.lower() in yes_inputs:
@@ -406,21 +435,6 @@ def instructions_prompt():
             instructions_check = input(
                 "\n\nPlease type YES or NO: ")
             continue  # Back to beginning of loop
-
-def thinking_dots(word):
-    while True:
-        sys.stdout.write(f"\r{word} .    ")
-        sys.stdout.flush()
-        time.sleep(0.3)
-        
-        sys.stdout.write(f"\r{word} . .  ")
-        sys.stdout.flush()
-        time.sleep(0.3)
-        
-        sys.stdout.write(f"\r{word} . . .")
-        sys.stdout.flush()
-        time.sleep(0.3)
-
 
 def setup():
     print_banner()
