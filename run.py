@@ -142,7 +142,7 @@ Discovering Ireland is a board game that consists of a playing board with
 {number_of_towns} towns spread over Ireland, each given a number from 1 to {number_of_towns}.
 
 Each player is given 2 Entry/Exit cards; where they start & finish their route.
-They also receive 4-8 Town Cards. These may be visited in ANY order, but
+They also receive at least 5 Town Cards. These may be visited in ANY order, but
 each player MUST visit EVERY town for which they have a Town card. 
 
 The winner is the first person to visit all of their Town cards and 
