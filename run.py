@@ -437,9 +437,9 @@ def calculate_route():
     for i in range(len(results_list)):
         a_copy = assigned_town_cards.copy()
         print("\n\n    " +
-              Back.WHITE + " Route " +
-              Back.WHITE + str(i + 1) +
-              Back.WHITE + " ", "\n")
+              Back.WHITE + Fore.BLACK + " Route " +
+              Back.WHITE + Fore.BLACK + str(i + 1) +
+              Back.WHITE + Fore.BLACK + " ", "\n")
         for j in range(len(results_list[i])):
             town = results_list[i][j]
             if j == 0 or j == (len(results_list[i]) - 1):
