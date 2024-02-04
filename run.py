@@ -7,6 +7,8 @@ import itertools
 import sys
 import time
 import threading
+from colorama import Fore, Back, Style, init
+init(autoreset=True)
 
 # Define global varibale used in loading_animation
 solver_ready = False
@@ -217,7 +219,7 @@ def validate_inputs():
     global assigned_town_cards, assigned_entry_cards
 
     # Get input from the user as a space-separated string
-    input_entry = input(please_enter_entry)
+    input_entry = input(Fore.YELLOW + please_enter_entry)
 
     while True:
         # CHECK INPUT MAKES SENSE
@@ -228,38 +230,38 @@ def validate_inputs():
                 card_is_entry = all(
                     c in entry_cards for c in assigned_entry_cards)
                 card_is_town = all(
-                    c in entry_cards for c in assigned_entry_cards)
+                    c in town_cards for c in assigned_town_cards)
                 valid_entry = all(
                     c in all_cards for c in assigned_entry_cards)
                 valid_town = all(
                     c in all_cards for c in assigned_town_cards)
             else:
-                print(invalid_spaces_intergers)
+                print(Fore.RED + invalid_spaces_intergers)
                 raise ValueError(
                     "Invalid input format")
 
             if not valid_entry:
-                print(invalid_entry_between)
+                print(Fore.RED + invalid_entry_between)
                 raise ValueError(
                     "Entry/Exit cards out of range")
 
             if (not (card_is_entry)) and valid_entry:
-                print(invalid_entry_not_town)
+                print(Fore.RED + invalid_entry_not_town)
                 raise ValueError(
                     "Town cards entered instead of Entry/Exit cards")
 
             if len(assigned_entry_cards) != 2:
-                print(invalid_exactly_two)
+                print(Fore.RED + invalid_exactly_two)
                 raise ValueError(
                     "Incorrect number of Entry/Exit cards")
             break
 
         except ValueError:
-            input_entry = input(please_enter_entry)
+            input_entry = input(Fore.YELLOW + please_enter_entry)
             continue  # Back to beginning of loop
 
     # Get input from the user as a space-separated string
-    input_town = input(please_enter_town)
+    input_town = input(Fore.GREEN + please_enter_town)
 
     while True:
         # CHECK INPUT MAKES SENSE
@@ -268,29 +270,29 @@ def validate_inputs():
             if all(value.isdigit() for value in input_town):
                 assigned_town_cards = [int(card) for card in input_town]
             else:
-                print(invalid_spaces_intergers)
+                print(Fore.RED + invalid_spaces_intergers)
                 raise ValueError("Invalid input format")
 
             if not valid_town:
-                print(invalid_town_between)
+                print(Fore.RED + invalid_town_between)
                 raise ValueError("Town cards out of range")
 
             if (not (card_is_town)) and valid_town:
-                print(invalid_town_not_entry)
+                print(Fore.RED + invalid_town_not_entry)
                 raise ValueError(
                     "Entry/Exit cards entered instead of Town cards")
 
             if len(assigned_town_cards) not in range(1, 47):
-                print(invalid_at_least_one)
+                print(Fore.RED + invalid_at_least_one)
                 raise ValueError("Incorrect number of Entry/Exit cards")
 
             if len(input_town) != len(set(input_town)):
-                print(invalid_duplicates)
+                print(Fore.RED + invalid_duplicates)
                 raise ValueError("Duplicate cards found")
             break
 
         except ValueError:
-            input_town = input(please_enter_town)
+            input_town = input(Fore.GREEN + please_enter_town)
             continue  # Back to beginning of loop
 
 
@@ -298,16 +300,18 @@ def print_cards():
     global dealt_hand, assigned_town_cards, assigned_entry_cards
 
     dealt_hand = np.hstack((assigned_entry_cards, assigned_town_cards))
-
-    print("\nAssigned Town Cards are:")
-    print(assigned_town_cards)
+    
+    print(Style.RESET_ALL)
+    print("Assigned Town Cards are:")
+    print(Fore.GREEN + str(assigned_town_cards))
 
     print("\nAssigned Entry Cards are:")
-    print(assigned_entry_cards)
+    print(Fore.YELLOW + str(assigned_entry_cards))
 
     # Combining the above to give the dealt hand
     print("\nDealt hand is:")
     print(dealt_hand)
+    
 
 
 def check_cards():
@@ -322,25 +326,27 @@ def check_cards():
             continue
 
 
+
+
 too_many_cards_warning = f"""
 You have entered {len(assigned_town_cards)} town cards.
 This may result in program termination/malfunction due to memory issues.
 Do you wish to continue anyway? Please type YES or NO:"
 """
 
-
 def too_many_cards():
     if len(assigned_town_cards) <= 9:
         return True
     if len(assigned_town_cards) > 9:
         while True:
-            too_many_cards_check = input(too_many_cards_warning)
+            too_many_cards_check = input(Fore.RED + too_many_cards_warning)
             if too_many_cards_check.lower() in yes_inputs:
                 return True
             elif too_many_cards_check.lower() in no_inputs:
                 return False
             else:
                 continue
+
 
 
 """
