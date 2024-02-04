@@ -132,8 +132,8 @@ dealt_hand = []
 
 # Welcome message greeting user at start of program
 welcome_message = """
-Welcome to the Discovering Ireland solver!
-Would you like to read the instructions? Please type YES or NO:
+                   Welcome to the Discovering Ireland Solver!
+         Would you like to read the instructions? Please type YES or NO:
 """
 
 # Written instructions to be printed if necessary
