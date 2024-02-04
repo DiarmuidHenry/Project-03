@@ -4,6 +4,7 @@ cachetools==5.3.2
 certifi==2020.12.5
 charset-normalizer==3.3.2
 cloudpickle==1.6.0
+colorama==0.4.6
 cycler==0.10.0
 decorator==4.4.2
 google-auth==2.27.0
@@ -44,6 +45,7 @@ seaborn==0.13.1
 six==1.15.0
 spyder-kernels==2.0.1
 StrEnum==0.4.15
+termcolor==2.4.0
 tornado==6.1
 traitlets==5.0.5
 tsputil==1.1.1a1
