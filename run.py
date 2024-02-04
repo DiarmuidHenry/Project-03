@@ -219,7 +219,7 @@ def validate_inputs():
     global assigned_town_cards, assigned_entry_cards
 
     # Get input from the user as a space-separated string
-    input_entry = input(Fore.YELLOW + please_enter_entry)
+    input_entry = input(Fore.YELLOW + Style.BRIGHT + please_enter_entry)
 
     while True:
         # CHECK INPUT MAKES SENSE
@@ -232,32 +232,32 @@ def validate_inputs():
                 valid_entry = all(
                     c in all_cards for c in assigned_entry_cards)
             else:
-                print(Fore.RED + invalid_spaces_intergers)
+                print(Fore.RED + Style.BRIGHT + invalid_spaces_intergers)
                 raise ValueError(
                     "Invalid input format")
 
             if not valid_entry:
-                print(Fore.RED + invalid_entry_between)
+                print(Fore.RED + Style.BRIGHT + invalid_entry_between)
                 raise ValueError(
                     "Entry/Exit cards out of range")
 
             if (not (card_is_entry)) and valid_entry:
-                print(Fore.RED + invalid_entry_not_town)
+                print(Fore.RED + Style.BRIGHT + invalid_entry_not_town)
                 raise ValueError(
                     "Town cards entered instead of Entry/Exit cards")
 
             if len(assigned_entry_cards) != 2:
-                print(Fore.RED + invalid_exactly_two)
+                print(Fore.RED + Style.BRIGHT + invalid_exactly_two)
                 raise ValueError(
                     "Incorrect number of Entry/Exit cards")
             break
 
         except ValueError:
-            input_entry = input(Fore.YELLOW + please_enter_entry)
+            input_entry = input(Fore.YELLOW + Style.BRIGHT + please_enter_entry)
             continue  # Back to beginning of loop
 
     # Get input from the user as a space-separated string
-    input_town = input(Fore.GREEN + please_enter_town)
+    input_town = input(Fore.GREEN + Style.BRIGHT + please_enter_town)
 
     while True:
         # CHECK INPUT MAKES SENSE
@@ -270,29 +270,29 @@ def validate_inputs():
                 valid_town = all(
                     c in all_cards for c in assigned_town_cards)
             else:
-                print(Fore.RED + invalid_spaces_intergers)
+                print(Fore.RED + Style.BRIGHT + invalid_spaces_intergers)
                 raise ValueError("Invalid input format")
 
             if not valid_town:
-                print(Fore.RED + invalid_town_between)
+                print(Fore.RED + Style.BRIGHT + invalid_town_between)
                 raise ValueError("Town cards out of range")
 
             if (not (card_is_town)) and valid_town:
-                print(Fore.RED + invalid_town_not_entry)
+                print(Fore.RED + Style.BRIGHT + invalid_town_not_entry)
                 raise ValueError(
                     "Entry/Exit cards entered instead of Town cards")
 
             if len(assigned_town_cards) not in range(1, 47):
-                print(Fore.RED + invalid_at_least_one)
+                print(Fore.RED + Style.BRIGHT + invalid_at_least_one)
                 raise ValueError("Incorrect number of Entry/Exit cards")
 
             if len(input_town) != len(set(input_town)):
-                print(Fore.RED + invalid_duplicates)
+                print(Fore.RED + Style.BRIGHT + invalid_duplicates)
                 raise ValueError("Duplicate cards found")
             break
 
         except ValueError:
-            input_town = input(Fore.GREEN + please_enter_town)
+            input_town = input(Fore.GREEN + Style.BRIGHT + please_enter_town)
             continue  # Back to beginning of loop
 
 
@@ -303,10 +303,10 @@ def print_cards():
     
     print(Style.RESET_ALL)
     print("Assigned Town Cards are:")
-    print(Fore.GREEN + str(assigned_town_cards))
+    print(Fore.GREEN + Style.BRIGHT + str(assigned_town_cards))
 
     print("\nAssigned Entry/Exit Cards are:")
-    print(Fore.YELLOW + str(assigned_entry_cards))
+    print(Fore.YELLOW + Style.BRIGHT + str(assigned_entry_cards))
 
     # Combining the above to give the dealt hand
     print("\nDealt hand is:")
@@ -343,7 +343,7 @@ def too_many_cards():
         return True
     if len(assigned_town_cards) > 9:
         while True:
-            too_many_cards_check = input(Fore.RED + too_many_cards_warning)
+            too_many_cards_check = input(Fore.RED + Style.BRIGHT + too_many_cards_warning)
             if too_many_cards_check.lower() in yes_inputs:
                 return True
             elif too_many_cards_check.lower() in no_inputs:
@@ -443,12 +443,12 @@ def calculate_route():
         for j in range(len(results_list[i])):
             town = results_list[i][j]
             if j == 0 or j == (len(results_list[i]) - 1):
-                print(Fore.YELLOW + 
+                print(Fore.YELLOW + Style.BRIGHT + 
                     "    {:>2} : {}".format(town, town_names[town - 1]))
                 a_copy = [
                     card for card in a_copy if card != town]
             elif (town in a_copy):
-                print(Fore.GREEN + 
+                print(Fore.GREEN + Style.BRIGHT + 
                     "    {:>2} : {}".format(town, town_names[town - 1]))
                 a_copy = [
                     card for card in a_copy if card != town]
