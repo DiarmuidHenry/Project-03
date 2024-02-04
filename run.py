@@ -305,12 +305,18 @@ def print_cards():
     print("Assigned Town Cards are:")
     print(Fore.GREEN + str(assigned_town_cards))
 
-    print("\nAssigned Entry Cards are:")
+    print("\nAssigned Entry/Exit Cards are:")
     print(Fore.YELLOW + str(assigned_entry_cards))
 
     # Combining the above to give the dealt hand
     print("\nDealt hand is:")
     print(dealt_hand)
+    
+"""
+Is printing the dealt hand necessary?
+Formatting/colouring is not an option,
+so maybe just print Entry/Exit and Town cards?
+"""
     
 
 
@@ -430,16 +436,24 @@ def calculate_route():
 
     for i in range(len(results_list)):
         a_copy = assigned_town_cards.copy()
-        print("\n\n     Route", i + 1, "\n")
+        print("\n\n    " +
+              Back.WHITE + " Route " +
+              Back.WHITE + str(i + 1) +
+              Back.WHITE + " ", "\n")
         for j in range(len(results_list[i])):
             town = results_list[i][j]
-            if j == 0 or j == (len(results_list[i]) - 1) or (town in a_copy):
-                print(
-                    "****  {:>2} : {}".format(town, town_names[town - 1]))
+            if j == 0 or j == (len(results_list[i]) - 1):
+                print(Fore.YELLOW + 
+                    "    {:>2} : {}".format(town, town_names[town - 1]))
+                a_copy = [
+                    card for card in a_copy if card != town]
+            elif (town in a_copy):
+                print(Fore.GREEN + 
+                    "    {:>2} : {}".format(town, town_names[town - 1]))
                 a_copy = [
                     card for card in a_copy if card != town]
             else:
-                print("      {:>2} : {}".format(
+                print("    {:>2} : {}".format(
                     results_list[i][j], town_names[results_list[i][j]-1]))
 
     end = timer()
