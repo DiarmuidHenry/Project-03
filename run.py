@@ -229,12 +229,8 @@ def validate_inputs():
                 assigned_entry_cards = [int(card) for card in input_entry]
                 card_is_entry = all(
                     c in entry_cards for c in assigned_entry_cards)
-                card_is_town = all(
-                    c in town_cards for c in assigned_town_cards)
                 valid_entry = all(
                     c in all_cards for c in assigned_entry_cards)
-                valid_town = all(
-                    c in all_cards for c in assigned_town_cards)
             else:
                 print(Fore.RED + invalid_spaces_intergers)
                 raise ValueError(
@@ -269,6 +265,10 @@ def validate_inputs():
             input_town = input_town.split()
             if all(value.isdigit() for value in input_town):
                 assigned_town_cards = [int(card) for card in input_town]
+                card_is_town = all(
+                    c in town_cards for c in assigned_town_cards)
+                valid_town = all(
+                    c in all_cards for c in assigned_town_cards)
             else:
                 print(Fore.RED + invalid_spaces_intergers)
                 raise ValueError("Invalid input format")
