@@ -188,10 +188,10 @@ min_entry = min(entry_cards)
 max_entry = max(entry_cards)
 min_town = min(town_cards)
 max_town = max(town_cards)
-please_enter_entry = """
+enter_entry = """
 Please enter your Entry/Exit Cards, separated by a space:
 """
-please_enter_town = """
+enter_town = """
 Please enter your Town Cards, separated by a space:
 """
 invalid_spaces_intergers = """
@@ -219,7 +219,7 @@ def validate_inputs():
     global assigned_town_cards, assigned_entry_cards
 
     # Get input from the user as a space-separated string
-    input_entry = input(Fore.YELLOW + Style.BRIGHT + please_enter_entry)
+    input_entry = input(Fore.YELLOW + Style.BRIGHT + enter_entry)
 
     while True:
         # CHECK INPUT MAKES SENSE
@@ -253,11 +253,11 @@ def validate_inputs():
             break
 
         except ValueError:
-            input_entry = input(Fore.YELLOW + Style.BRIGHT + please_enter_entry)
+            input_entry = input(Fore.YELLOW + Style.BRIGHT + enter_entry)
             continue  # Back to beginning of loop
 
     # Get input from the user as a space-separated string
-    input_town = input(Fore.GREEN + Style.BRIGHT + please_enter_town)
+    input_town = input(Fore.GREEN + Style.BRIGHT + enter_town)
 
     while True:
         # CHECK INPUT MAKES SENSE
@@ -292,7 +292,7 @@ def validate_inputs():
             break
 
         except ValueError:
-            input_town = input(Fore.GREEN + Style.BRIGHT + please_enter_town)
+            input_town = input(Fore.GREEN + Style.BRIGHT + enter_town)
             continue  # Back to beginning of loop
 
 
@@ -300,7 +300,7 @@ def print_cards():
     global dealt_hand, assigned_town_cards, assigned_entry_cards
 
     dealt_hand = np.hstack((assigned_entry_cards, assigned_town_cards))
-    
+
     print(Style.RESET_ALL)
     print("Assigned Town Cards are:")
     print(Fore.GREEN + Style.BRIGHT + str(assigned_town_cards))
@@ -311,13 +311,13 @@ def print_cards():
     # Combining the above to give the dealt hand
     print("\nDealt hand is:")
     print(dealt_hand)
-    
+
+
 """
 Is printing the dealt hand necessary?
 Formatting/colouring is not an option,
 so maybe just print Entry/Exit and Town cards?
 """
-    
 
 
 def check_cards():
@@ -333,17 +333,19 @@ def check_cards():
 
 
 def too_many_cards():
-    too_many_cards_warning = ("\n"
-    f"You have entered {len(assigned_town_cards)} town cards.\n"
-    "This may result in program termination/malfunction"
-    "due to memory issues.\n"
-    "Do you wish to continue anyway? Please type YES or NO:\n"
-    )
+    too_many_cards_warning = (
+                              f"\nYou have entered {len(assigned_town_cards)}
+                              f" town cards.\nThis may result in program"
+                              f" termination/malfunction due to memory"
+                              f" issues.\nDo you wish to continue anyway?"
+                              f" Please type YES or NO:\n"
+                              )
     if len(assigned_town_cards) <= 9:
         return True
     if len(assigned_town_cards) > 9:
         while True:
-            too_many_cards_check = input(Fore.RED + Style.BRIGHT + too_many_cards_warning)
+            too_many_cards_check = input(
+                Fore.RED + Style.BRIGHT + too_many_cards_warning)
             if too_many_cards_check.lower() in yes_inputs:
                 return True
             elif too_many_cards_check.lower() in no_inputs:
@@ -443,13 +445,13 @@ def calculate_route():
         for j in range(len(results_list[i])):
             town = results_list[i][j]
             if j == 0 or j == (len(results_list[i]) - 1):
-                print(Fore.YELLOW + Style.BRIGHT + 
-                    "    {:>2} : {}".format(town, town_names[town - 1]))
+                print(Fore.YELLOW + Style.BRIGHT +
+                      "    {:>2} : {}".format(town, town_names[town - 1]))
                 a_copy = [
                     card for card in a_copy if card != town]
             elif (town in a_copy):
-                print(Fore.GREEN + Style.BRIGHT + 
-                    "    {:>2} : {}".format(town, town_names[town - 1]))
+                print(Fore.GREEN + Style.BRIGHT +
+                      "    {:>2} : {}".format(town, town_names[town - 1]))
                 a_copy = [
                     card for card in a_copy if card != town]
             else:
