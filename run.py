@@ -334,7 +334,7 @@ def check_cards():
 
 def too_many_cards():
     too_many_cards_warning = (
-                              f"\nYou have entered {len(assigned_town_cards)}
+                              f"\nYou have entered {len(assigned_town_cards)}"
                               f" town cards.\nThis may result in program"
                               f" termination/malfunction due to memory"
                               f" issues.\nDo you wish to continue anyway?"
