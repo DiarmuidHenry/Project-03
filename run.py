@@ -326,15 +326,13 @@ def check_cards():
             continue
 
 
-
-
-too_many_cards_warning = f"""
-You have entered {len(assigned_town_cards)} town cards.
-This may result in program termination/malfunction due to memory issues.
-Do you wish to continue anyway? Please type YES or NO:"
-"""
-
 def too_many_cards():
+    too_many_cards_warning = ("\n"
+    f"You have entered {len(assigned_town_cards)} town cards.\n"
+    "This may result in program termination/malfunction"
+    "due to memory issues.\n"
+    "Do you wish to continue anyway? Please type YES or NO:\n"
+    )
     if len(assigned_town_cards) <= 9:
         return True
     if len(assigned_town_cards) > 9:
@@ -346,7 +344,6 @@ def too_many_cards():
                 return False
             else:
                 continue
-
 
 
 """
