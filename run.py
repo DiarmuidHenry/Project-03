@@ -215,7 +215,7 @@ Invalid input. Players must have exactly 2 Entry/Exit Cards."""
 invalid_at_least_one = """
 Invalid input. Players must have at least 1 Town Card."""
 invalid_duplicates = """
-Invalid input, duplicates found."""
+Invalid input. Duplicates found."""
 
 
 def validate_inputs():
