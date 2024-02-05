@@ -54,9 +54,9 @@ The number of Town Cards can in theory be up to $\lfloor\frac{\text{Number of To
 **Things to note:**
 - All given shortest paths are symmetrical, i.e. if your given path is `[50, 52, 51, 48, 45, 40, 39]`, then this is the same length as `[39, 40, 45, 48, 51, 52, 50]`. Since this is always the case, I fixed the entry card (the starting point) and just created one order of each of these routes.
 - Chance Cards, road blocks, other players' decisions (e.g. to use their Chance Card to send you to a different location on the board) are not taken into account, as these cannot be accuratley accounted for. It would take more than 500 lines of code to correctly predict human psychology during a game.
-- Making a U-turn (i.e. visiting a town and then returning from the direction you came from) often includes wasted movements, since you can overshoot the town by $n$ steps, leading to you having to backtrack $n$ wasted steps again, adding a total of $2n$ steps to the path length. Compensating for this would lead to a much more in depth analysis of each route, as well as applying probability theory to the dice throws, so I chose therefore to ignore it in this case. In a future version, [I may come back to this](#future-improvementsdevelopmentsure).
+- Making a U-turn (i.e. visiting a town and then returning from the direction you came from) often includes wasted movements, since you can overshoot the town by $n$ steps, leading to you having to backtrack $n$ wasted steps again, adding a total of $2n$ steps to the path length. Compensating for this would lead to a much more in depth analysis of each route, as well as applying probability theory to the dice throws, so I chose therefore to ignore it in this case. In a future version, [I may come back to this](#future-improvementsdevelopment).
 - The output is basic, i.e. text on the console. To make it something that would be more appealing to most people, some sort of front end should be paired with it.
-- This program was made to be very adaptable/generic (as is the goal with writing in code in general). If the towns on the board were completely moved around; a new list of towns was created; a new sublist of Entry/Exit Cards was created; then all that would need to be changed would be the construction of the lists `all_cards`, `entry_cards` and the `counted_distances` spreadsheet. Although this would still take some time, it would only be a matter of minutes to count the distances on a new board of a similar size, and mere seconds to recontruct the lists of cards.
+- This program was made to be very adaptable/generic (as is the goal with writing code in general). If the towns on the board were moved around; a new list of towns was created; a new sublist of Entry/Exit Cards was created; then all that would need to be changed would be the construction of the lists `all_cards`, `entry_cards` and the `counted_distances` spreadsheet. Although this would still take some time, it would only be a matter of minutes to count the distances on a new board of a similar size, and mere seconds to recontruct the lists of cards. The code could also be adapted to other similar board games (such as [Ticket to Ride](https://www.daysofwonder.com/ticket-to-ride/)), although the slightly different rule set would require a slight change in the code's structure.
 
 ## Aim
 
@@ -171,6 +171,33 @@ I used red for error messages, as people often associate the colour red with war
 - [Code Institute Python Linter](https://pep8ci.herokuapp.com/) was used for PEP8 validation.
 
 ## Deployment
+
+### How to Clone Repository
+
+1. Go to the [GitHub repository](https://github.com/DiarmuidHenry/Project-03/).
+2. Click the green **Code** drop down button.
+3. Click **HTTPS** and copy the URL.
+4. Open your IDE, and open a terminal.
+5. Type `git clone url`, replacing `url` with the URL copied in step 3.
+
+### How to set up Google Sheets API
+
+1.
+
+### How to deploy to Heroku
+
+1. Log in to [Heroku](https://www.heroku.com/). If you do not already have an account, you can [sign up here](https://signup.heroku.com/).
+2. Click **Create new app** on the Heroku Dashboard. Give the app a unique name. Select your region, click **Create app**.
+3. Go to the **Settings** tab, click on **Reveal Config Vars**
+4. In the **KEY** field, enter `CREDS`. In the **VALUE** field, copy and paste the entire `creds.json` file from the project directory. Click **Add**.
+In the **KEY** field, enter `PORT`. In the **VALUE** field, enter **8000**. Click **Add**.
+5. Scroll down, click **Add buildpack**. Select **python**, then click **Save changes**. Select **nodejs**, then click **Save changes**. *It is important that `heroku/python` appers above `heroku/nodejs`. If this is not the case, they can be rearranged into the correct order*. 
+6. Go to the **Deploy** tab. Beside **Deployment method**, click **GitHub**, then confirm by clicking **Connect to GitHub**.
+7. Under **Search for a repository to connect to**, type the name of the repo (whether that be the name of this repo, or of the one you have cloned). Click **Search**, then click **Connect** when the repo name appears. The Heroku app is now linked to the GitHub repo.
+8. If you would like Heroku to manually update the app every time you push chances to GitHub, click on **Enable Automatic Deploys**. (This is optional).
+9. Deploy the app by scrolling down and clicking **Deploy Branch**. Heroku will show you the deployment logs as it builds the app. This will take a few seconds.
+10. When the app is finished being built, a message will appear saying **Your app was successfully deployed**. Click the **View** button to view the app (opens in a new tab).
+
 
 ## Issues/Bugs
 
