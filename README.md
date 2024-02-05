@@ -347,6 +347,8 @@ I had intended on reshaping `all_shortest_paths` intp a 3d array, rather than a 
 
 ### Functional Testing
 
+The main purpose of this is to ensure that all error validation steps work as intended, and that any invalid inputs are detected before being accepted by the program.
+
 |Test Item|Test Carried Out|Result|Pass/Fail|
 |-------------|------------------|-----------|-------|
 |Run program|Open page containing program |Program loads. `Loading . . .` animation is shown. When program is ready to receive input, welcome banner and Instructions prompt appear.|PASS|
