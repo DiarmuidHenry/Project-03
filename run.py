@@ -418,12 +418,10 @@ def calculate_route():
     results_list = [[assigned_entry_cards[0]] for _ in range(len(min_indices))]
     for i in range(len(min_indices)):
         for j in range(len(routes_to_take[i])-1):
-            # Variables declared only to shorten line length
-            a = routes_to_take[i][j] - 1
-            b = len(all_cards)
-            c = routes_to_take[i][j+1]
             # .copy() so no changes are made to all_shortest_paths.
-            next = all_shortest_paths[(a * b) + c - 1].copy()
+            next = all_shortest_paths[(
+                (routes_to_take[i][j] - 1) * len(all_cards)) + (
+                    routes_to_take[i][j+1] - 1)].copy()
             next.pop(0)
             results_list[i] += next
 
