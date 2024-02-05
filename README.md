@@ -172,6 +172,7 @@ I used red for error messages, as people often associate the colour red with war
 - [fsymbols](https://fsymbols.com/generators/carty/) was used to create the banner.
 - [Code Institute Python Linter](https://pep8ci.herokuapp.com/) was used for PEP8 validation.
 - [MDN Web Docs](https://developer.mozilla.org/en-US/docs/Glossary/Python) was used for further information on different Python modules/properties.
+- [Stack Overflow](https://stackoverflow.com/) for general troubleshooting.
 
 ## Deployment
 
@@ -207,15 +208,42 @@ In the **KEY** field, enter `PORT`. In the **VALUE** field, enter **8000**. Clic
 ### Resolved
 
 - Using `pop(0)` whilst calculating results list lead to subsequent items in lists being altered and shortened. After reading up on it, this is because I wasn't just changing `next_result`, but I was also changing what I had set it equal to. I fixed this by making next a soft copy, meaning that popping elements from it would leave the original object unchanged.
+
 - Some of the less obvious paths between adjacent towns were missed when manually counting, e.g. $(2,9)$, $(32,39)$. This meant that resulting shortest paths given seemed odd/incorrect when the program was run. After spotting these errors, I went back to `counted_distances` and added in the missing values.
+
+- The `loading_dots` animation wasn't working as expected: when it cycled back to 0 dots, the cursor was in the correct place, but all dots were still visible. After reading up about `sys.stdout.write()` on [Stack Overflow](#technology--resources), I discovered the issue. `sys.stdout.write()` wasn’t rewriting the line (as in erasing and then writing a new thing on top). It was simply putting the new input on top of the old: like putting a sticker on something. If the sticker behind is larger, it still can be seen even though there is a newer one on top. I solved this by changing the `dots` object, adding blank spaces to the earlier ones that will ‘block’ the dots when the cycle restarts.
+
+- Originally, I did not include `\n` at the end of every `input()` element, which meant the users input (for example, a list of 5+ Town Cards) spilled over onto the next line in the terminal. This led to a problem when trying to erase (backspace) the input, as you are unable to erase anything on a previous line.
+
+The fix for this was just to add `\n` ad the end of every `input()` element.
+
+- When initially testing with [PEP8 Validator](#technology--resources), I got a lot of errors, mainly about blank spaces and lines being too long. After reformatting how I wrote longer lines of text (using f-strings; declaring variables for text) I was able to fix all of these errors. 
+
+- Error validation for Town Cards was not catching all errors. I firstly saw that due to copying and pasting similar variable declarations, I have forgotten to change `entry` to `town`, which I fixed, but this didn't solve the issue. After looking at the structure of the `validate_inputs()` function, I realised that the variables `card_is_town` and `valid_town` were declared in a scope that they couldn't access.
+
+I solved this by moving where they were declared to the same `try` loop that they were called in.
+
+- When trying to remove duplicate routes in `results_list`, I encountered a problem with indexing: every time I deleted an element from the list, the index of every element after that changed. Since the number of duplicates that were to be removed was unknown, this cause an unknown reindexing of this list, which cause incorrect entries to be deleted. I worked around this by starting at the highest index and working in decreasing order, looking for duplicates. For example, if there were 6 elements in the list (indexed 0 to 5), and the program found that element 5 was not identical to any others, then that elements index 2 and 4 were identical, the code would delete element with index 4. Since this element - as well as all other elements of equal/higher index - had already been checked, I could be sure that the correct element was deleted, and that all duplicates would be caught.
+
+- The colons in the final print out were not lining up, due to some of the town numbers being 1 digit. I solve this by including `{:>2}` in the print message, which aligned both 1 and 2 digit numbers to the right. The result looked much more pleasing to the user.
+
 - Whilst testing, I realised that I had used non-generic integers whilst doing loops, i.e. instead of using `len(all_cards)`, I had just used `52`, since that was the number I was working with. I made sure to change this, so that a change in the setup of the game (new cards, new board layout) wouldn't lead to problems in executing the program in the future. I didn't extend this to the Instructions, as this would need to be rewritten if the game in question was to change.
+
 - When testing in the early stages, I used `random` to create a hand, which I could then run the program with. I began seeing that the Entry/Exit cards were never the same, even though this is allowed in the game. This was due to me using `random.sample()` (without replacement) to `random.choices()` (with replacement). Since there are only 2 copies of each Town card, this will suffice, but would need to be altered if the program would allow for several people choosing cards in a single execution. Another way to fix this would be to make each element in `entry_cards` appear twice. However, for the current purpose and function of this program, my current solution is fine.
-- When including error messages, I found myself either getting stuck in loops, or jumping over some checks, depending on what/how many loops I was repeating. I solved this breaking the program down into functions, then creating a `run_program()` function that would neatly organise the logic/flow through the solver.
+
+- When including error messages, I found myself either getting stuck in loops, or jumping over some checks, depending on what/how many loops I was repeating. The below example is an example where the welcome message was shown repeatedly:
+
+I solved this breaking the program down into functions, then creating a `run_program()` function that would neatly organise the logic/flow through the solver.
+
 - Program was crashing when more than 9 Town Cards were given. This was due to memory being exceeded. I fixed this by ADDING AN ERROR MESSAGE / LIMITING THE NUMBER OF TOWN CARDS THE USER MAY ENTER.
+
+- Incorrect use of f-strings caused syntax errors. After reading more on [MDN](#technology--resources), this was quickly resolved.
+
+- Banner was too wide to fit in terminal (by 1 character). I removed the final blanks space at the end of every line, and this caused it to fit perfectly.
 
 ### Unresolved
 
-- I had intended on reshaping `all_shortest_paths` as a 3d array, rather than a list of lists. However, I ran into trouble creating and indexing this 3d array. This led to inelegant indexing of the variable `next_result`. Since the code still functions, I wouldn't consider this a bug as such. However, it is something that could be improved.
+- I had intended on reshaping `all_shortest_paths` intp a 3d array, rather than a list of lists. However, I ran into trouble creating and indexing this 3d array. This led to inelegant indexing of the variable `next_result`. Since the code still functions, I wouldn't consider this a bug as such. However, it is something that could be improved.
 
 ## Testing \& Validation
 
@@ -246,6 +274,8 @@ In the **KEY** field, enter `PORT`. In the **VALUE** field, enter **8000**. Clic
 ||Enter any element from `no_inputs`|User returns to Entry/Exit Cards prompt, where they can re-input their cards.|PASS|
 
 ### PEP8 Validation
+
+`run.py` was checked using the [Code Institute Python Linter](https://pep8ci.herokuapp.com/). No errors were found.
 
 ## Future Improvements/Developments
 
