@@ -201,7 +201,7 @@ I used red for error messages, as people often associate the colour red with war
 
 ### How to set up Google Sheets API
 
-1.
+Is this necessary?
 
 ### How to deploy to Heroku
 
@@ -222,44 +222,126 @@ In the **KEY** field, enter `PORT`. In the **VALUE** field, enter **8000**. Clic
 
 ### Resolved
 
-- Using `pop(0)` whilst calculating results list lead to subsequent items in lists being altered and shortened. After reading up on it, this is because I wasn't just changing `next_result`, but I was also changing what I had set it equal to. I fixed this by making next a soft copy, meaning that popping elements from it would leave the original object unchanged.
+#### <u>`pop(0)` not functioning as intened in when calculating `next_result`</u>
 
-- Some of the less obvious paths between adjacent towns were missed when manually counting, e.g. $(2,9)$, $(32,39)$. This meant that resulting shortest paths given seemed odd/incorrect when the program was run. After spotting these errors, I went back to `counted_distances` and added in the missing values.
+Using `pop(0)` whilst calculating results list lead to subsequent items in lists being altered and shortened. After reading up on it, this is because I wasn't just changing `next_result`, but I was also changing what I had set it equal to. I fixed this by making next a soft copy, meaning that popping elements from it would leave the original object unchanged.
 
-- The `loading_dots` animation wasn't working as expected: when it cycled back to 0 dots, the cursor was in the correct place, but all dots were still visible. After reading up about `sys.stdout.write()` on [Stack Overflow](#technology--resources), I discovered the issue. `sys.stdout.write()` wasn’t rewriting the line (as in erasing and then writing a new thing on top). It was simply putting the new input on top of the old: like putting a sticker on something. If the sticker behind is larger, it still can be seen even though there is a newer one on top. I solved this by changing the `dots` object, adding blank spaces to the earlier ones that will ‘block’ the dots when the cycle restarts.
+#### <u>Missed paths</u>
 
-- Originally, I did not include `\n` at the end of every `input()` element, which meant the users input (for example, a list of 5+ Town Cards) spilled over onto the next line in the terminal. This led to a problem when trying to erase (backspace) the input, as you are unable to erase anything on a previous line.
+Some of the less obvious paths between adjacent towns were missed when manually counting, e.g. $(2,9)$, $(32,39)$. This meant that resulting shortest paths given seemed odd/incorrect when the program was run. After spotting these errors, I went back to `counted_distances` and added in the missing values.
 
-The fix for this was just to add `\n` ad the end of every `input()` element.
+#### <u>Loading animation</u>
 
-- When initially testing with [PEP8 Validator](#technology--resources), I got a lot of errors, mainly about blank spaces and lines being too long. After reformatting how I wrote longer lines of text (using f-strings; declaring variables for text) I was able to fix all of these errors. 
+The `loading_dots` animation wasn't working as expected: when it cycled back to 0 dots, the cursor was in the correct place, but all dots were still visible. 
 
-- Error validation for Town Cards was not catching all errors. I firstly saw that due to copying and pasting similar variable declarations, I have forgotten to change `entry` to `town`, which I fixed, but this didn't solve the issue. After looking at the structure of the `validate_inputs()` function, I realised that the variables `card_is_town` and `valid_town` were declared in a scope that they couldn't access.
+![Loading dots problem](/documents/readme-images/dots-problem.webp)
+
+After reading up about `sys.stdout.write()` on [Stack Overflow](#technology--resources), I discovered the issue. `sys.stdout.write()` wasn’t rewriting the line (as in erasing and then writing a new thing on top). It was simply putting the new input on top of the old: like putting a sticker on something. If the sticker behind is larger, it still can be seen even though there is a newer one on top.
+
+![Loading dots code before](/documents/readme-images/dots-before.webp)
+
+I solved this by changing the list of objects to be written, adding blank spaces to the earlier ones that will ‘block’ the dots when the cycle restarts.
+
+![Loading dots code after](/documents/readme-images/dots-after.webp)
+
+#### <u>Input overflowing onto 2 lines</u>
+
+Originally, I did not include `\n` at the end of every `input()` element, which meant the users input (for example, a list of 5+ Town Cards) spilled over onto the next line in the terminal. Firstly, this often bisected a 2 digit number (the first image shows a $16$ being split into $1$ and $6$ on 2 separate lines). Moreover, this led to a problem when trying to erase (backspace) the input, as you are unable to erase anything on a previous line. In the below example, the user is trying to erase the entry ($11$).
+
+![Line Overflow 1](/documents/readme-images/new-line-issue-1.webp)
+
+However, they are limited to erasing the second line, so cannot erase any more than shown below:
+
+![Line Overflow 2](/documents/readme-images/new-line-issue-2.webp)
+
+The fix for this was just to add `\n` ad the end of every `input()` element. This meant that the types input from the user began on a new line, where there was plenty of space.
+
+#### <u>Lines too long</u>
+
+When initially testing with [PEP8 Validator](#technology--resources), I got a lot of errors, mainly about blank spaces and lines being too long.
+
+![PEP8 Result - Long lines](/documents/readme-images/long-lines.webp)
+
+After reformatting how I wrote longer lines of text (using f-strings; using more line breaks in code without it meaning a new line of text; declaring variables for text) I was able to fix all of these errors. 
+
+#### <u>Error validation for Town Cards not detecting all errors</u>
+
+Error validation for Town Cards was not catching all errors. I firstly saw that due to copying and pasting similar variable declarations, I have forgotten to change `entry` to `town`, which I fixed, but this didn't solve the issue.
+
+![Validation Copy Error](/documents/readme-images/validation-copy-error.webp)
+
+After looking at the structure of the `validate_inputs()` function, I realised that the variables `card_is_town` and `valid_town` were declared in a scope that they couldn't access.
+
+![Validation Before](/documents/readme-images/validation-before.webp)
 
 I solved this by moving where they were declared to the same `try` loop that they were called in.
 
-- When trying to remove duplicate routes in `results_list`, I encountered a problem with indexing: every time I deleted an element from the list, the index of every element after that changed. Since the number of duplicates that were to be removed was unknown, this cause an unknown reindexing of this list, which cause incorrect entries to be deleted. I worked around this by starting at the highest index and working in decreasing order, looking for duplicates. For example, if there were 6 elements in the list (indexed 0 to 5), and the program found that element 5 was not identical to any others, then that elements index 2 and 4 were identical, the code would delete element with index 4. Since this element - as well as all other elements of equal/higher index - had already been checked, I could be sure that the correct element was deleted, and that all duplicates would be caught.
+![Validation After - Entry/Exit](/documents/readme-images/validation-entry-after.webp)
 
-- The colons in the final print out were not lining up, due to some of the town numbers being 1 digit. I solve this by including `{:>2}` in the print message, which aligned both 1 and 2 digit numbers to the right. The result looked much more pleasing to the user.
+![Validation After - Town](/documents/readme-images/validation-town-after.webp)
 
-- Whilst testing, I realised that I had used non-generic integers whilst doing loops, i.e. instead of using `len(all_cards)`, I had just used `52`, since that was the number I was working with. I made sure to change this, so that a change in the setup of the game (new cards, new board layout) wouldn't lead to problems in executing the program in the future. I didn't extend this to the Instructions, as this would need to be rewritten if the game in question was to change.
+#### <u>Indices changed my removing elements</u>
 
-- When testing in the early stages, I used `random` to create a hand, which I could then run the program with. I began seeing that the Entry/Exit cards were never the same, even though this is allowed in the game. This was due to me using `random.sample()` (without replacement) to `random.choices()` (with replacement). Since there are only 2 copies of each Town card, this will suffice, but would need to be altered if the program would allow for several people choosing cards in a single execution. Another way to fix this would be to make each element in `entry_cards` appear twice. However, for the current purpose and function of this program, my current solution is fine.
+When trying to remove duplicate routes in `results_list`, I encountered a problem with indexing: every time I deleted an element from the list, the index of every element after that changed, the length of the list decreased, this then cause issues with the `for` loops the code was in. 
 
-- When including error messages, I found myself either getting stuck in loops, or jumping over some checks, depending on what/how many loops I was repeating. The below example is an example where the welcome message was shown repeatedly:
+![Index Issue Lists](/documents/readme-images/index-issue-lists.webp)
+
+Since the number of duplicates that were to be removed was unknown, this cause an unknown reindexing of this list, which cause incorrect entries to be deleted. I was originally looking at the indicies in increasing order:
+
+![Index Issue Lists Check](/documents/readme-images/index-issue-lists-check.webp)
+
+I worked around this by starting at the highest index and working in decreasing order, looking for duplicates.
+
+![Index Issue Lists Solution](/documents/readme-images/index-issue-lists-solution.webp)
+
+For example, if there were 6 elements in the list (indexed 0 to 5), and the program found that element 5 was not identical to any others, then that elements index 2 and 4 were identical, the code would delete element with index 4. Since this element - as well as all other elements of equal/higher index - had already been checked, I could be sure that the correct element was deleted, and that all duplicates would be caught.
+
+#### <u>Badly aligned printed result</u>
+
+The colons in the final print out were not lining up, due to some of the town numbers being 1 digit and some beign 2 digits.
+
+![Colons Before](/documents/readme-images/colons-before.webp)
+
+I solve this by including `{:>2}` in the print message, which aligned both 1 and 2 digit numbers to the right. The result looked much more pleasing to the user.
+
+![Colons After](/documents/readme-images/colons-after.webp)
+
+#### <u>Unrealistic choice/s of Entry/Exit Cards</u> REMOVE???
+
+When testing in the early stages, I used `random` to create a hand, which I could then run the program with. I began seeing that the Entry/Exit cards were never the same, even though this is allowed in the game. This was due to me using `random.sample()` (without replacement) to `random.choices()` (with replacement). Since there are only 2 copies of each Town card, this will suffice, but would need to be altered if the program would allow for several people choosing cards in a single execution. Another way to fix this would be to make each element in `entry_cards` appear twice. However, for the current purpose and function of this program, my current solution is fine.
+
+#### <u>Getting stuck in loops</u>
+
+When including error messages, I found myself either getting stuck in loops, or jumping over some checks, depending on what/how many loops I was repeating. The below example is an example where the welcome message was shown repeatedly:
+
+![Stuck in Loop](/documents/readme-images/stuck-in-loop.webp)
 
 
-  I solved this breaking the program down into functions, then creating a `run_program()` function that would neatly organise the logic/flow through the solver.
+I solved this breaking the program down into functions, then creating a `run_program()` function that would neatly organise the logic/flow through the solver. Although this caused errors at first (like the image above), closer examination of the code and the logic led me to the correct order/solution.
 
-- Program was crashing when more than 9 Town Cards were given. This was due to memory being exceeded. I fixed this by ADDING AN ERROR MESSAGE / LIMITING THE NUMBER OF TOWN CARDS THE USER MAY ENTER.
+#### <u>REMOVE PROBLEM FROM CODE?!!?!?!?!</u>
 
-- Incorrect use of f-strings caused syntax errors. After reading more on [MDN](#technology--resources), this was quickly resolved.
+Program was crashing when more than 9 Town Cards were given. This was due to memory being exceeded. I fixed this by ADDING AN ERROR MESSAGE / LIMITING THE NUMBER OF TOWN CARDS THE USER MAY ENTER.
 
-- Banner was too wide to fit in terminal (by 1 character). I removed the final blanks space at the end of every line, and this caused it to fit perfectly.
+#### <u>f-strings causing issue</u>
+
+Incorrect use of f-strings caused syntax errors. After reading more on [MDN](#technology--resources), this was quickly resolved.
+
+#### <u>Incorrectly sized banner</u>
+
+Banner was too wide to fit in terminal (by 1 character). This caused each line to actually take up 2 lines, the second of which contained only 1 character.
+
+![Banner too wide](/documents/readme-images/banner-too-wide.webp)
+
+I removed the final character at the end of every line (part of the shadow of the letters), and this caused it to fit perfectly, without negatively impacting the appearance.
+
+![Banner fixed](/documents/readme-images/banner.webp)
 
 ### Unresolved
 
-- I had intended on reshaping `all_shortest_paths` intp a 3d array, rather than a list of lists. However, I ran into trouble creating and indexing this 3d array. This led to inelegant indexing of the variable `next_result`. Since the code still functions, I wouldn't consider this a bug as such. However, it is something that could be improved.
+#### <u>Object type: `all_shortest_paths`</u>
+
+I had intended on reshaping `all_shortest_paths` intp a 3d array, rather than a list of lists. However, I ran into trouble creating and indexing this 3d array. This led to inelegant indexing of the variable `next_result`. Since the code still functions, I wouldn't consider this a bug as such. However, it is [something that could be improved](#future-improvementsdevelopments).
 
 ## Testing \& Validation
 
@@ -293,8 +375,12 @@ I solved this by moving where they were declared to the same `try` loop that the
 
 `run.py` was checked using the [Code Institute Python Linter](https://pep8ci.herokuapp.com/). No errors were found.
 
+![PEP8 Validation Result](/documents/readme-images/linter-result.webp)
+
 ## Future Improvements/Developments
 
 - Add a front end, to improve the overall look and emotional response of the user. A lot of peolpe would be turned away by a terminal as they might be worried that it is 'too technical', so making it look more like a regular website, and having the input being through an input form using JavaScript would make it more accessible to most people.
-- As mentioned in [Noteworthy Comments](#noteworthy-comments), I would like to factor in the fact that players often overshoot their town and waste movements when amknig a U-turn in their route. To compensate for this, I could firstly favour routes without U-turns whilst creating the suggested routes, as routes without U-turns have no wasted moves (here we are ignoring Chance Cards, roadblocks etc.). This could be done by adding an extra condition whilst checking/removing duplicate routes, something along the lines of `if results_lists[i][j] = results_lists[i][j+2]`. Going deeper into Game Theory, I would then need to use Probability Theory to caclculate the average number of wasted steps in such as instance, and add this (multiplied by the number of U-turns in a path) to the length of each relevant path.
+
+- As mentioned in [Noteworthy Comments](#noteworthy-comments), I would like to factor in the fact that players often overshoot their town and waste movements when amknig a U-turn in their route. To compensate for this, I could firstly favour routes without U-turns whilst creating the suggested routes (in the event of there being multiple routes of shortest length), as routes without U-turns have no wasted moves (here we are ignoring Chance Cards, roadblocks etc.). This could be done by adding an extra condition whilst checking/removing duplicate routes, something along the lines of `if results_lists[i][j] == results_lists[i][j+2]`. Going deeper into Game Theory, I would then need to use Probability Theory to caclculate the average number of wasted steps in such as instance, and add this (multiplied by the number of U-turns in a path) to the length of each relevant path.
+
 - Fix the problem with indexing of `next_result` as was [mentioned in Issues/Bugs: Unresolved](#unresolved)
