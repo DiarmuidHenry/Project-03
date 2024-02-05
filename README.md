@@ -231,11 +231,11 @@ In the **KEY** field, enter `PORT`. In the **VALUE** field, enter **8000**. Clic
 ||Type `0` and/or an integer greater than the highest Entry/Exit Card ($50$), e.g. `0 5`, `39 51`, `88 5 39 65`|Input is not accepted. `Invalid input. Inputs must be between 5 and 50 (inclusive)` appears. User is again asked to enter their Entry/Exit Cards.|PASS|
 ||Type exactly 1 valid Entry/Exit Cards e.g. `5`, `39`|Input is not accepted. `Invalid input. Players must have exactly 2 Entry/Exit cards.` appears. User is again asked to enter their Entry/Exit Cards.|PASS|
 ||Type 3 or more valid Entry/Exit Cards e.g. `5 9 39`, `5 5 5`|Input is not accepted. `Invalid input. Players must have exactly 2 Entry/Exit cards.` appears. User is again asked to enter their Entry/Exit Cards.|PASS|
-||Type 3 or more valid Entry/Exit Cards e.g. `5 9 39`, `5 5 5`|Input is not accepted. `Invalid input. Players must have exactly 2 Entry/Exit cards.` appears. User is again asked to enter their Entry/Exit Cards.|PASS|
 ||Type something including a Town Card e.g. `5 8`, `1`|Input is not accepted. `Invalid input. Please enter only your Entry/Exit cards. Do not include any Town cards.` appears. User is again asked to enter their Entry/Exit Cards.|PASS|
 |Town Cards prompt|Type nothing|Input is not accepted. `Invalid input. Players must have at least 1 Town Card.` appears. User is again asked to enter their Town Cards.|PASS|
 ||Type something other than spaces and integers, e.g. `2 e 4 6`, `12 51 17_19`, `5 a`, `two three eleven seventeen thirty-eight`, `NO`|Input is not accepted. `Invalid input. Input must only contain spaces and integers` appears. User is again asked to enter their Town Cards.|PASS|
-||Type `0` and/or an integer greater than the highest Town Card ($52$), e.g. `12 37 49 0 16`, `30 32 14 53`, `77 5 39 4`|Input is not accepted. `Invalid input. Inputs must be between 1 and 52 (inclusive)` appears. User is again asked to enter their Entry/Exit Cards.|PASS|
+||Type `0` and/or an integer greater than the highest Town Card ($52$), e.g. `12 37 49 0 16`, `30 32 14 53`, `77 5 39 4`|Input is not accepted. `Invalid input. Inputs must be between 1 and 52 (inclusive)` appears. User is again asked to enter their Town Cards.|PASS|
+|||Input is not accepted. `Invalid input. Inputs must be between 1 and 52 (inclusive)` appears. User is again asked to enter their Town Cards.|PASS|
 
 
 
