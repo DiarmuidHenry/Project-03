@@ -168,7 +168,7 @@ I used red for error messages, as people often associate the colour red with war
 - [Heroku](https://www.heroku.com/) was used to deploy the program.
 - [draw.io](https://app.diagrams.net/) was used to create the flowcharts.
 - [fsymbols](https://fsymbols.com/generators/carty/) was used to create the banner.
-
+- [Code Institute Python Linter](https://pep8ci.herokuapp.com/) was used for PEP8 validation.
 
 ## Deployment
 
@@ -176,7 +176,15 @@ I used red for error messages, as people often associate the colour red with war
 
 ### Resolved
 
+- pop(0) lead to subsequent items in lists being altered and shortened. After reading up on it, this is because I wasn't just chaning next, but I was also changing what I had set it equal to. I fixed this by making next a soft copy, meaning that popping elements from it would leave the original element unchanged.
+- Some of the less obvious paths between adjacent towns were missed when manually counting, e.g. $(2,9)$, $(32,39)$. This meant that resulting shortest paths given seemed odd when the program was run. After spotting these errors, I went back to `counted_distances` and added in the missed values.
+- Whilst testing, I realised that I had used non-generic integers whilst doing loops, i.e. instead of using `len(all_cards)`, I had just used `52`, since that was the number I was working with. I made sure to change this, so that a change in the setup of the game (new cards, new board layout) wouldn't lead to problems in executing the program in the future. I didn't extend this to the Instructions, as this would need to be rewritten if the game in question was to change.
+- Since there are 2 of each Entry/Exit card, I have allowed for both cards to be the same, by changing `random.sample()` (without replacement) to `random.choices()` (with replacement). Since there are only 2 copies of each Town card, this will suffice, but would need to be altered if the program would allow for several people choosing cards in a single execution. Another way to fix this would be to make each element in `entry_cards` appear twice. However, for the current purpose and function of this program, my current solution is fine.
+- When including error messages, I found myself either getting stuck in loops, or jumping over some checks, depending on what/how many loops I was repeating. I solved this breaking the program down into functions, then creating a run_program() function that would neatly organise the logic/flow through the solver.
+
 ### Unresolved
+
+with an extra condition along the lines of `if results_lists[i] = results_lists[i+2]`.
 
 ## Testing \& Validation
 
@@ -186,7 +194,7 @@ I used red for error messages, as people often associate the colour red with war
 
 ## Future Improvements/Developments
 
-with an extra condition along the lines of `if results_lists[i] = results_lists[i+2]`.
+
 
 
 
@@ -203,11 +211,7 @@ with an extra condition along the lines of `if results_lists[i] = results_lists[
 
 
 Bugs/fixes:
-- pop(0) lead to subsequent items in lists being altered and shortened. After reading up on it, this is because I wasn't just chaning next, but I was also changing what I had set it equal to. I fixed this by making next a soft copy, meaning that popping elements from it would leave the original element unchanged.
-- Some of the less obvious paths between adjacent towns were missed when manually counting, e.g. (2,9), (32,39). This meant that resulting shortets paths given seemed odd when the code was run. After spotting these errors, I went back to sym and added in the missed edges.
-- Whilst testing, I realised that I had used non-generic integers whilst doing loops, i.e. instead of using `len(all_cards)`, I had just used `52`, since that was the number I was working with. I made sure to change this, so that a change in the setup of the game (new cards, new board layout) wouldn't lead to problems in executing the program in the future.
-- Since there are 2 of each Entry/Exit card, I have allowed for both cards to be the same, by changing `random.sample()` (without replacement) to `random.choices()` (with replacement). Since there are only 2 copies of each Town card, this will suffice, but would need to be altered if the program would allow for several people choosing cards in a single execution. Another way to fix this would be to make each element in entry_cards appear twice. 
-- When including error messages, I found myself either getting stuck in loops, or jumping over some checks, depending on what/how many loops I was repeating. I solved this breaking the program down into functions, then creating a run_program() function that would neatly organise the logic/flow through the solver.
+
 
 Approach:
 - Create an adjacency matrix/table/array, containing the number of steps between all pairs of adjacent towns.
