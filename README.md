@@ -37,11 +37,7 @@ The program is visually pleasing and evokes positive emotions in the user. Instr
 
 ### History
 
-Discovering Ireland is a board game originally released by Gosling Games in 1987, and has gone on to sell over 250,000 copies. The newer version (which this program was written with in mind) was releasd in 2018. The playing board consists of 52 towns, each connected to some of the other towns by a number of steps/blocks. Each player is dealt 2 Entry/Exit Cards: these indicate where they must start and finish their game/journey. They also receive a predesignated number of Town Cards, which they must visit in between the Entry/Exit Cards. The number of Town Cards chosen must be at least 5, and in theory can be up to $\lfloor\frac{\text{Number of Town Cards}}{\text{Number of Players}}\rfloor$. For a 2 player game, this would be $\lfloor\frac{46}{2}\rfloor = 23$. For a 3 player game, this would be $\lfloor\frac{46}{3}\rfloor = \lfloor 15.\dot{3}\rfloor = 15$ However, the most common number of Town Cards to play with is around 5-8, as anymore than this can lead to a very long game, especially with a larger number of players.
-
-Due to the memory restrictions on the Heroku hosting platform, I have limited the number of Town Cards to 9. Any more than this causes the memory quota to be exceeded. For further information, [see below in Issues/Bugs](#issuesbugs).
-
-The player who visits all of the towns on their Town Cards and ends at their final Entry/Exit card wins.
+Discovering Ireland is a board game originally released by Gosling Games in 1987, and has gone on to sell over 250,000 copies. The newer version (which this program was written with in mind) was releasd in 2018. The playing board consists of 52 towns, each connected to some of the other towns by a number of steps/blocks. Each player is dealt 2 Entry/Exit Cards: these indicate where they must start and finish their game/journey. They also receive a predesignated number of Town Cards, which they must visit in between the Entry/Exit Cards. The number of Town Cards chosen must be at least 5 and is most commonly around 6-8, as anymore than this can lead to a very long game, especially with a larger number of players.
 
 The player who visits all of the towns on their Town Cards and ends at their final Entry/Exit card wins.
 
@@ -53,10 +49,14 @@ Whilst playing with my partner at home, we have often both been in the situation
 
 By creating a graph of the game, I can exploit properties and algorithms used in Graph Theory to systematically explore any/all routes simply through for loops in code, thereby ensuring that the resulting path is the shortest that exists. Due to the relatively small number of towns and Town Cards, this problem can be solved in seconds. For larger numbers of Town Cards, more computing power (or a lot more time) would be needed.
 
+The number of Town Cards can in theory be up to $\lfloor\frac{\text{Number of Town Cards}}{\text{Number of Players}}\rfloor$. For a 2 player game, this would be $\lfloor\frac{46}{2}\rfloor = 23$. For a 3 player game, this would be $\lfloor\frac{46}{3}\rfloor = \lfloor 15.\dot{3}\rfloor = 15$. Due to the memory restrictions on the Heroku hosting platform, I have limited the number of Town Cards to 9. Any more than this causes the memory quota to be exceeded. For further information, [see below in Issues/Bugs](#issuesbugs). On my own computer at home, I encountered a runtime of around 45 seconds for 10 Town Cards; 6 minutes for 11 Town Cards; 45 minutes for 12 Town Cards. After 6 hours running, the program didn't terminate when 13 Town Cards were entered (which is understandable, as it must iterate through over 6 billion possible routes). 
+
 **Things to note:**
-- All given shortest paths are symmetrical, i.e. if your given path is `[50, 52, 51, 48, 45, 40, 39]`, then this is the same length as `[39, 40, 45, 48, 51, 52, 50]``. Since this is always the case, I fixed the entry card (the starting point) and just created one order of each of these routes.
-- Chance Cards, road blocks, other players' decisions (e.g. to use their Chance Card to send you to a different location on the board) are not taken into account, as these cannot be accuratley accounted for in a simple program. It would take more than 500 lines of code to correctly predict human psychology during a game.
-- Making a U-turn (i.e. visiting a town and then returning from the direction you came from) often includes wasted movements, since you can overshoot the town by $n$ steps, leading to you having to backtrack $n$ wasted steps again, adding a total of $2n$ steps to the path length. Compensating for this would lead to a much more in depth analysis of each route, as well as applying probability theory to the dice throws, so I chose therefore to ignore it in this case. In a future version, [I may come back to this](#future-improvementsdevelopmentsure) 
+- All given shortest paths are symmetrical, i.e. if your given path is `[50, 52, 51, 48, 45, 40, 39]`, then this is the same length as `[39, 40, 45, 48, 51, 52, 50]`. Since this is always the case, I fixed the entry card (the starting point) and just created one order of each of these routes.
+- Chance Cards, road blocks, other players' decisions (e.g. to use their Chance Card to send you to a different location on the board) are not taken into account, as these cannot be accuratley accounted for. It would take more than 500 lines of code to correctly predict human psychology during a game.
+- Making a U-turn (i.e. visiting a town and then returning from the direction you came from) often includes wasted movements, since you can overshoot the town by $n$ steps, leading to you having to backtrack $n$ wasted steps again, adding a total of $2n$ steps to the path length. Compensating for this would lead to a much more in depth analysis of each route, as well as applying probability theory to the dice throws, so I chose therefore to ignore it in this case. In a future version, [I may come back to this](#future-improvementsdevelopmentsure).
+- The output is basic, i.e. text on the console. To make it something that would be more appealing to most people, some sort of front end should be paired with it.
+- This program was made to be very adaptable/generic (as is the goal with writing in code in general). If the towns on the board were completely moved around; a new list of towns was created; a new sublist of Entry/Exit Cards was created; then all that would need to be changed would be the construction of the lists `all_cards`, `entry_cards` and the `counted_distances` spreadsheet. Although this would still take some time, it would only be a matter of minutes to count the distances on a new board of a similar size, and mere seconds to recontruct the lists of cards.
 
 ## Aim
 
@@ -83,6 +83,16 @@ To create a program that, given a hand of cards a player is dealt, will create t
 - Anyone who has played - or intends to play - Discovering Ireland.
 - Those interested in Graph Theory and/or the Travelling Salesman Problem.
 - Those who are starting to learn Python and would like to see a functioning program that uses a relatively small input to perform large calculations.
+
+## User Testimonial
+
+Christina - aged 32 - Plays Discovering Ireland regularly
+
+"I was very interested to try out the program, but initially was a bit apprehensive as I am not the best when it comes to computers and programs. However, the program was very easy to follow and easy to understand. I liked the use of colour, and enjoyed the detailed results I got, this helped me create the oath taken during my game, which I ended up winning! I also like the timer function: although it's not a necessity, it's intreesting to see just how quickly the computer can calculate such a complicated problem!"
+
+Jens - 27 - Studying Graph Theory as part of his Maths degree
+
+"When I heard about the maths behind the program, I was interested, as I hadn't heard of this particular modified version of the Travelling Salesman Problem. After reading the instructions and having a look at the game board, I tried it out to see how well the program would perform. I also tried to trick it by giving an input I knew would confuse the program, but the error messages stopped any invalid input from being allowed. When I looked at the source code, I could see that the networkx module was incredibly easy to use, and the way the information is handled and laid out is very easy to make sense of. I'll be sure to explore networkx when I'm doing my projects in the future, and it's good to know I can refer back to this program to remind me how it works!"
 
 ## Design & Development
 
@@ -124,7 +134,7 @@ Use `itertools` to create a list of all permutations of `assigned_town_cards`. T
 
 7. *Find the shortest route length value/s, and print the corresponding route that the player should take, including all towns they will visit along their journey*
 
-Find the miniminum value/s in `route_lengths` and the corresponding entry in `all_routes` for this/these. These will then be printed clearly for the user, highlighting when they visit one of the towns on their cards. 
+Find the miniminum value/s in `route_lengths` and the corresponding entry in `all_routes` for this/these. These will then be printed clearly for the user, highlighting when they visit one of the towns corresponding to one of their cards. 
 
 
 ### Game Flow/Logic
@@ -133,11 +143,32 @@ Find the miniminum value/s in `route_lengths` and the corresponding entry in `al
 
 ### Banner
 
+I wanted a large banner with the title of the program to be what greeted the user once the program was loaded. I also wanted there to be space underneath for a welcome messange and initial prompt. Since I was limited to a $80 \times 24$ terminal, this meant there was some trial and error in getting the size right, but I am happy with the result.
+
 ### Colour Scheme
 
-### Features
+The yellow and green used in the prompts and printed result/s match the colour of the Entry/Exit and Town Cards respectively. I felt this was suitable to use, as it was another way of guiding the user through the program.
+
+I used red for error messages, as people often associate the colour red with warnings; errors; important information.
+
+### Other Features
+
+- Printing the users input directly after it is recieved in order to check that the information received is correct. This gives the user the chance to check for any mistakes, and to restart the input if that is the case.
+
+- Error validation: ensuring that the inåut is of exactly the correct form. This includes checking if input only contains spaces and integers (as requested); that the numbers are in the range 1 - 52; that Town Cards are entered when asked for Town Cards; that Entry/Exit cards anre entered when asked for Entry/Exit Cards; that no duplicate Town Cards are entered. Here, we note that duplicate Entry/Exit cards are allowed, as there are 2 of each in the game, whereas there is only 1 of each Town Card, so no Town Card duplicates are allowed. This also would be a trivial card, as any duplicates would just be a wasted card.
+
+- Timer: the user is shown how long the calculation has taken. This is purely to satisfy curiosity, and was a feature that I created during construction and testing, but users have responded well to it, so I left it in.
 
 ## Technology \& Resources
+
+- **IDE** : Visual Studio Code
+- **Languages** : Python for the program. Markdown for this README
+- **Template** : The CodeInstitute template was used in order to install all the relevant tools for the code to function.
+- [Github](https://github.com/) was used to host the project. I used `git commit` regularly to create versions of the project at regular intervals. This meant that I could be more precise if I needed to `git reset`.
+- [Heroku](https://www.heroku.com/) was used to deploy the program.
+- [draw.io](https://app.diagrams.net/) was used to create the flowcharts.
+- [fsymbols](https://fsymbols.com/generators/carty/) was used to create the banner.
+
 
 ## Deployment
 
@@ -189,6 +220,5 @@ Approach:
 
 Comments/Criticisms:
 - I used the CodeInstitute template in order to make a workspace that could run python coding.
-- The output is basic, i.e. text on the console. To make it something that would be more appealing to most people, some sort of front end should be paired with it.
-- This program was made to be very adaptable/generic. If the towns on the board were completely moved around; a new list of towns was created; a new sublist of Entry/Exit Cards was created; then all that would need to be changed would be the construction of the lists `all_cards`, `entry_cards` and the `counted_distances` spreadsheet. Although this would still take some time, it would only be a matter of minutes to count the distances on a new board of a similar size, and mere seconds to recontruct the lists of cards.
+
 - The largest contributor to running time is calculating the shortest route (including intermediate towns) for each legal iteration of the dealt cards, of which there are `number_of_town_cards`$!$ (factorial). For a game with 8 Town Cards, that is $8 \times 7 \times 6 \times \dots \times 2 \times 1 = 40320$, with each of these operations containing thousands of suboperations. This could almost certainly be optimised using [Dijkstra's Algorithm](https://www.freecodecamp.org/news/dijkstras-shortest-path-algorithm-visual-introduction/) to greatly narrow the number of operations for higher numbers of town cards, but for the purposes of this project, I felt this was unnecessary.
