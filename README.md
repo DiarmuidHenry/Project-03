@@ -235,7 +235,8 @@ In the **KEY** field, enter `PORT`. In the **VALUE** field, enter **8000**. Clic
 |Town Cards prompt|Type nothing|Input is not accepted. `Invalid input. Players must have at least 1 Town Card.` appears. User is again asked to enter their Town Cards.|PASS|
 ||Type something other than spaces and integers, e.g. `2 e 4 6`, `12 51 17_19`, `5 a`, `two three eleven seventeen thirty-eight`, `NO`|Input is not accepted. `Invalid input. Input must only contain spaces and integers` appears. User is again asked to enter their Town Cards.|PASS|
 ||Type `0` and/or an integer greater than the highest Town Card ($52$), e.g. `12 37 49 0 16`, `30 32 14 53`, `77 5 39 4`|Input is not accepted. `Invalid input. Inputs must be between 1 and 52 (inclusive)` appears. User is again asked to enter their Town Cards.|PASS|
-|||Input is not accepted. `Invalid input. Inputs must be between 1 and 52 (inclusive)` appears. User is again asked to enter their Town Cards.|PASS|
+||Type any number of Town Cards, including at least 1 duplicate e.g. `6 13 46 30 29 13 45`|Input is not accepted. `Invalid input. Duplicates found` appears. User is again asked to enter their Town Cards.|PASS|
+||Type something including an Entry/Exit Card e.g. `5 8 50`, `9`, `11 17 37 1 31 40`|Input is not accepted. `Invalid input. Please enter only your Town cards. Do not include any Entry/Exit cards.` appears. User is again asked to enter their Town Cards.|PASS|
 
 
 

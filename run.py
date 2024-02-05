@@ -290,7 +290,7 @@ def validate_inputs():
                 print(Fore.RED + Style.BRIGHT + invalid_duplicates)
                 raise ValueError("Duplicate cards found")
 
-            if len(assigned_town_cards) not in range(1, 47):
+            if len(assigned_town_cards) == 0:
                 print(Fore.RED + Style.BRIGHT + invalid_at_least_one)
                 raise ValueError("Incorrect number of Town Cards")
             break
