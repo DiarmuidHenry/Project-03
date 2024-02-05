@@ -312,10 +312,6 @@ def print_cards():
     print("\nAssigned Entry/Exit Cards are:")
     print(Fore.YELLOW + Style.BRIGHT + str(assigned_entry_cards))
 
-    # Combining the above to give the dealt hand
-    print("\nDealt hand is:")
-    print(dealt_hand)
-
 
 """
 Is printing the dealt hand necessary?
