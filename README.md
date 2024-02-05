@@ -4,6 +4,7 @@ This project is a Python program where users who are playing the board game Disc
 
 The program is visually pleasing and evokes positive emotions in the user. Instructions, colours and clear prompts make the program simple to follow.
 
+![Welcome Banner and Message](/documents/readme-images/banner.webp)
 
 [Deployed Program](https://discovering-ireland-solver-8aea73758694.herokuapp.com/)
 
@@ -100,7 +101,7 @@ Jens - 27 - Studying Graph Theory as part of his Maths degree
 
 ### Data Model
 
-This part contains some mathematical terminology that might not be familiar to many. If you are interested, [click here for a brief introduction of Graph Theory](https://en.wikipedia.org/wiki/Graph_theory).
+This part contains some mathematical terminology that might not be familiar to many. If you are interested, here is a [brief introduction of Graph Theory](https://en.wikipedia.org/wiki/Graph_theory).
 
 Here is a breakdown of how the program runs its calculations:
 
@@ -141,25 +142,39 @@ Find the miniminum value/s in `route_lengths` and the corresponding entry in `al
 
 ### Game Flow/Logic
 
-
+![Game Flow Chart](/documents/readme-images/game-flow.webp)
 
 ### Banner
 
-I wanted a large banner with the title of the program to be what greeted the user once the program was loaded. I also wanted there to be space underneath for a welcome messange and initial prompt. Since I was limited to a $80 \times 24$ terminal, this meant there was some trial and error in getting the size right, but I am happy with the result.
+I wanted a large banner with the title of the program to be what greeted the user once the program was loaded. I also wanted there to be space underneath for a welcome message and initial prompt. Since I was limited to a $80 \times 24$ terminal, this meant there was some trial and error in getting the size right, but I am happy with the result.
+
+![Banner and Welcome Message](/documents/readme-images/banner-and-welcome.webp)
 
 ### Colour Scheme
 
 The yellow and green used in the prompts and printed result/s match the colour of the Entry/Exit and Town Cards respectively. I felt this was suitable to use, as it was another way of guiding the user through the program.
 
+![Coilorued Prompts](/documents/readme-images/coloured-prompts.webp)
+
 I used red for error messages, as people often associate the colour red with warnings; errors; important information.
+
+![Coloured Error Message](/documents/readme-images/coloured-error-message.webp)
 
 ### Other Features
 
 - Printing the users input directly after it is recieved in order to check that the information received is correct. This gives the user the chance to check for any mistakes, and to restart the input if that is the case.
 
-- Error validation: ensuring that the input is of exactly the correct form. This includes checking if input only contains spaces and integers (as requested); that the numbers are in the range 1 - 52; that Town Cards are entered when asked for Town Cards; that Entry/Exit cards anre entered when asked for Entry/Exit Cards; that no duplicate Town Cards are entered. Here, we note that duplicate Entry/Exit cards are allowed, as there are 2 of each in the game, whereas there is only 1 of each Town Card, so no Town Card duplicates are allowed. This also would be a trivial card, as any duplicates would just be a wasted card. I also created `yes_inputs` and `no_inputs`, which allow several variationns of `YES` and `NO` to be accepted, to allow for a missed letter/spelling mistake/lower case letters. It is also important to note that an incorrect input can often lead to more than 1 error (e.g. if, when prompted to enter Town Cards, the user enters a non-integer value as well as an Entry/Exit card). Rather than flooding the screen with several error messages, I decided to just print one. If the user then fixed this one error and not the other, another relevant error message would appear alerting them of the problem.
+![Confirm Input](/documents/readme-images/confirm-input.webp)
 
 - Timer: the user is shown how long the calculation has taken. This is purely to satisfy curiosity, and was a feature that I created during construction and testing, but users have responded well to it, so I left it in.
+
+![Time Taken](/documents/readme-images/time-taken.webp)
+
+- Clearly printing the shortest route/s using colour. The coloured town names & numbers are the first instance that the user would reach that card in their hand. If they would need to travel through that town more than once, only the first time would be highlighted, as the player only 'plays' that card once. The 4 images below show all routes of equal length that the program returned for this particular hand. You can clearly see the Entry/Exit and Town Cards the player started with by which towns/numbers are coloured:
+
+![Result 1](/documents/readme-images/result-1.webp) ![Result 2](/documents/readme-images/result-2.webp) ![Result 3](/documents/readme-images/result-3.webp) ![Result 4](/documents/readme-images/result-4.webp)
+
+- Error validation: ensuring that the input is of exactly the correct form. This includes checking if input only contains spaces and integers (as requested); that the numbers are in the range 1 - 52; that Town Cards are entered when asked for Town Cards; that Entry/Exit cards anre entered when asked for Entry/Exit Cards; that no duplicate Town Cards are entered. Here, we note that duplicate Entry/Exit cards are allowed, as there are 2 of each in the game, whereas there is only 1 of each Town Card, so no Town Card duplicates are allowed. This also would be a trivial card, as any duplicates would just be a wasted card. I also created `yes_inputs` and `no_inputs`, which allow several variationns of `YES` and `NO` to be accepted, to allow for a missed letter/spelling mistake/lower case letters. It is also important to note that an incorrect input can often lead to more than 1 error (e.g. if, when prompted to enter Town Cards, the user enters a non-integer value as well as an Entry/Exit card). Rather than flooding the screen with several error messages, I decided to just print one. If the user then fixed this one error and not the other, another relevant error message would appear alerting them of the problem. More specifics can be seen in the [Functional Testing below](#functional-testing).
 
 ## Technology \& Resources
 
@@ -233,7 +248,8 @@ I solved this by moving where they were declared to the same `try` loop that the
 
 - When including error messages, I found myself either getting stuck in loops, or jumping over some checks, depending on what/how many loops I was repeating. The below example is an example where the welcome message was shown repeatedly:
 
-I solved this breaking the program down into functions, then creating a `run_program()` function that would neatly organise the logic/flow through the solver.
+
+  I solved this breaking the program down into functions, then creating a `run_program()` function that would neatly organise the logic/flow through the solver.
 
 - Program was crashing when more than 9 Town Cards were given. This was due to memory being exceeded. I fixed this by ADDING AN ERROR MESSAGE / LIMITING THE NUMBER OF TOWN CARDS THE USER MAY ENTER.
 
