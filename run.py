@@ -306,11 +306,11 @@ def print_cards():
     dealt_hand = np.hstack((assigned_entry_cards, assigned_town_cards))
 
     print(Style.RESET_ALL)
-    print("Assigned Town Cards are:")
-    print(Fore.GREEN + Style.BRIGHT + str(assigned_town_cards))
-
-    print("\nAssigned Entry/Exit Cards are:")
+    print("Assigned Entry/Exit Cards are:")
     print(Fore.YELLOW + Style.BRIGHT + str(assigned_entry_cards))
+    
+    print("\nAssigned Town Cards are:")
+    print(Fore.GREEN + Style.BRIGHT + str(assigned_town_cards))
 
 
 def check_cards():
