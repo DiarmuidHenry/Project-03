@@ -313,13 +313,6 @@ def print_cards():
     print(Fore.YELLOW + Style.BRIGHT + str(assigned_entry_cards))
 
 
-"""
-Is printing the dealt hand necessary?
-Formatting/colouring is not an option,
-so maybe just print Entry/Exit and Town Cards?
-"""
-
-
 def check_cards():
     while True:
         input_check = input(
