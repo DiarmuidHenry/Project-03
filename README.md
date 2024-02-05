@@ -157,7 +157,7 @@ I used red for error messages, as people often associate the colour red with war
 
 - Printing the users input directly after it is recieved in order to check that the information received is correct. This gives the user the chance to check for any mistakes, and to restart the input if that is the case.
 
-- Error validation: ensuring that the inåut is of exactly the correct form. This includes checking if input only contains spaces and integers (as requested); that the numbers are in the range 1 - 52; that Town Cards are entered when asked for Town Cards; that Entry/Exit cards anre entered when asked for Entry/Exit Cards; that no duplicate Town Cards are entered. Here, we note that duplicate Entry/Exit cards are allowed, as there are 2 of each in the game, whereas there is only 1 of each Town Card, so no Town Card duplicates are allowed. This also would be a trivial card, as any duplicates would just be a wasted card.
+- Error validation: ensuring that the input is of exactly the correct form. This includes checking if input only contains spaces and integers (as requested); that the numbers are in the range 1 - 52; that Town Cards are entered when asked for Town Cards; that Entry/Exit cards anre entered when asked for Entry/Exit Cards; that no duplicate Town Cards are entered. Here, we note that duplicate Entry/Exit cards are allowed, as there are 2 of each in the game, whereas there is only 1 of each Town Card, so no Town Card duplicates are allowed. This also would be a trivial card, as any duplicates would just be a wasted card. I also created `yes_inputs` and `no_inputs`, which allow several variationns of `YES` and `NO` to be accepted, to allow for a missed letter/spelling mistake/lower case letters. It is also important to note that an incorrect input can often lead to more than 1 error (e.g. if, when prompted to enter Town Cards, the user enters a non-integer value as well as an Entry/Exit card). Rather than flooding the screen with several error messages, I decided to just print one. If the user then fixed this one error and not the other, another relevant error message would appear alerting them of the problem.
 
 - Timer: the user is shown how long the calculation has taken. This is purely to satisfy curiosity, and was a feature that I created during construction and testing, but users have responded well to it, so I left it in.
 
@@ -205,19 +205,35 @@ In the **KEY** field, enter `PORT`. In the **VALUE** field, enter **8000**. Clic
 
 ### Resolved
 
-- pop(0) lead to subsequent items in lists being altered and shortened. After reading up on it, this is because I wasn't just chaning next, but I was also changing what I had set it equal to. I fixed this by making next a soft copy, meaning that popping elements from it would leave the original element unchanged.
-- Some of the less obvious paths between adjacent towns were missed when manually counting, e.g. $(2,9)$, $(32,39)$. This meant that resulting shortest paths given seemed odd when the program was run. After spotting these errors, I went back to `counted_distances` and added in the missed values.
+- Using `pop(0)` whilst calculating results list lead to subsequent items in lists being altered and shortened. After reading up on it, this is because I wasn't just changing `next_result`, but I was also changing what I had set it equal to. I fixed this by making next a soft copy, meaning that popping elements from it would leave the original object unchanged.
+- Some of the less obvious paths between adjacent towns were missed when manually counting, e.g. $(2,9)$, $(32,39)$. This meant that resulting shortest paths given seemed odd/incorrect when the program was run. After spotting these errors, I went back to `counted_distances` and added in the missing values.
 - Whilst testing, I realised that I had used non-generic integers whilst doing loops, i.e. instead of using `len(all_cards)`, I had just used `52`, since that was the number I was working with. I made sure to change this, so that a change in the setup of the game (new cards, new board layout) wouldn't lead to problems in executing the program in the future. I didn't extend this to the Instructions, as this would need to be rewritten if the game in question was to change.
-- Since there are 2 of each Entry/Exit card, I have allowed for both cards to be the same, by changing `random.sample()` (without replacement) to `random.choices()` (with replacement). Since there are only 2 copies of each Town card, this will suffice, but would need to be altered if the program would allow for several people choosing cards in a single execution. Another way to fix this would be to make each element in `entry_cards` appear twice. However, for the current purpose and function of this program, my current solution is fine.
-- When including error messages, I found myself either getting stuck in loops, or jumping over some checks, depending on what/how many loops I was repeating. I solved this breaking the program down into functions, then creating a run_program() function that would neatly organise the logic/flow through the solver.
+- When testing in the early stages, I used `random` to create a hand, which I could then run the program with. I began seeing that the Entry/Exit cards were never the same, even though this is allowed in the game. This was due to me using `random.sample()` (without replacement) to `random.choices()` (with replacement). Since there are only 2 copies of each Town card, this will suffice, but would need to be altered if the program would allow for several people choosing cards in a single execution. Another way to fix this would be to make each element in `entry_cards` appear twice. However, for the current purpose and function of this program, my current solution is fine.
+- When including error messages, I found myself either getting stuck in loops, or jumping over some checks, depending on what/how many loops I was repeating. I solved this breaking the program down into functions, then creating a `run_program()` function that would neatly organise the logic/flow through the solver.
+- Program was crashing when more than 9 Town Cards were given. This was due to memory being exceeded. I fixed this by ADDING AN ERROR MESSAGE / LIMITING THE NUMBER OF TOWN CARDS THE USER MAY ENTER.
 
 ### Unresolved
 
-- I had intended on reshaping `all_shortest_paths` as an array, rather than a list of lists. However, I ran into trouble creating and indexing this 3d array. This led to 
+- I had intended on reshaping `all_shortest_paths` as a 3d array, rather than a list of lists. However, I ran into trouble creating and indexing this 3d array. This led to inelegant indexing of the variable `next_result`. Since the code still functions, I wouldn't consider this a bug as such. However, it is something that could be improved.
 
 ## Testing \& Validation
 
 ### Functional Testing
+
+|Test Item|Test Carried Out|Result|Pass/Fail|
+|-------------|------------------|-----------|-------|
+|Instructions prompt|Type `YES` or any element from `yes_inputs`|Instructions appear, followed by the first prompt of the program|PASS|
+||Type `NO` or any element from `no_inputs`|The first prompt of the program appears|PASS|
+||Type anything other than the elements in `no_inputs` or `yes_inputs`|Input is not accepted. `Invalid input. Please type YES or NO` appears.|PASS|
+|Entry/Exit Card prompt|Type nothing|Input is not accepted. `Invalid input. Players must have exactly 2 Entry/Exit cards.` appears. User is again asked to enter their Entry/Exit Cards.|PASS|
+||Type something other than spaces and integers, e.g. `5 i`, `5_9`, `4 a`, `five nine`, `YES`|Input is not accepted. `Invalid input. Input must only contain spaces and integers` appears. User is again asked to enter their Entry/Exit Cards.|PASS|
+||Type `0` and/or an integer greater than the highest Entry/Exit Card ($50$), e.g. `0 5`, `39 51`, `88 5 39 65`|Input is not accepted. `Invalid input. Must be between 5 and 50 (inclusive)` appears. User is again asked to enter their Entry/Exit Cards.|PASS|
+||Type exactly 1 valid Entry/Exit Cards e.g. `5`, `39`|Input is not accepted. `Invalid input. Players must have exactly 2 Entry/Exit cards.` appears. User is again asked to enter their Entry/Exit Cards.|PASS|
+||Type 3 or more valid Entry/Exit Cards e.g. `5 9 39`, `5 5 5`|Input is not accepted. `Invalid input. Players must have exactly 2 Entry/Exit cards.` appears. User is again asked to enter their Entry/Exit Cards.|PASS|
+||Type 3 or more valid Entry/Exit Cards e.g. `5 9 39`, `5 5 5`|Input is not accepted. `Invalid input. Players must have exactly 2 Entry/Exit cards.` appears. User is again asked to enter their Entry/Exit Cards.|PASS|
+||Type something including a Town Card e.g. `5 8`, `1`|Input is not accepted. `Invalid input. Please enter only your Entry/Exit cards. Do not include any Town cards.` appears. User is again asked to enter their Entry/Exit Cards.|PASS|
+|Town Card prompt|Type nothing|Input is not accepted. `Invalid input. Players must have at least 1 Town Card.` appears. User is again asked to enter their Entry/Exit Cards.|PASS|
+
 
 ### PEP8 Validation
 
@@ -225,3 +241,4 @@ In the **KEY** field, enter `PORT`. In the **VALUE** field, enter **8000**. Clic
 
 - Add a front end, to improve the overall look and emotional response of the user. A lot of peolpe would be turned away by a terminal as they might be worried that it is 'too technical', so making it look more like a regular website, and having the input being through an input form using JavaScript would make it more accessible to most people.
 - As mentioned in [Noteworthy Comments](#noteworthy-comments), I would like to factor in the fact that players often overshoot their town and waste movements when amknig a U-turn in their route. To compensate for this, I could firstly favour routes without U-turns whilst creating the suggested routes, as routes without U-turns have no wasted moves (here we are ignoring Chance Cards, roadblocks etc.). This could be done by adding an extra condition whilst checking/removing duplicate routes, something along the lines of `if results_lists[i][j] = results_lists[i][j+2]`. Going deeper into Game Theory, I would then need to use Probability Theory to caclculate the average number of wasted steps in such as instance, and add this (multiplied by the number of U-turns in a path) to the length of each relevant path.
+- Fix the problem with indexing of `next_result` as was [mentioned in Issues/Bugs: Unresolved](#unresolved)

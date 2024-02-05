@@ -112,17 +112,17 @@ town_names = [
     "Clonakilty"
 ]
 
-# Getting number of town cards from size of edge_weight_matrix
+# Getting number of Town Cards from size of edge_weight_matrix
 number_of_towns = edge_weights_matrix.shape[0]
 
 # Construct list of all cards, labelled by their corresponding numbers
 all_cards = list(range(1, number_of_towns + 1))
 
-# List of all entry/exit cards. Must be manually enterred
+# List of all Entry/Exit Cards. Must be manually enterred
 entry_cards = [
     5, 9, 31, 39, 47, 50
 ]
-# List of all town cards, which is all_cards with entry_cards removed
+# List of all Town Cards, which is all_cards with entry_cards removed
 town_cards = [i for i in all_cards if i not in entry_cards]
 
 # Declare assigned card variables in global scope
@@ -142,12 +142,12 @@ instructions = """
 Discovering Ireland is a board game that consists of a playing board with
 52 towns spread over Ireland, each given a number from 1 to 52.
 
-Each player is given 2 Entry/Exit cards; where they start & finish their route.
+Each player is given 2 Entry/Exit Cards; where they start & finish their route.
 They also receive at least 5 Town Cards. These may be visited in ANY order, but
-each player MUST visit EVERY town for which they have a Town card.
+each player MUST visit EVERY town for which they have a Town Card.
 
-The winner is the first person to visit all of their Town cards and
-to arrive at their final Entry/Exit card.
+The winner is the first person to visit all of their Town Cards and
+to arrive at their final Entry/Exit Card.
 
 This solver finds the shortest possible route to visit all your dealt cards.
 This gives you the best chance of finishing before your opponent/s!
@@ -155,8 +155,8 @@ This gives you the best chance of finishing before your opponent/s!
 In order to use the solver, simply follow the prompts that appear on screen.
 The optimal route/s will be calculated and printed clearly for you.
 
-Entry/Exit cards: 5, 9, 31, 39, 47, 50
-Town cards: All other numbers from 1 to 52
+Entry/Exit Cards: 5, 9, 31, 39, 47, 50
+Town Cards: All other numbers from 1 to 52
 
 Enjoy, and good luck!
 """
@@ -201,15 +201,15 @@ Invalid input. Must be between {min_entry} and {max_entry} (inclusive)."""
 invalid_town_between = f"""
 Invalid input. Must be between {min_town} and {max_town} (inclusive)."""
 invalid_entry_not_town = """
-Invalid input. Please enter only your Entry/Exit cards.
-Do not include any Town cards."""
+Invalid input. Please enter only your Entry/Exit Cards.
+Do not include any Town Cards."""
 invalid_town_not_entry = """
-Invalid input. Please enter only your Town cards.
-Do not include any Entry/Exit cards."""
+Invalid input. Please enter only your Town Cards.
+Do not include any Entry/Exit Cards."""
 invalid_exactly_two = """
-Invalid input. Players must have exactly 2 Entry/Exit cards."""
+Invalid input. Players must have exactly 2 Entry/Exit Cards."""
 invalid_at_least_one = """
-Invalid input. Players must have at least 1 Town card."""
+Invalid input. Players must have at least 1 Town Card."""
 invalid_duplicates = """
 Invalid input, duplicates found."""
 
@@ -239,17 +239,17 @@ def validate_inputs():
             if not valid_entry:
                 print(Fore.RED + Style.BRIGHT + invalid_entry_between)
                 raise ValueError(
-                    "Entry/Exit cards out of range")
+                    "Entry/Exit Cards out of range")
 
             if (not (card_is_entry)) and valid_entry:
                 print(Fore.RED + Style.BRIGHT + invalid_entry_not_town)
                 raise ValueError(
-                    "Town cards entered instead of Entry/Exit cards")
+                    "Town Cards entered instead of Entry/Exit Cards")
 
             if len(assigned_entry_cards) != 2:
                 print(Fore.RED + Style.BRIGHT + invalid_exactly_two)
                 raise ValueError(
-                    "Incorrect number of Entry/Exit cards")
+                    "Incorrect number of Entry/Exit Cards")
             break
 
         except ValueError:
@@ -275,16 +275,16 @@ def validate_inputs():
 
             if not valid_town:
                 print(Fore.RED + Style.BRIGHT + invalid_town_between)
-                raise ValueError("Town cards out of range")
+                raise ValueError("Town Cards out of range")
 
             if (not (card_is_town)) and valid_town:
                 print(Fore.RED + Style.BRIGHT + invalid_town_not_entry)
                 raise ValueError(
-                    "Entry/Exit cards entered instead of Town cards")
+                    "Entry/Exit Cards entered instead of Town Cards")
 
             if len(assigned_town_cards) not in range(1, 47):
                 print(Fore.RED + Style.BRIGHT + invalid_at_least_one)
-                raise ValueError("Incorrect number of Entry/Exit cards")
+                raise ValueError("Incorrect number of Town Cards")
 
             if len(input_town) != len(set(input_town)):
                 print(Fore.RED + Style.BRIGHT + invalid_duplicates)
@@ -316,7 +316,7 @@ def print_cards():
 """
 Is printing the dealt hand necessary?
 Formatting/colouring is not an option,
-so maybe just print Entry/Exit and Town cards?
+so maybe just print Entry/Exit and Town Cards?
 """
 
 
@@ -335,7 +335,7 @@ def check_cards():
 def too_many_cards():
     too_many_cards_warning = (
                               f"\nYou have entered {len(assigned_town_cards)}"
-                              f" town cards.\nThis may result in program"
+                              f" Town Cards.\nThis may result in program"
                               f" termination/malfunction due to memory"
                               f" issues.\nDo you wish to continue anyway?"
                               f" Please type YES or NO:\n"
@@ -357,7 +357,7 @@ def too_many_cards():
 """
 Alternative: alter too_many_cards to only allow
 a maximum of 9 cards. Hosted app crashes with
-10+ town cards due to lack of memory.
+10+ Town Cards due to lack of memory.
 """
 
 
