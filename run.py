@@ -197,11 +197,11 @@ Please enter your Town Cards, separated by a space:
 invalid_spaces_intergers = """
 Invalid input. Input must only contain spaces and integers."""
 invalid_entry_between = (
-                         f"\nInvalid input. Input must be between"
+                         f"\nInvalid input. Input musts be between"
                          f" {min_entry} and {max_entry} (inclusive)."
                          )
 invalid_town_between = (
-                         f"\nInvalid input. Input must be between"
+                         f"\nInvalid input. Inputs must be between"
                          f" {min_town} and {max_town} (inclusive)."
                          )
 invalid_entry_not_town = """

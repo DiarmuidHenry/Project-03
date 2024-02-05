@@ -171,6 +171,7 @@ I used red for error messages, as people often associate the colour red with war
 - [draw.io](https://app.diagrams.net/) was used to create the flowcharts.
 - [fsymbols](https://fsymbols.com/generators/carty/) was used to create the banner.
 - [Code Institute Python Linter](https://pep8ci.herokuapp.com/) was used for PEP8 validation.
+- [MDN Web Docs](https://developer.mozilla.org/en-US/docs/Glossary/Python) was used for further information on different Python modules/properties.
 
 ## Deployment
 
@@ -225,14 +226,17 @@ In the **KEY** field, enter `PORT`. In the **VALUE** field, enter **8000**. Clic
 |Instructions prompt|Type `YES` or any element from `yes_inputs`|Instructions appear, followed by the first prompt of the program|PASS|
 ||Type `NO` or any element from `no_inputs`|The first prompt of the program appears|PASS|
 ||Type anything other than the elements in `no_inputs` or `yes_inputs`|Input is not accepted. `Invalid input. Please type YES or NO` appears.|PASS|
-|Entry/Exit Card prompt|Type nothing|Input is not accepted. `Invalid input. Players must have exactly 2 Entry/Exit cards.` appears. User is again asked to enter their Entry/Exit Cards.|PASS|
+|Entry/Exit Cards prompt|Type nothing|Input is not accepted. `Invalid input. Players must have exactly 2 Entry/Exit cards.` appears. User is again asked to enter their Entry/Exit Cards.|PASS|
 ||Type something other than spaces and integers, e.g. `5 i`, `5_9`, `4 a`, `five nine`, `YES`|Input is not accepted. `Invalid input. Input must only contain spaces and integers` appears. User is again asked to enter their Entry/Exit Cards.|PASS|
-||Type `0` and/or an integer greater than the highest Entry/Exit Card ($50$), e.g. `0 5`, `39 51`, `88 5 39 65`|Input is not accepted. `Invalid input. Must be between 5 and 50 (inclusive)` appears. User is again asked to enter their Entry/Exit Cards.|PASS|
+||Type `0` and/or an integer greater than the highest Entry/Exit Card ($50$), e.g. `0 5`, `39 51`, `88 5 39 65`|Input is not accepted. `Invalid input. Inputs must be between 5 and 50 (inclusive)` appears. User is again asked to enter their Entry/Exit Cards.|PASS|
 ||Type exactly 1 valid Entry/Exit Cards e.g. `5`, `39`|Input is not accepted. `Invalid input. Players must have exactly 2 Entry/Exit cards.` appears. User is again asked to enter their Entry/Exit Cards.|PASS|
 ||Type 3 or more valid Entry/Exit Cards e.g. `5 9 39`, `5 5 5`|Input is not accepted. `Invalid input. Players must have exactly 2 Entry/Exit cards.` appears. User is again asked to enter their Entry/Exit Cards.|PASS|
 ||Type 3 or more valid Entry/Exit Cards e.g. `5 9 39`, `5 5 5`|Input is not accepted. `Invalid input. Players must have exactly 2 Entry/Exit cards.` appears. User is again asked to enter their Entry/Exit Cards.|PASS|
 ||Type something including a Town Card e.g. `5 8`, `1`|Input is not accepted. `Invalid input. Please enter only your Entry/Exit cards. Do not include any Town cards.` appears. User is again asked to enter their Entry/Exit Cards.|PASS|
-|Town Card prompt|Type nothing|Input is not accepted. `Invalid input. Players must have at least 1 Town Card.` appears. User is again asked to enter their Entry/Exit Cards.|PASS|
+|Town Cards prompt|Type nothing|Input is not accepted. `Invalid input. Players must have at least 1 Town Card.` appears. User is again asked to enter their Town Cards.|PASS|
+||Type something other than spaces and integers, e.g. `2 e 4 6`, `12 51 17_19`, `5 a`, `two three eleven seventeen thirty-eight`, `NO`|Input is not accepted. `Invalid input. Input must only contain spaces and integers` appears. User is again asked to enter their Town Cards.|PASS|
+||Type `0` and/or an integer greater than the highest Town Card ($52$), e.g. `12 37 49 0 16`, `30 32 14 53`, `77 5 39 4`|Input is not accepted. `Invalid input. Inputs must be between 1 and 52 (inclusive)` appears. User is again asked to enter their Entry/Exit Cards.|PASS|
+
 
 
 ### PEP8 Validation
