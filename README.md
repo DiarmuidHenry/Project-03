@@ -11,6 +11,7 @@ The program is visually pleasing and evokes positive emotions in the user. Instr
 - [Introduction](#introduction)
   - [History](#history)
   - [Game Theory](#game-theory)
+  - [Noteworthy Comments](#noteworthy-comments)
 - [Aim](#aim)
   - [Program Objective](#website-objective)
   - [Key Features](#key-features)
@@ -51,7 +52,8 @@ By creating a graph of the game, I can exploit properties and algorithms used in
 
 The number of Town Cards can in theory be up to $\lfloor\frac{\text{Number of Town Cards}}{\text{Number of Players}}\rfloor$. For a 2 player game, this would be $\lfloor\frac{46}{2}\rfloor = 23$. For a 3 player game, this would be $\lfloor\frac{46}{3}\rfloor = \lfloor 15.\dot{3}\rfloor = 15$. Due to the memory restrictions on the Heroku hosting platform, I have limited the number of Town Cards to 9. Any more than this causes the memory quota to be exceeded. For further information, [see below in Issues/Bugs](#issuesbugs). On my own computer at home, I encountered a runtime of around 45 seconds for 10 Town Cards; 6 minutes for 11 Town Cards; 45 minutes for 12 Town Cards. After 6 hours running, the program didn't terminate when 13 Town Cards were entered (which is understandable, as it must iterate through over 6 billion possible routes). 
 
-**Things to note:**
+### Noteworthy Comments
+
 - All given shortest paths are symmetrical, i.e. if your given path is `[50, 52, 51, 48, 45, 40, 39]`, then this is the same length as `[39, 40, 45, 48, 51, 52, 50]`. Since this is always the case, I fixed the entry card (the starting point) and just created one order of each of these routes.
 - Chance Cards, road blocks, other players' decisions (e.g. to use their Chance Card to send you to a different location on the board) are not taken into account, as these cannot be accuratley accounted for. It would take more than 500 lines of code to correctly predict human psychology during a game.
 - Making a U-turn (i.e. visiting a town and then returning from the direction you came from) often includes wasted movements, since you can overshoot the town by $n$ steps, leading to you having to backtrack $n$ wasted steps again, adding a total of $2n$ steps to the path length. Compensating for this would lead to a much more in depth analysis of each route, as well as applying probability theory to the dice throws, so I chose therefore to ignore it in this case. In a future version, [I may come back to this](#future-improvementsdevelopment).
@@ -211,7 +213,7 @@ In the **KEY** field, enter `PORT`. In the **VALUE** field, enter **8000**. Clic
 
 ### Unresolved
 
-with an extra condition along the lines of `if results_lists[i] = results_lists[i+2]`.
+- I had intended on reshaping `all_shortest_paths` as an array, rather than a list of lists. However, I ran into trouble creating and indexing this 3d array. This led to 
 
 ## Testing \& Validation
 
@@ -221,35 +223,5 @@ with an extra condition along the lines of `if results_lists[i] = results_lists[
 
 ## Future Improvements/Developments
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Bugs/fixes:
-
-
-Approach:
-- Create an adjacency matrix/table/array, containing the number of steps between all pairs of adjacent towns.
-- Use this alongside `networkx` to create a graph of the game board, where each node represents a town (indexed by the town number) and each edge represents the number of steps between adjacent towns.
-- From this, create another array containing the shortest path between every pair of towns on the board (including non-adjacent towns).
-- User inputs their assigned cards. (During construction, I randomly assigened a valid dealt hand of cards in order to sidestep this in the early stages),
-- Create a list of all possible routes to visit these towns (whilst abiding by the rules of the game).
-- Calculate the length of all of these possible routes.
-- Find the shortest one/s, and print both the order that the player should visit the cards in their hand, including all the towns they would visit inbetween, to show a more detailed route.
-
-Comments/Criticisms:
-- I used the CodeInstitute template in order to make a workspace that could run python coding.
-
-- The largest contributor to running time is calculating the shortest route (including intermediate towns) for each legal iteration of the dealt cards, of which there are `number_of_town_cards`$!$ (factorial). For a game with 8 Town Cards, that is $8 \times 7 \times 6 \times \dots \times 2 \times 1 = 40320$, with each of these operations containing thousands of suboperations. This could almost certainly be optimised using [Dijkstra's Algorithm](https://www.freecodecamp.org/news/dijkstras-shortest-path-algorithm-visual-introduction/) to greatly narrow the number of operations for higher numbers of town cards, but for the purposes of this project, I felt this was unnecessary.
+- Add a front end, to improve the overall look and emotional response of the user. A lot of peolpe would be turned away by a terminal as they might be worried that it is 'too technical', so making it look more like a regular website, and having the input being through an input form using JavaScript would make it more accessible to most people.
+- As mentioned in [Noteworthy Comments](#noteworthy-comments), I would like to factor in the fact that players often overshoot their town and waste movements when amknig a U-turn in their route. To compensate for this, I could firstly favour routes without U-turns whilst creating the suggested routes, as routes without U-turns have no wasted moves (here we are ignoring Chance Cards, roadblocks etc.). This could be done by adding an extra condition whilst checking/removing duplicate routes, something along the lines of `if results_lists[i][j] = results_lists[i][j+2]`. Going deeper into Game Theory, I would then need to use Probability Theory to caclculate the average number of wasted steps in such as instance, and add this (multiplied by the number of U-turns in a path) to the length of each relevant path.

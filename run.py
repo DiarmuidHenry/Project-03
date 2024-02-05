@@ -419,11 +419,12 @@ def calculate_route():
     for i in range(len(min_indices)):
         for j in range(len(routes_to_take[i])-1):
             # .copy() so no changes are made to all_shortest_paths.
-            next = all_shortest_paths[(
+            next_result = all_shortest_paths[(
                 (routes_to_take[i][j] - 1) * len(all_cards)) + (
                     routes_to_take[i][j+1] - 1)].copy()
-            next.pop(0)
-            results_list[i] += next
+            # pop to remove starting town to avoid duplication in list
+            next_result.pop(0)
+            results_list[i] += next_result
 
     # Remove instances where card order is different but route is same.
     for i in range(len(results_list)-1, 0, -1):
