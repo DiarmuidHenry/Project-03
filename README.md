@@ -34,6 +34,7 @@ The program is visually pleasing and evokes positive emotions in the user. Instr
   - [Functional Testing](#functional-testing)
   - [PEP8 Validation](#pep8-validation)
 - [Future Improvements/Development](#future-improvementsdevelopment)
+- [Acknowledgments](#acknowledgments)
 
 ## Introduction
 
@@ -386,3 +387,8 @@ The main purpose of this is to ensure that all error validation steps work as in
 - As mentioned in [Noteworthy Comments](#noteworthy-comments), I would like to factor in the fact that players often overshoot their town and waste movements when amknig a U-turn in their route. To compensate for this, I could firstly favour routes without U-turns whilst creating the suggested routes (in the event of there being multiple routes of shortest length), as routes without U-turns have no wasted moves (here we are ignoring Chance Cards, roadblocks etc.). This could be done by adding an extra condition whilst checking/removing duplicate routes, something along the lines of `if results_lists[i][j] == results_lists[i][j+2]`. Going deeper into Game Theory, I would then need to use Probability Theory to caclculate the average number of wasted steps in such as instance, and add this (multiplied by the number of U-turns in a path) to the length of each relevant path.
 
 - Fix the problem with indexing of `next_result` as was [mentioned in Issues/Bugs: Unresolved](#unresolved)
+
+## Acknowledgments
+
+- The Slack community, for helping with minor queries as well as larger problems.
+- Tutor Assistance, for helping point me in the right direciton when discussing problems that I just couldn't get my head around.
