@@ -285,7 +285,7 @@ def validate_inputs():
                 print(Fore.RED + Style.BRIGHT + invalid_town_not_entry)
                 raise ValueError(
                     "Entry/Exit Cards entered instead of Town Cards")
-                
+
             if len(input_town) != len(set(input_town)):
                 print(Fore.RED + Style.BRIGHT + invalid_duplicates)
                 raise ValueError("Duplicate cards found")
