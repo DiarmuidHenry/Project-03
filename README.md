@@ -73,14 +73,15 @@ To create a program that, given a hand of cards a player is dealt, will create t
 - Get the user to input their given cards in an acceptable form, through the use of clear prompts and error validation.
 - Use this data as well as the data from the board itself (see [Data Model](#data-model)) to calculate the shortest possible route.
 - Print this route in a clear, visually pleasing manner for the user.
+- An attractive graphic shown to the user once the program terminates.
 
 ### Key Features
 
-- A large, eye-catching welcome message/banner.
+- A large, eye-catching welcome message/banner and goodbye message/banner.
 - Instructions that fit well in the limiter terminal screen.
 - Explanatory prompts.
 - Use of colours for clarity.
-- Use of animations to show activity on an otherwise inactive screen. 
+- Use of animations to show activity on an otherwise inactive screen.
 
 ## Potential Users
 
@@ -145,11 +146,15 @@ Find the miniminum value/s in `route_lengths` and the corresponding entry in `al
 
 ![Game Flow Chart](/documents/readme-images/game-flow.webp)
 
-### Banner
+### Banners
 
 I wanted a large banner with the title of the program to be what greeted the user once the program was loaded. I also wanted there to be space underneath for a welcome message and initial prompt. Since I was limited to a $80 \times 24$ terminal, this meant there was some trial and error in getting the size right, but I am happy with the result.
 
 ![Banner and Welcome Message](/documents/readme-images/banner-and-welcome.webp)
+
+Similarly, I created a goodbye banner for when the program was terminated.
+
+![Goodbye Banner](/documents/readme-images/goodbye-banner.webp)
 
 ### Colour Scheme
 
@@ -167,13 +172,21 @@ I used red for error messages, as people often associate the colour red with war
 
 ![Confirm Input](/documents/readme-images/confirm-input.webp)
 
+- Clearly printing the shortest route/s using colour. The coloured town names & numbers are the first instance that the user would reach that card in their hand. If they would need to travel through that town more than once, only the first time would be highlighted, as the player only 'plays' that card once. The 4 images below show all routes of equal length that the program returned for this particular hand. You can clearly see the Entry/Exit and Town Cards the player started with by which towns/numbers are coloured:
+
+![Result 1](/documents/readme-images/result-1.webp) ![Result 2](/documents/readme-images/result-2.webp) ![Result 3](/documents/readme-images/result-3.webp) ![Result 4](/documents/readme-images/result-4.webp)
+
 - Timer: the user is shown how long the calculation has taken. This is purely to satisfy curiosity, and was a feature that I created during construction and testing, but users have responded well to it, so I left it in.
 
 ![Time Taken](/documents/readme-images/time-taken.webp)
 
-- Clearly printing the shortest route/s using colour. The coloured town names & numbers are the first instance that the user would reach that card in their hand. If they would need to travel through that town more than once, only the first time would be highlighted, as the player only 'plays' that card once. The 4 images below show all routes of equal length that the program returned for this particular hand. You can clearly see the Entry/Exit and Town Cards the player started with by which towns/numbers are coloured:
+- A highlighted message appears instructing the user to scroll up to see their resulting route/s (which often don't fit entirely in the terminal).
 
-![Result 1](/documents/readme-images/result-1.webp) ![Result 2](/documents/readme-images/result-2.webp) ![Result 3](/documents/readme-images/result-3.webp) ![Result 4](/documents/readme-images/result-4.webp)
+![Scroll](/documents/readme-images/scroll.webp)
+
+- The user is asked if they would like to rerun the program with a different set of cards. This could be, for example, if several players about to start a game wanted to find their respective shortest route/s.
+
+![Rerun Program](/documents/readme-images/rerun-program.webp)
 
 - Error validation: ensuring that the input is of exactly the correct form. This includes checking if input only contains spaces and integers (as requested); that the numbers are in the range 1 - 52; that Town Cards are entered when asked for Town Cards; that Entry/Exit cards anre entered when asked for Entry/Exit Cards; that no duplicate Town Cards are entered. Here, we note that duplicate Entry/Exit cards are allowed, as there are 2 of each in the game, whereas there is only 1 of each Town Card, so no Town Card duplicates are allowed. This also would be a trivial card, as any duplicates would just be a wasted card. I also created `yes_inputs` and `no_inputs`, which allow several variationns of `YES` and `NO` to be accepted, to allow for a missed letter/spelling mistake/lower case letters. It is also important to note that an incorrect input can often lead to more than 1 error (e.g. if, when prompted to enter Town Cards, the user enters a non-integer value as well as an Entry/Exit card). Rather than flooding the screen with several error messages, I decided to just print one. If the user then fixed this one error and not the other, another relevant error message would appear alerting them of the problem. More specifics can be seen in the [Functional Testing below](#functional-testing).
 
@@ -200,9 +213,17 @@ I used red for error messages, as people often associate the colour red with war
 4. Open your IDE, and open a terminal.
 5. Enter `git clone url`, replacing `url` with the URL copied in step 3.
 
-### How to set up Google Sheets API
+### How to alter the Google API for a custom game
 
-Is this necessary?
+Once the GitHub repo has been cloned, the user can set up their own `counted_distances` and `town_names`spreadsheets if they wish to modify the code to a different game/board/set up. For example, they might want to use the older version of the Discovering Ireland board which has a different layout and only 50 towns.
+
+**`counted_distances`**:
+The entries in each cell of row $a$ and column $a$ is $0$ if there is no direct path from $a$ to $b$ (without passing through at least 1 other town). Otherwise, if $a$ and $b$ are directly linked, it is the shortest distance from $a$ to $b$. For example, the entry in cell $AF39$ is $15$: $AF$ is the 32nd column; 32 - Tullamore and 39 - Shannon are directly linked, and the distance between them is $15$.
+
+**`town_names`**:
+This is a simply a list of all town names in order , starting in cell $A1$. For example, the entry in cell $A37$ is `Tullamore`, since this is town number `37`.
+
+Once you have correctly edited these spreasheets, you can [follow these instructions](https://hackernoon.com/how-to-use-the-google-sheets-api-with-python) to link this worksheet to your cloned program.
 
 ### How to deploy to Heroku
 
@@ -281,7 +302,7 @@ I solved this by moving where they were declared to the same `try` loop that the
 
 ![Validation After - Town](/documents/readme-images/validation-town-after.webp)
 
-#### <u>Indices changed my removing elements</u>
+#### <u>Indices changed by deleting elements</u>
 
 When trying to remove duplicate routes in `results_list`, I encountered a problem with indexing: every time I deleted an element from the list, the index of every element after that changed, the length of the list decreased, this then cause issues with the `for` loops the code was in. 
 
@@ -307,24 +328,43 @@ I solve this by including `{:>2}` in the print message, which aligned both 1 and
 
 ![Colons After](/documents/readme-images/colons-after.webp)
 
-#### <u>Unrealistic choice/s of Entry/Exit Cards</u> REMOVE???
+#### <u>Unrealistic choice/s of Entry/Exit Cards</u>
 
 When testing in the early stages, I used `random` to create a hand, which I could then run the program with. I began seeing that the Entry/Exit cards were never the same, even though this is allowed in the game. This was due to me using `random.sample()` (without replacement) to `random.choices()` (with replacement). Since there are only 2 copies of each Town card, this will suffice, but would need to be altered if the program would allow for several people choosing cards in a single execution. Another way to fix this would be to make each element in `entry_cards` appear twice. However, for the current purpose and function of this program, my current solution is fine.
 
 #### <u>Getting stuck in loops</u>
 
-When including error messages, I found myself either getting stuck in loops, or jumping over some checks, depending on what/how many loops I was repeating. The below example is an example where the welcome message was shown repeatedly:
+When including error messages, I found myself either getting stuck in loops, or jumping over some checks, depending on what/how many loops I was repeating. The first example below shows the welcome message being shown repeatedly:
 
-Also got stuck in loop whent trying to incorporate the environment variable because of how i defined the fucntion `too_many_cards` NEED EXPANDING ON THS BIT.
-
-![Stuck in Loop](/documents/readme-images/stuck-in-loop.webp)
-
+![Stuck in Loop 1](/documents/readme-images/stuck-in-loop-1.webp)
 
 I solved this breaking the program down into functions, then creating a `run_program()` function that would neatly organise the logic/flow through the solver. Although this caused errors at first (like the image above), closer examination of the code and the logic led me to the correct order/solution.
 
-#### <u>REMOVE PROBLEM FROM CODE?!!?!?!?!</u>
+I also had trouble with getting stuck in loops when trying to incorporate the environment variable, due of how I defined the fucntion `too_many_cards`. This had prvously only needed returns of `True` or `False`.
 
-Program was crashing when more than 9 Town Cards were given. This was due to memory being exceeded. I fixed this by ADDING AN ERROR MESSAGE / LIMITING THE NUMBER OF TOWN CARDS THE USER MAY ENTER.
+![Stuck in Loop 2](/documents/readme-images/stuck-in-loop-2.webp)
+
+![Stuck in Loop 3](/documents/readme-images/stuck-in-loop-3.webp)
+
+However, since the function needed to be expanded, I solved this issue by creating more return possibilities: `"continue"`; `"new cards"`; `"restart program"` which gave me more options as to which functions to then lead in to.
+
+#### <u>Code environment crashing due to insufficient memory</u>
+
+Whilst testing shortly after launching with Heroku, I found that the environment crashed due to insufficient memory.
+
+![Memory Error 1](/documents/readme-images/memory-error-1.webp)
+
+![Memory Error 2](/documents/readme-images/memory-error-2.webp)
+
+![Memory Error 3](/documents/readme-images/memory-error-3.webp)
+
+The hosting platform provides less memory than the machine I was coding on, so this problem had not previously occured. I fixed this by adding another `Config Var` in Heroku, thereby creating an environmental variable. I incorporated this into my code so that - when defined - it created an upper limit on the number of Town Cards the user could enter.
+
+![New Config Var](/documents/readme-images/new-config-var.webp)
+
+This means that the code runs as it previously did on my local machine (and on any other machine, if someone were to clone the repo), but whilst running on the Heroku platform, an [extra error prompt appears](#functional-testing) indictating the limitations of the environment, and giving the user a choice as to how to continue.
+
+![Config Var Limit](/documents/readme-images/config-var-limit.webp)
 
 #### <u>f-strings causing issue</u>
 
@@ -344,7 +384,7 @@ I removed the final character at the end of every line (part of the shadow of th
 
 #### <u>Object type: `all_shortest_paths`</u>
 
-I had intended on reshaping `all_shortest_paths` intp a 3d array, rather than a list of lists. However, I ran into trouble creating and indexing this 3d array. This led to inelegant indexing of the variable `next_result`. Since the code still functions, I wouldn't consider this a bug as such. However, it is [something that could be improved](#future-improvementsdevelopments).
+I had intended on reshaping `all_shortest_paths` into a 3d array, rather than a list of lists. However, I ran into trouble creating and indexing this 3d array. This led to inelegant indexing of the variable `next_result`. Since the code still functions, I wouldn't consider this a bug as such. However, it is [something that could be improved](#future-improvementsdevelopments).
 
 ## Testing \& Validation
 
@@ -372,9 +412,14 @@ The main purpose of this is to ensure that all error validation steps work as in
 |`Is the above information correct?` prompt|Enter `YES` or any element from `yes_inputs`|`calculate_route` executes. Shortest route/s are printed shortly after|PASS|
 ||Enter any element from `no_inputs`|User returns to Entry/Exit Cards prompt, where they can re-input their cards.|PASS|
 ||Enter anything other than the elements in `no_inputs` or `yes_inputs`|Input is not accepted. `Is the above information correct?` prompt appears again.|PASS|
-|MAYBE REMOVE??? Too many Town Cards prompt|Enter 10 or more Town Cards when prompted|Error message appears, asking user if they wish to continute anyway.|PASS|
-||Enter any element from `yes_inputs`|`calculate_route` executes (if their is sufficient memory in the environment) and eventually, shortest route/s are printed. If their is insufficient memory, the program mmay not execute and may crash in the hosting environment (as warned).|PASS|
-||Enter any element from `no_inputs`|User returns to Entry/Exit Cards prompt, where they can re-input their cards.|PASS|
+|Too many Town Cards prompt|Enter $m$ Town Cards when prompted, where $m$ is greater than `MAX_NUMBER_OF_TOWN_CARDS` (where this is defined). *This value depends on the environment the program is being deployed in. It is $9$ for this deployment in Heroku*|Input is not accepted. `You have entered m Town Cards. This exceeds the limit of Town Cards for this environment (9). To enter a new selection of cards, enter 1. To restart the program, enter 2:` appears. User can then choose whether to enter `1` or `2`|PASS| 
+||Enter $n$ Town Cards when prompted, where $n > 10$ and `MAX_NUMBER_OF_TOWN_CARDS` is **not** defined by the environment. *This instance will not occur in this deployment due to the above restriction, but if someone were to clone this repo and run it on their local machine, this could happen*|Input is not accepted. `You have entered n Town Cards. This may result in a long processing time and/or program termination/malfunction due to memory issues. Do you wish to continue anyway? Please type YES or NO:` appears. User can then choose whether to enter `YES` or `NO`|PASS|
+|`...This may result in a long processing time...` prompt|Enter any element from `yes_inputs`|`calculate_route` executes (if their is sufficient memory in the environment) and eventually, shortest route/s are printed. If their is insufficient memory, the program may not execute and may crash in the hosting environment (as warned)|PASS|
+||Enter any element from `no_inputs`|User returns to welcome banner and Instructions prompt appears|PASS|
+||Enter anything other than the elements in `no_inputs` or `yes_inputs`|Input is not accepted. Prompt reappears|PASS|
+|`...This exceeds the limit of Town Cards for this environment...` prompt|Enter `1`|User returns to Entry/Exit Cards prompt, where they can input a different selection of cards|PASS|
+||Enter `2`|User returns to welcome banner and Instructions prompt appears|PASS|
+||Enter anything other than `1` or `2`|Input is not accepted. Prompt reappears|PASS|
 
 ### PEP8 Validation
 
@@ -386,7 +431,7 @@ The main purpose of this is to ensure that all error validation steps work as in
 
 - Add a front end, to improve the overall look and emotional response of the user. A lot of peolpe would be turned away by a terminal as they might be worried that it is 'too technical', so making it look more like a regular website, and having the input being through an input form using JavaScript would make it more accessible to most people.
 
-- As mentioned in [Noteworthy Comments](#noteworthy-comments), I would like to factor in the fact that players often overshoot their town and waste movements when amknig a U-turn in their route. To compensate for this, I could firstly favour routes without U-turns whilst creating the suggested routes (in the event of there being multiple routes of shortest length), as routes without U-turns have no wasted moves (here we are ignoring Chance Cards, roadblocks etc.). This could be done by adding an extra condition whilst checking/removing duplicate routes, something along the lines of `if results_lists[i][j] == results_lists[i][j+2]`. Going deeper into Game Theory, I would then need to use Probability Theory to caclculate the average number of wasted steps in such as instance, and add this (multiplied by the number of U-turns in a path) to the length of each relevant path.
+- As mentioned in [Noteworthy Comments](#noteworthy-comments), I would like to factor in the fact that players often overshoot their town and waste movements when amknig a U-turn in their route. To compensate for this, I could firstly favour routes without U-turns whilst creating the suggested routes (in the event of there being multiple routes of shortest length), as routes without U-turns have no wasted moves (here we are ignoring Chance Cards, roadblocks etc.). Most of these instances could be detected by adding an extra condition whilst checking/removing duplicate routes, something along the lines of `if results_lists[i][j] == results_lists[i][j+2]`. However this is not always the case: for example, travelling the route $20 \rightarrow 16 \rightarrow 13$ involves a U-turn, without revisiting any towns. Going deeper into Game Theory, I would then need to use Probability Theory to caclculate the average number of wasted steps in such as instance, and add this (multiplied by the number of U-turns in a path) to the length of each relevant path.
 
 - Fix the problem with indexing of `next_result` as was [mentioned in Issues/Bugs: Unresolved](#unresolved)
 
