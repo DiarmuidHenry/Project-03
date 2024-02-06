@@ -62,8 +62,7 @@ town_names = town_data.get_all_values()
 town_names = [town[0] for town in town_names]
 
 # Getting value of MAX_NUMBER_OF_TOWNS from environment variables
-# MAX_NUMBER_OF_TOWNS = os.environ.get("MAX_NUMBER_OF_TOWNS")
-MAX_NUMBER_OF_TOWNS = 6
+MAX_NUMBER_OF_TOWNS = os.environ.get("MAX_NUMBER_OF_TOWNS")
 
 # Check if MAX_NUMBER_OF_TOWNS exists
 if MAX_NUMBER_OF_TOWNS is not None:
@@ -292,15 +291,16 @@ def too_many_cards():
     too_many_cards_warning = (
                               f"\nYou have entered {len(assigned_town_cards)}"
                               f" Town Cards.\nThis may result in a long"
-                              f" processing time and/or program"
-                              f" termination/malfunction\ndue to memory"
+                              f" processing time and/or\nprogram"
+                              f" termination/malfunction due to memory"
                               f" issues.\nDo you wish to continue anyway?"
                               f" Please type YES or NO:\n"
                               )
     env_limit_warning = (
                          f"\nYou have entered {len(assigned_town_cards)}"
                          f" Town Cards.\nThis exceeds the limit"
-                         f" of Town Cards for this environment.\nTo enter"
+                         f" of Town Cards for this environment"
+                         f" ({MAX_NUMBER_OF_TOWNS}).\nTo enter"
                          f" a new selection of cards, enter 1.\nTo"
                          f" restart the program, enter 2:\n"
                          )
@@ -375,7 +375,7 @@ def calculate_route():
 
     # Find shortest route/s in all_routes using min_indicies.
     routes_to_take = []
-    for i in range(0, (len(min_indices))):
+    for i in range(len(min_indices)):
         routes_to_take.append(all_routes[min_indices[i]])
 
     routes_to_take = np.asarray(routes_to_take)
@@ -436,9 +436,24 @@ def calculate_route():
     time_taken = round((end - start), 5)
 
     print("\nTime taken to calculate route/s:")
-    print(time_taken, "seconds")
-    print("\nScroll up to see your optimal route/s")
-    print("\nEnjoy your game!\n")
+    print(time_taken, "seconds\n")
+    print(Back.WHITE + Fore.BLACK + "Scroll up to see your optimal route/s!")
+
+    while True:
+        restart_choice = input(
+                               f"\nDo you want to run the program with"
+                               f" another selection of cards?"
+                               f" Please type YES or NO:\n"
+                               )
+        if restart_choice.lower() in yes_inputs:
+            run_program()
+            break
+        elif restart_choice.lower() in no_inputs:
+            print_goodbye()
+            break
+        else:
+            print(Fore.RED + Style.BRIGHT +
+                  "Invalid input. Please type YES or NO:\n")
 
 
 def print_banner():
@@ -447,6 +462,13 @@ def print_banner():
     banner_image = banner.read()
     print(banner_image)
     banner.close()
+    
+def print_goodbye():
+    print(Style.RESET_ALL)
+    goodbye = open('goodbye-text.txt', 'r')
+    goodbye_image = goodbye.read()
+    print(goodbye_image)
+    goodbye.close()
 
 
 def instructions_prompt():
