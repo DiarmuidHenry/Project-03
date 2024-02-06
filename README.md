@@ -420,6 +420,9 @@ The main purpose of this is to ensure that all error validation steps work as in
 |`...This exceeds the limit of Town Cards for this environment...` prompt|Enter `1`|User returns to Entry/Exit Cards prompt, where they can input a different selection of cards|PASS|
 ||Enter `2`|User returns to welcome banner and Instructions prompt appears|PASS|
 ||Enter anything other than `1` or `2`|Input is not accepted. Prompt reappears|PASS|
+|`calculate_route` execution|A valid collection of Entry/Exit Cards and Town Cards were given during the above stages|`Calculating roots . . .` animation appears, shortly followed by the `Optimal route length` and the list of all routes fo that length. These routes are labelled and colour coordinated for clarity to the user, with a prompt telling the user to scroll up to review their routes. `Do you want to run the program with another selection of cards? Please type YES or NO:` appears|PASS|
+|`Do you want to run the program with another selection of cards?` prompt|Enter any element from `yes_inputs`|User returns to welcome banner and Instructions prompt appears|PASS|
+||Enter any element from `no_inputs`|Goodbye banner appears, program terminates|PASS|
 
 ### PEP8 Validation
 
