@@ -72,11 +72,7 @@ if MAX_NUMBER_OF_TOWNS is not None:
 else:
     # If MAX_NUMBER_OF_TOWNS is not set, set town_limit to False
     town_limit = False
-    
-print("town_limit :")
-print(town_limit)
-print("MAX_TOWNS:")
-print(MAX_NUMBER_OF_TOWNS)
+
 
 # Getting number of Town Cards from length of town_names
 number_of_towns = len(town_names)
