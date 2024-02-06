@@ -62,10 +62,21 @@ town_names = town_data.get_all_values()
 town_names = [town[0] for town in town_names]
 
 # Getting value of MAX_NUMBER_OF_TOWNS from environment variables
-MAX_NUMBER_OF_TOWNS = int(os.environ.get("MAX_NUMBER_OF_TOWNS"))
+MAX_NUMBER_OF_TOWNS = os.environ.get("MAX_NUMBER_OF_TOWNS")
 
-# Creating a variable to check whether MAX_NUMBER_OF_TOWNS exists
-town_limit = bool(MAX_NUMBER_OF_TOWNS)
+# Check if MAX_NUMBER_OF_TOWNS exists
+if MAX_NUMBER_OF_TOWNS is not None:
+    # If MAX_NUMBER_OF_TOWNS exists, set to integer value
+    MAX_NUMBER_OF_TOWNS = int(MAX_NUMBER_OF_TOWNS)
+    town_limit = True
+else:
+    # If MAX_NUMBER_OF_TOWNS is not set, set town_limit to False
+    town_limit = False
+    
+print("town_limit :")
+print(town_limit)
+print("MAX_TOWNS:")
+print(MAX_NUMBER_OF_TOWNS)
 
 # Getting number of Town Cards from length of town_names
 number_of_towns = len(town_names)
@@ -283,30 +294,48 @@ def check_cards():
 def too_many_cards():
     too_many_cards_warning = (
                               f"\nYou have entered {len(assigned_town_cards)}"
-                              f" Town Cards.\nThis may result in program"
-                              f" termination/malfunction due to memory"
+                              f" Town Cards.\nThis may result in a long"
+                              f" processing time and/or program"
+                              f" termination/malfunction\ndue to memory"
                               f" issues.\nDo you wish to continue anyway?"
                               f" Please type YES or NO:\n"
                               )
-    if len(assigned_town_cards) <= MAX_NUMBER_OF_TOWNS:
-        return True
-    else:
-        while True:
-            too_many_cards_check = input(
-                Fore.RED + Style.BRIGHT + too_many_cards_warning)
-            if too_many_cards_check.lower() in yes_inputs:
-                return True
-            elif too_many_cards_check.lower() in no_inputs:
-                return False
-            else:
-                continue
-
-
-"""
-Alternative: alter too_many_cards to only allow
-a maximum of 9 cards. Hosted app crashes with
-10+ Town Cards due to lack of memory.
-"""
+    env_limit_warning = (
+                         f"\nYou have entered {len(assigned_town_cards)}"
+                         f" Town Cards.\nThis exceeds the limit"
+                         f" of town cards for this environment.\nTo enter"
+                         f" a new selection of cards, enter 1. To"
+                         f" restart the program, enter 2."
+                         )
+    
+    if (not town_limit):
+        if len(assigned_town_cards) <= 9:
+            return True
+        else:
+            while True:
+                too_many_cards_check = input(
+                    Fore.RED + Style.BRIGHT + too_many_cards_warning)
+                if too_many_cards_check.lower() in yes_inputs:
+                    return True
+                elif too_many_cards_check.lower() in no_inputs:
+                    return False
+                else:
+                    continue
+    
+    if town_limit:
+        if len(assigned_town_cards) <= MAX_NUMBER_OF_TOWNS:
+            return True
+        else:
+            while True:
+                env_limit_choice = input(
+                    Fore.RED + Style.BRIGHT + env_limit_warning)
+                if env_limit_choice == 1:
+                    solver()
+                if env_limit_choice == 2:
+                    setup()
+                else:
+                    continue
+    
 
 
 def calculate_route():
