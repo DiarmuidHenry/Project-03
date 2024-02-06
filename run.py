@@ -9,6 +9,7 @@ import time
 import threading
 from colorama import Fore, Back, Style, init
 init(autoreset=True)
+import os
 
 # Define global varibale used in loading_animation
 solver_ready = False
@@ -59,6 +60,12 @@ edge_weights_matrix = np.array(counted_distances, dtype=np.int32)
 town_data = SHEET.worksheet("town_names")
 town_names = town_data.get_all_values()
 town_names = [town[0] for town in town_names]
+
+# Getting value of MAX_NUMBER_OF_TOWNS from environment variables
+MAX_NUMBER_OF_TOWNS = int(os.environ.get("MAX_NUMBER_OF_TOWNS"))
+
+# Creating a variable to check whether MAX_NUMBER_OF_TOWNS exists
+town_limit = bool(MAX_NUMBER_OF_TOWNS)
 
 # Getting number of Town Cards from length of town_names
 number_of_towns = len(town_names)
@@ -281,9 +288,9 @@ def too_many_cards():
                               f" issues.\nDo you wish to continue anyway?"
                               f" Please type YES or NO:\n"
                               )
-    if len(assigned_town_cards) <= 9:
+    if len(assigned_town_cards) <= MAX_NUMBER_OF_TOWNS:
         return True
-    if len(assigned_town_cards) > 9:
+    else:
         while True:
             too_many_cards_check = input(
                 Fore.RED + Style.BRIGHT + too_many_cards_warning)
