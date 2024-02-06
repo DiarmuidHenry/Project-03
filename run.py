@@ -62,7 +62,8 @@ town_names = town_data.get_all_values()
 town_names = [town[0] for town in town_names]
 
 # Getting value of MAX_NUMBER_OF_TOWNS from environment variables
-MAX_NUMBER_OF_TOWNS = os.environ.get("MAX_NUMBER_OF_TOWNS")
+# MAX_NUMBER_OF_TOWNS = os.environ.get("MAX_NUMBER_OF_TOWNS")
+MAX_NUMBER_OF_TOWNS = 6
 
 # Check if MAX_NUMBER_OF_TOWNS exists
 if MAX_NUMBER_OF_TOWNS is not None:
@@ -306,29 +307,29 @@ def too_many_cards():
     
     if (not town_limit):
         if len(assigned_town_cards) <= 9:
-            return True
+            return "continue"   
         else:
             while True:
                 too_many_cards_check = input(
                     Fore.RED + Style.BRIGHT + too_many_cards_warning)
                 if too_many_cards_check.lower() in yes_inputs:
-                    return True
+                    return "continue"
                 elif too_many_cards_check.lower() in no_inputs:
-                    return False
+                    return "restart program"
                 else:
                     continue
     
     if town_limit:
         if len(assigned_town_cards) <= MAX_NUMBER_OF_TOWNS:
-            return True
+            return "continue"
         else:
             while True:
                 env_limit_choice = input(
                     Fore.RED + Style.BRIGHT + env_limit_warning)
                 if env_limit_choice == "1":
-                    solver()
+                    return "new cards"
                 if env_limit_choice == "2":
-                    run_program()
+                    return "restart program"
                 else:
                     continue
     
@@ -481,9 +482,12 @@ def solver():
     validate_inputs()
     print_cards()
     if check_cards():
-        if too_many_cards():
+        too_many_cards_return = too_many_cards()
+        if too_many_cards_return == "continue":
             calculate_route()
-        else:
+        elif too_many_cards_return == "restart program":
+            run_program()
+        elif too_many_cards_return == "new cards":
             solver()
     else:
         solver()

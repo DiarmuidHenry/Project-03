@@ -315,6 +315,8 @@ When testing in the early stages, I used `random` to create a hand, which I coul
 
 When including error messages, I found myself either getting stuck in loops, or jumping over some checks, depending on what/how many loops I was repeating. The below example is an example where the welcome message was shown repeatedly:
 
+Also got stuck in loop whent trying to incorporate the environment variable because of how i defined the fucntion `too_many_cards` NEED EXPANDING ON THS BIT.
+
 ![Stuck in Loop](/documents/readme-images/stuck-in-loop.webp)
 
 
