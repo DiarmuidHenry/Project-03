@@ -303,9 +303,9 @@ def too_many_cards():
     env_limit_warning = (
                          f"\nYou have entered {len(assigned_town_cards)}"
                          f" Town Cards.\nThis exceeds the limit"
-                         f" of town cards for this environment.\nTo enter"
-                         f" a new selection of cards, enter 1. To"
-                         f" restart the program, enter 2."
+                         f" of Town Cards for this environment.\nTo enter"
+                         f" a new selection of cards, enter 1.\nTo"
+                         f" restart the program, enter 2:\n"
                          )
     
     if (not town_limit):
@@ -329,14 +329,13 @@ def too_many_cards():
             while True:
                 env_limit_choice = input(
                     Fore.RED + Style.BRIGHT + env_limit_warning)
-                if env_limit_choice == 1:
+                if env_limit_choice == "1":
                     solver()
-                if env_limit_choice == 2:
-                    setup()
+                if env_limit_choice == "2":
+                    run_program()
                 else:
                     continue
     
-
 
 def calculate_route():
     global solver_ready
@@ -446,6 +445,7 @@ def calculate_route():
 
 
 def print_banner():
+    print(Style.RESET_ALL)
     banner = open('banner-text.txt', 'r')
     banner_image = banner.read()
     print(banner_image)
@@ -467,11 +467,12 @@ def instructions_prompt():
             elif instructions_check.lower() in no_inputs:
                 break
             else:
-                print("\nInvalid input.")
+                print(Fore.RED + Style.BRIGHT + "\nInvalid input.")
                 raise ValueError("Invalid input")
         except Exception:
+            print
             instructions_check = input(
-                "\n\nPlease type YES or NO: ")
+                "\nPlease type YES or NO: \n")
             continue  # Back to beginning of loop
 
 
