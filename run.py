@@ -49,71 +49,19 @@ GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 SHEET = GSPREAD_CLIENT.open("discovering_ireland")
 
 # Extracting data from counted_distances worksheet
-data = SHEET.worksheet("counted_distances")
-
-counted_distances = data.get_all_values()
+distance_data = SHEET.worksheet("counted_distances")
+counted_distances = distance_data.get_all_values()
 
 # Convert values from counted_distances to a NumPy array with integer values
 edge_weights_matrix = np.array(counted_distances, dtype=np.int32)
 
-# List of town names, in order
-town_names = [
-    "Ballycastle",
-    "Coleraine",
-    "Derry",
-    "Letterkenny",
-    "Larne",
-    "Ballymena",
-    "Strabane",
-    "Donegal",
-    "Belfast",
-    "Omagh",
-    "Armagh",
-    "Enniskillen",
-    "Sligo",
-    "Belmullet",
-    "Monaghan",
-    "Ballina",
-    "Newry",
-    "Cavan",
-    "Dundalk",
-    "Carrick on Shannon",
-    "Westport",
-    "Knock",
-    "Longford",
-    "Drogheda",
-    "Roscommon",
-    "Trim",
-    "Mullingar",
-    "Clifden",
-    "Athlone",
-    "Ballinasloe",
-    "Dublin",
-    "Tullamore",
-    "Galway",
-    "Naas",
-    "Portlaoise",
-    "Roscrea",
-    "Tullow",
-    "Arklow",
-    "Shannon",
-    "Limerick",
-    "Kilkenny",
-    "Tipperary",
-    "Clonmel",
-    "Wexford",
-    "Tralee",
-    "Waterford",
-    "Rosslare Harbour",
-    "Killarney",
-    "Youghal",
-    "Cork",
-    "Bantry",
-    "Clonakilty"
-]
+# Extracting town names from town_names, convert to list of strings
+town_data = SHEET.worksheet("town_names")
+town_names = town_data.get_all_values()
+town_names = [town[0] for town in town_names]
 
-# Getting number of Town Cards from size of edge_weight_matrix
-number_of_towns = edge_weights_matrix.shape[0]
+# Getting number of Town Cards from length of town_names
+number_of_towns = len(town_names)
 
 # Construct list of all cards, labelled by their corresponding numbers
 all_cards = list(range(1, number_of_towns + 1))
