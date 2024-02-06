@@ -443,7 +443,7 @@ def calculate_route():
         restart_choice = input(
                                f"\nDo you want to run the program with"
                                f" another selection of cards?"
-                               f" Please type YES or NO:\n"
+                               f"\nPlease type YES or NO:\n"
                                )
         if restart_choice.lower() in yes_inputs:
             run_program()
