@@ -21,7 +21,7 @@ The program is visually pleasing and evokes positive emotions in the user. Instr
   - [User Testimonials](#user-testimonials)
 - [Design \& Development](#design--development)
   - [Data Model](#data-model)
-  - [Game Flow](#game-flow)
+  - [Game Flow/Logic](#game-flow)
   - [Colour Scheme](#colour-scheme)
   - [Banner](#banner) 
   - [Features](#features)
