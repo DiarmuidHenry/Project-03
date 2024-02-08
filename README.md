@@ -203,6 +203,53 @@ I used red for error messages, as people often associate the colour red with war
 - [MDN Web Docs](https://developer.mozilla.org/en-US/docs/Glossary/Python) was used for further information on different Python modules/properties.
 - [Stack Overflow](https://stackoverflow.com/) for general troubleshooting.
 
+### Modules imported in Python
+
+**`gspread`**
+
+Importing/reading data from Google Sheets into code.
+
+**`google.oauth2.service_account`**
+
+Used with `creds.json` to ensure the security and privacy of the location/address of the source data. Although in this instance, the data is not sensitive, it is  good practice.
+
+**`numpy`**
+
+Manipulating/rearranging objects, e.g. from lists to an array. Concatenating and reshaping objects to improve indexing simplicity. General basic mathematic functions.
+
+**`networkx`**
+
+Arguably the module doing the most 'work'. Used to create the graph/network of the game from the Google Sheet data. From this, all shortest paths and path lengths were calculated.
+
+**`timeit`**
+
+`timer` function, acts as a stopwatch starting when the user confirms their valid input is correct, stops when shortest route/s are printed. Not vital to function of program, was mainly put in for my own curiosity during constructions, but it tested positively with users so I left it in.
+
+**`ìtertools`**
+
+Used to cycle through `dots` in the `loading_animation`. Also used to find all permutations of Town Cards for a given route, thereby creating every possible allowed route for the users selection of cards.
+
+**`sys`**
+
+`sys.stdout.write()` was used in `laoding_animation` so that the line where `Loading . . .` appeared was rewritten, rather than the standard `print()` which would have printed on a new line.
+
+**`time`**
+
+To create a pause during  `loading_animation`.
+
+`threading`
+
+Allows the `loading_animation` to run simultaneously with the rest of the code.
+
+**`colorama`**
+
+Adding colour to text, prompts, error messages.
+
+**`os`**
+
+Allows the code to read the environment vairable `MAX_NUMBER_OF_TOWNS` for the particular environment that the program is being deployed on.
+
+
 ## Deployment
 
 ### How to Clone Repository
