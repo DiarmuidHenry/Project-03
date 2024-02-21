@@ -482,16 +482,16 @@ def save_routes_to_new_sheet(save_name, dealt_hand, results_list):
     new_sheet = SHEET.add_worksheet(title=f"saved_routes_{save_name}", rows=100, cols=10)
 
     # Write deatl hand to the first column
-    new_sheet.update(range_name="A1", values=[["Dealt Hand"]])
-    dealt_hand_column = [card for card in dealt_hand]
+    # new_sheet.update(range_name="A1", values="Dealt Hand")
+    dealt_hand_column = [str(card) for card in dealt_hand]
     new_sheet.update(range_name=f"A2:A{len(dealt_hand_column) + 1}", values=[dealt_hand_column])
     
     # Write routes to folowing columns
     for i in range(len(results_list)):
         # Using ASCII Unicode to translate index into corresponding column
-        new_sheet.update(f"{chr(ord('B') + i)}1", f"Route {i+1}")
+        new_sheet.update(range_name=f"{chr(ord('B') + i)}1", values=f"Route {i+1}")
         for j in results_list[i]:
-            new_sheet.update(f"{chr(ord('B') + i)}{j+2}", f"{j}: {town_names[j]}")
+            new_sheet.update(range_name=f"{chr(ord('B') + i)}{j+2}", values=f"{j}: {town_names[j]}")
 
 
 def save_route_with_name(dealt_hand, results_list):
