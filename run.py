@@ -532,7 +532,7 @@ run_program()
 # Below are in progress functions for the save/load features
 
 # Function to save dealt hand and shortest route/s to new sheet
-def save_routes_to_sheet(save_name, dealt_hand, results_list):
+def save_routes_to_new_sheet(save_name, dealt_hand, results_list):
     
     # Create a new sheet for each save
     new_sheet = SHEET.add_worksheet(title=f"saved_routes_{save_name}", rows=100, cols=10)
@@ -550,10 +550,17 @@ def save_routes_to_sheet(save_name, dealt_hand, results_list):
             new_sheet.update(f"{chr(ord('B') + i)}{j+2}", f"{j}: {town_names[j]}")
 
 def save_route_with_name(dealt_hand, results_list):
-    save_name = input("Please enter a name to save your route/s under:\n")
-    # Need to insert error here if save name already exists
-    save_routes_to_sheet(save_name, dealt_hand, results_list)
-    print(f"Route/s saved with name: '{save_name}'.\n")
+    while True:
+        save_name = input("Please enter a name to save your route/s under:\n")
+        # Get list of existing save names
+        existing_saves = [saved.title for saved in SHEET.worksheets()]
+        if f"saved_routes_{save_name}" in existing_saves:
+            print("Saved route/s already exist with this name.")
+            continue
+        else:
+            save_routes_to_new_sheet(save_name, dealt_hand, results_list)
+            print(f"Route/s saved with name: '{save_name}'.\n")
+            break # Exits once unique name is provuded
 
 def recall_routes_by_save_name():
     load_name = input("Enter the name used to save your calculated route/s:\n")
