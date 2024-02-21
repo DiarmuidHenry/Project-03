@@ -429,7 +429,9 @@ def calculate_route():
             else:
                 print("    {:>2} : {}".format(
                     results_list[i][j], town_names[results_list[i][j]-1]))
-
+                
+    # Adding saving option
+    
     end = timer()
 
     # Time taken shown in seconds to 5sf
@@ -438,6 +440,11 @@ def calculate_route():
     print("\nTime taken to calculate route/s:")
     print(time_taken, "seconds\n")
     print(Back.WHITE + Fore.BLACK + "Scroll up to see your optimal route/s!")
+    
+    """
+    Need to change order of functions etc, but here will be the option
+    to save the route with a given name.
+    """
 
     while True:
         restart_choice = input(
@@ -521,3 +528,39 @@ def run_program():
 
 
 run_program()
+
+# Below are in progress functions for the save/load features
+
+# Function to save dealt hand and shortest route/s to new sheet
+def save_routes_to_sheet(save_name, dealt_hand, results_list):
+    
+    # Create a new sheet for each save
+    new_sheet = SHEET.add_worksheet(title=f"saved_routes_{save_name}", rows=100, cols=10)
+
+    # Write deatl hand to the first column
+    new_sheet.update("A1", "Dealt Hand")
+    dealt_hand_column = [card for card in dealt_hand]
+    new_sheet.update(f"A2:A{len(dealt_hand_column) + 1}", [dealt_hand_column])
+    
+    # Write routes to folowing columns
+    for i in range(len(results_list)):
+        # Using ASCII Unicode to translate index into corresponding column
+        new_sheet.update(f"{chr(ord('B') + i)}1", f"Route {i+1}")
+        for j in results_list[i]:
+            new_sheet.update(f"{chr(ord('B') + i)}{j+2}", f"{j}: {town_names[j]}")
+
+def save_route_with_name(dealt_hand, results_list):
+    save_name = input("Please enter a name to save your route/s under:\n")
+    # Need to insert error here if save name already exists
+    save_routes_to_sheet(save_name, dealt_hand, results_list)
+    print(f"Route/s saved with name: '{save_name}'.\n")
+
+def recall_routes_by_save_name():
+    load_name = input("Enter the name used to save your calculated route/s:\n")
+    try:
+        saved_sheet = SHEET.worksheet(f"save_{load_name}")
+        saved_data = saved_sheet.get_all_values()
+        # Parse saved data and print routes
+        # Code to print route using same formatting as earlier
+    except gspread.exceptions.APIError as e:
+        print(f"No route/s found with saved name '{load_name}'.")
