@@ -441,10 +441,22 @@ def calculate_route():
     print(time_taken, "seconds\n")
     print(Back.WHITE + Fore.BLACK + "Scroll up to see your optimal route/s!")
     
-    """
-    Need to change order of functions etc, but here will be the option
-    to save the route with a given name.
-    """
+    while True:
+        save_choice = input(
+                               f"\nWould you like to save your"
+                               f" route/s? You can load them at"
+                               f" a later time by following the"
+                               f" instructions in the opening message."
+                               f"\nPlease type YES or NO:\n"
+                               )
+        if save_choice.lower() in yes_inputs:
+            save_route_with_name(dealt_hand, results_list)
+            break
+        elif save_choice.lower() in no_inputs:
+            break
+        else:
+            print(Fore.RED + Style.BRIGHT +
+                  "Invalid input. Please type YES or NO:\n") 
 
     while True:
         restart_choice = input(
@@ -461,6 +473,61 @@ def calculate_route():
         else:
             print(Fore.RED + Style.BRIGHT +
                   "Invalid input. Please type YES or NO:\n")
+            
+            
+# Function to save dealt hand and shortest route/s to new sheet
+def save_routes_to_new_sheet(save_name, dealt_hand, results_list):
+    
+    # Create a new sheet for each save
+    new_sheet = SHEET.add_worksheet(title=f"saved_routes_{save_name}", rows=100, cols=10)
+
+    # Write deatl hand to the first column
+    new_sheet.update(range_name="A1", values=[["Dealt Hand"]])
+    dealt_hand_column = [card for card in dealt_hand]
+    new_sheet.update(range_name=f"A2:A{len(dealt_hand_column) + 1}", values=[dealt_hand_column])
+    
+    # Write routes to folowing columns
+    for i in range(len(results_list)):
+        # Using ASCII Unicode to translate index into corresponding column
+        new_sheet.update(f"{chr(ord('B') + i)}1", f"Route {i+1}")
+        for j in results_list[i]:
+            new_sheet.update(f"{chr(ord('B') + i)}{j+2}", f"{j}: {town_names[j]}")
+
+
+def save_route_with_name(dealt_hand, results_list):
+    while True:
+        save_name = input("Please enter a name to save your route/s under:\n")
+        # Get list of existing save names
+        existing_saves = [saved.title for saved in SHEET.worksheets()]
+        if f"saved_routes_{save_name}" in existing_saves:
+            print("Saved route/s already exist with this name.")
+            continue
+        else:
+            save_routes_to_new_sheet(save_name, dealt_hand, results_list)
+            print(f"Route/s saved with name: '{save_name}'.\n")
+            break # Exits once unique name is provuded
+
+
+def recall_routes_by_save_name():
+    load_name = input("Enter the name used to save your calculated route/s:\n")
+    try:
+        saved_sheet = SHEET.worksheet(f"save_{load_name}")
+        saved_data = saved_sheet.get_all_values()
+        # Check if there are any saved routes
+        if len(saved_data) == 0:
+            print(f"No route/s found with saved name '{load_name}'.")
+            return
+        # If load_name is valid, parse saved data and print route/s
+        else:
+            print("\nSaved route/s for name:", load_name)
+            for column in saved_data:
+                # Ignore empty columns in saved_sheet
+                non_empty_columns = [column for column in saved_data if column[0]]
+                # Print each row as a comma-separated list
+                # PLACEHOLDER for formatted printing, like original result
+                print(", ".join(non_empty_columns))
+    except gspread.exceptions.APIError as e:
+        print(f"No route/s found with saved name '{load_name}'.")
 
 
 def print_banner():
@@ -483,24 +550,33 @@ def instructions_prompt():
 
     # Stop loading_animation
     solver_ready = True
+    
+    
+    input("Welcome to the Discovering Ireland Solver!\nPress ENTER to begin\n")
 
-    instructions_check = input(welcome_message)
+    options_prompt = """
+Enter 1 to view the instructions.
+Enter 2 to enter your dealt cards.
+Enter 3 to load previously saved route/s.
+"""
+
     while True:
         try:
-            if instructions_check.lower() in yes_inputs:
+            welcome_choice = input(options_prompt)
+            if welcome_choice == "1":
                 print(instructions)
                 break
-            elif instructions_check.lower() in no_inputs:
+            elif welcome_choice == "2":
+                break
+            elif welcome_choice == "3":
+                recall_routes_by_save_name()
                 break
             else:
                 print(Fore.RED + Style.BRIGHT + "\nInvalid input.")
                 raise ValueError("Invalid input")
         except Exception:
-            print
-            instructions_check = input(
-                "\nPlease type YES or NO: \n")
+            print(Fore.RED + Style.BRIGHT + "Please enter 1, 2 or 3: \n")
             continue  # Back to beginning of loop
-
 
 def setup():
     print_banner()
@@ -526,48 +602,7 @@ def run_program():
     setup()
     solver()
 
-
 run_program()
 
 # Below are in progress functions for the save/load features
 
-# Function to save dealt hand and shortest route/s to new sheet
-def save_routes_to_new_sheet(save_name, dealt_hand, results_list):
-    
-    # Create a new sheet for each save
-    new_sheet = SHEET.add_worksheet(title=f"saved_routes_{save_name}", rows=100, cols=10)
-
-    # Write deatl hand to the first column
-    new_sheet.update("A1", "Dealt Hand")
-    dealt_hand_column = [card for card in dealt_hand]
-    new_sheet.update(f"A2:A{len(dealt_hand_column) + 1}", [dealt_hand_column])
-    
-    # Write routes to folowing columns
-    for i in range(len(results_list)):
-        # Using ASCII Unicode to translate index into corresponding column
-        new_sheet.update(f"{chr(ord('B') + i)}1", f"Route {i+1}")
-        for j in results_list[i]:
-            new_sheet.update(f"{chr(ord('B') + i)}{j+2}", f"{j}: {town_names[j]}")
-
-def save_route_with_name(dealt_hand, results_list):
-    while True:
-        save_name = input("Please enter a name to save your route/s under:\n")
-        # Get list of existing save names
-        existing_saves = [saved.title for saved in SHEET.worksheets()]
-        if f"saved_routes_{save_name}" in existing_saves:
-            print("Saved route/s already exist with this name.")
-            continue
-        else:
-            save_routes_to_new_sheet(save_name, dealt_hand, results_list)
-            print(f"Route/s saved with name: '{save_name}'.\n")
-            break # Exits once unique name is provuded
-
-def recall_routes_by_save_name():
-    load_name = input("Enter the name used to save your calculated route/s:\n")
-    try:
-        saved_sheet = SHEET.worksheet(f"save_{load_name}")
-        saved_data = saved_sheet.get_all_values()
-        # Parse saved data and print routes
-        # Code to print route using same formatting as earlier
-    except gspread.exceptions.APIError as e:
-        print(f"No route/s found with saved name '{load_name}'.")
