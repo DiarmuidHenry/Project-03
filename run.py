@@ -407,30 +407,8 @@ def calculate_route():
                 break
 
     print("\nOptimal route/s for dealt cards: ")
-
-    for i in range(len(results_list)):
-        a_copy = assigned_town_cards.copy()
-        print("\n\n    " +
-              Back.WHITE + Fore.BLACK + " Route " +
-              Back.WHITE + Fore.BLACK + str(i + 1) +
-              Back.WHITE + Fore.BLACK + " ", "\n")
-        for j in range(len(results_list[i])):
-            town = results_list[i][j]
-            if j == 0 or j == (len(results_list[i]) - 1):
-                print(Fore.YELLOW + Style.BRIGHT +
-                      "    {:>2} : {}".format(town, town_names[town - 1]))
-                a_copy = [
-                    card for card in a_copy if card != town]
-            elif (town in a_copy):
-                print(Fore.GREEN + Style.BRIGHT +
-                      "    {:>2} : {}".format(town, town_names[town - 1]))
-                a_copy = [
-                    card for card in a_copy if card != town]
-            else:
-                print("    {:>2} : {}".format(
-                    results_list[i][j], town_names[results_list[i][j]-1]))
-                
-    # Adding saving option
+    
+    print_coloured_routes(results_list, assigned_town_cards)
     
     end = timer()
 
@@ -479,7 +457,7 @@ def calculate_route():
 def save_routes_to_new_sheet(save_name, dealt_hand, results_list):
     
     # Create a new sheet for each save
-    new_sheet = SHEET.add_worksheet(title=f"saved_routes_{save_name}", rows=100, cols=10)
+    new_sheet = SHEET.add_worksheet(title=f"saved_routes_{save_name}", rows=100, cols=(len(results_list) + 1))
 
     # Write deatl hand to the first column
     new_sheet.update(range_name="A1", values=[["Dealt Hand"]])
@@ -517,24 +495,76 @@ def save_route_with_name(dealt_hand, results_list):
 
 def recall_routes_by_save_name():
     load_name = input("Enter the name used to save your calculated route/s:\n")
+    print("01")
     try:
-        saved_sheet = SHEET.worksheet(f"save_{load_name}")
+        saved_sheet = SHEET.worksheet(f"saved_routes_{load_name}")
+        print("02")
         saved_data = saved_sheet.get_all_values()
+        print("03")
         # Check if there are any saved routes
         if len(saved_data) == 0:
             print(f"No route/s found with saved name '{load_name}'.")
             return
         # If load_name is valid, parse saved data and print route/s
         else:
+            
+            # Separate Entry/Exit and Town Cards
+            saved_dealt = saved_sheet.col_values(1)
+            saved_entry_cards = saved_dealt[1:3]
+            saved_entry_cards = [int(card) for card in saved_entry_cards]
+            saved_town_cards = saved_dealt[3:(len(saved_dealt))]
+            saved_town_cards = [int(card) for card in saved_town_cards]
             print("\nSaved route/s for name:", load_name)
-            for column in saved_data:
-                # Ignore empty columns in saved_sheet
-                non_empty_columns = [column for column in saved_data if column[0]]
-                # Print each row as a comma-separated list
-                # PLACEHOLDER for formatted printing, like original result
-                print(", ".join(non_empty_columns))
+            print("\nEntry/Exit Cards:")
+            print(Fore.YELLOW + Style.BRIGHT + str(saved_entry_cards))
+            print("\nTown Cards:")
+            print(Fore.GREEN + Style.BRIGHT + str(saved_town_cards))
+
+            # Get the values from the second column onward (columns B, C, D, ...)
+            all_saved_routes = []
+            
+            # Iterate over each column starting from column B
+            print(saved_sheet.col_count)
+            for i in range(2, saved_sheet.col_count + 1):  # Assume the first column is 1
+                next_route = saved_sheet.col_values(i)
+                # Remove the header, assuming it's in the first row
+                next_route = next_route[1:]
+                all_saved_routes.append(next_route)
+                    
+            print(len(all_saved_routes))
+            print(all_saved_routes)
+                    
+            print_coloured_routes(all_saved_routes, saved_town_cards)
+                                
+    except gspread.exceptions.WorksheetNotFound:
+        print(f"No worksheet found with the name 'saved_routes_{load_name}'.")
     except gspread.exceptions.APIError as e:
-        print(f"No route/s found with saved name '{load_name}'.")
+        print(f"An API error occurred: {e}")
+
+
+def print_coloured_routes(routes, relevant_towns_list):
+
+    for i in range(len(routes)):
+        a_copy = relevant_towns_list.copy()
+        print("\n\n    " +
+              Back.WHITE + Fore.BLACK + " Route " +
+              Back.WHITE + Fore.BLACK + str(i + 1) +
+              Back.WHITE + Fore.BLACK + " ", "\n")
+        for j in range(len(routes[i])):
+            town = int(routes[i][j])
+            if j == 0 or j == (len(routes[i]) - 1):
+                print(Fore.YELLOW + Style.BRIGHT +
+                      "    {:>2} : {}".format(town, town_names[town - 1]))
+                a_copy = [
+                    card for card in a_copy if card != town]
+            elif (town in a_copy):
+                print(Fore.GREEN + Style.BRIGHT +
+                      "    {:>2} : {}".format(town, town_names[town - 1]))
+                a_copy = [
+                    card for card in a_copy if card != town]
+            else:
+                print("    {:>2} : {}".format(
+                    town, town_names[town-1]))
 
 
 def print_banner():
@@ -579,10 +609,10 @@ Enter 3 to load previously saved route/s.
                 recall_routes_by_save_name()
                 break
             else:
-                print(Fore.RED + Style.BRIGHT + "\nInvalid input.")
+                print(Fore.RED + Style.BRIGHT + "Invalid input.")
                 raise ValueError("Invalid input")
         except Exception:
-            print(Fore.RED + Style.BRIGHT + "Please enter 1, 2 or 3: \n")
+            print(Fore.RED + Style.BRIGHT + "Please enter 1, 2 or 3:\n")
             continue  # Back to beginning of loop
 
 def setup():
