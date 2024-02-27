@@ -436,23 +436,22 @@ def calculate_route():
             print(Fore.RED + Style.BRIGHT +
                   "Invalid input. Please type YES or NO:\n") 
 
-    while True:
-        restart_choice = input(
-                               f"\nDo you want to run the program with"
-                               f" another selection of cards?"
-                               f"\nPlease type YES or NO:\n"
-                               )
-        if restart_choice.lower() in yes_inputs:
-            run_program()
-            break
-        elif restart_choice.lower() in no_inputs:
-            print_goodbye()
-            break
-        else:
-            print(Fore.RED + Style.BRIGHT +
-                  "Invalid input. Please type YES or NO:\n")
-            
-            
+    
+def restart_option():
+    restart_choice = input(
+                            f"\nDo you want to run the program with"
+                            f" another selection of cards?"
+                            f"\nPlease type YES or NO:\n"
+                            )
+    if restart_choice.lower() in yes_inputs:
+        return True
+    elif restart_choice.lower() in no_inputs:
+        return False
+    else:
+        print(Fore.RED + Style.BRIGHT +
+                "Invalid input. Please type YES or NO:\n")
+
+
 # Function to save dealt hand and shortest route/s to new sheet
 def save_routes_to_new_sheet(save_name, dealt_hand, results_list):
     
@@ -495,19 +494,13 @@ def save_route_with_name(dealt_hand, results_list):
 
 def recall_routes_by_save_name():
     load_name = input("Enter the name used to save your calculated route/s:\n")
-    print("01")
     try:
         saved_sheet = SHEET.worksheet(f"saved_routes_{load_name}")
-        print("02")
         saved_data = saved_sheet.get_all_values()
-        print("03")
-        # Check if there are any saved routes
         if len(saved_data) == 0:
             print(f"No route/s found with saved name '{load_name}'.")
             return
-        # If load_name is valid, parse saved data and print route/s
         else:
-            
             # Separate Entry/Exit and Town Cards
             saved_dealt = saved_sheet.col_values(1)
             saved_entry_cards = saved_dealt[1:3]
@@ -535,35 +528,16 @@ def recall_routes_by_save_name():
             print(all_saved_routes)
                     
             print_coloured_routes(all_saved_routes, saved_town_cards)
-            
-            # restart_prompt = input("Would you like to restart the solver? Please type YES or NO:\n")
-            # if restart_prompt.lower() in yes_inputs:
-            #     return "continue"
-            # elif restart_prompt.lower() in no_inputs:
-            #     return "restart program"
-            # else:
-            #     continue
-            
-            while True:
-                try:
-                    restart_prompt = input("Would you like to restart the solver? Please type YES or NO:\n")
-                    if restart_prompt.lower() in yes_inputs:
-                        setup()
-                        break
-                    elif restart_prompt.lower() in no_inputs:
-                        print_goodbye()
-                        break
-                    else:
-                        print(Fore.RED + Style.BRIGHT + "Invalid input.")
-                        raise ValueError("Invalid input")
-                except Exception:
-                    print(Fore.RED + Style.BRIGHT + "Please enter YES or NO:\n")
-                    continue  # Back to beginning of loop
+            return
             
     except gspread.exceptions.WorksheetNotFound:
-        print(f"No worksheet found with the name 'saved_routes_{load_name}'.")
+        print(f"No saved route/s found with the name '{load_name}'.")
+        
     except gspread.exceptions.APIError as e:
         print(f"An API error occurred: {e}")
+        
+
+
         
     
 
@@ -614,27 +588,30 @@ def instructions_prompt():
     # Stop loading_animation
     solver_ready = True
     
-    
     input("Welcome to the Discovering Ireland Solver!\nPress ENTER to begin\n")
-
-    options_prompt = """
-Enter 1 to view the instructions.
+    
+    
+def options_prompt():
+    print(Style.RESET_ALL)
+    options_prompt = """Enter 1 to view the instructions.
 Enter 2 to enter your dealt cards.
 Enter 3 to load previously saved route/s.
+Enter 4 to exit the solver.
 """
-
     while True:
         try:
             welcome_choice = input(options_prompt)
             if welcome_choice == "1":
                 print(instructions)
-                break
+                return "one"
             elif welcome_choice == "2":
-                break
+                return "two"
             elif welcome_choice == "3":
-                recall_routes_by_save_name()
-                break
+                # recall_routes_by_save_name()
+                return "three"
                 # THIS IS WHERE IT NEEDS TO BE CHANGED
+            elif welcome_choice == "4":
+                break
             else:
                 print(Fore.RED + Style.BRIGHT + "Invalid input.")
                 raise ValueError("Invalid input")
@@ -645,28 +622,38 @@ Enter 3 to load previously saved route/s.
 def setup():
     print_banner()
     instructions_prompt()
-
-
+        
 def solver():
-    validate_inputs()
-    print_cards()
-    if check_cards():
-        too_many_cards_return = too_many_cards()
-        if too_many_cards_return == "continue":
-            calculate_route()
-        elif too_many_cards_return == "restart program":
-            run_program()
-        elif too_many_cards_return == "new cards":
-            solver()
-    else:
+    choice = options_prompt()
+    if choice == "one":
         solver()
+    elif choice == "two":
+        validate_inputs()
+        print_cards()
+        if check_cards():
+            too_many_cards_return = too_many_cards()
+            if too_many_cards_return == "continue":
+                calculate_route()
+            elif too_many_cards_return == "restart program":
+                solver()
+            elif too_many_cards_return == "new cards":
+                solver()
+        else:
+            solver()
+        if restart_option():
+            solver()
+        else:
+            pass
+    elif choice == "three":
+        recall_routes_by_save_name()
+        solver()
+    elif choice == "four":
+        pass
 
 
 def run_program():
     setup()
     solver()
+    print_goodbye()
 
 run_program()
-
-# Below are in progress functions for the save/load features
-
