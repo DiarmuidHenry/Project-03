@@ -535,11 +535,37 @@ def recall_routes_by_save_name():
             print(all_saved_routes)
                     
             print_coloured_routes(all_saved_routes, saved_town_cards)
-                                
+            
+            # restart_prompt = input("Would you like to restart the solver? Please type YES or NO:\n")
+            # if restart_prompt.lower() in yes_inputs:
+            #     return "continue"
+            # elif restart_prompt.lower() in no_inputs:
+            #     return "restart program"
+            # else:
+            #     continue
+            
+            while True:
+                try:
+                    restart_prompt = input("Would you like to restart the solver? Please type YES or NO:\n")
+                    if restart_prompt.lower() in yes_inputs:
+                        setup()
+                        break
+                    elif restart_prompt.lower() in no_inputs:
+                        print_goodbye()
+                        break
+                    else:
+                        print(Fore.RED + Style.BRIGHT + "Invalid input.")
+                        raise ValueError("Invalid input")
+                except Exception:
+                    print(Fore.RED + Style.BRIGHT + "Please enter YES or NO:\n")
+                    continue  # Back to beginning of loop
+            
     except gspread.exceptions.WorksheetNotFound:
         print(f"No worksheet found with the name 'saved_routes_{load_name}'.")
     except gspread.exceptions.APIError as e:
         print(f"An API error occurred: {e}")
+        
+    
 
 
 def print_coloured_routes(routes, relevant_towns_list):
@@ -608,6 +634,7 @@ Enter 3 to load previously saved route/s.
             elif welcome_choice == "3":
                 recall_routes_by_save_name()
                 break
+                # THIS IS WHERE IT NEEDS TO BE CHANGED
             else:
                 print(Fore.RED + Style.BRIGHT + "Invalid input.")
                 raise ValueError("Invalid input")
