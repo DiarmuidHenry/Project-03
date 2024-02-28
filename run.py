@@ -35,7 +35,7 @@ def play_loading_animation(word):
 
 
 # Loading prints on program startup
-loading_animation = play_loading_animation("Loading")
+loading_animation = play_loading_animation(" Loading")
 
 # Setting up API from Google Sheet
 SCOPE = [
@@ -101,28 +101,28 @@ welcome_message = """
 # Written instructions to be printed if necessary
 instructions_1 = """
 
-Discovering Ireland is a board game that consists of a playing board with
-52 towns spread over Ireland, each given a number from 1 to 52.
+ Discovering Ireland is a board game that consists of a playing board with
+ 52 towns spread over Ireland, each given a number from 1 to 52.
 
-Each player is given 2 Entry/Exit Cards; where they start & finish their route.
-They also receive at least 5 Town Cards. These may be visited in ANY order, but
-each player MUST visit EVERY town for which they have a Town Card.
+ Each player gets 2 Entry/Exit Cards; where they start & finish their route.
+ They also receive at least 5 Town Cards. These may be visited in ANY order,
+ but each player MUST visit EVERY town for which they have a Town Card.
 
-The winner is the first person to visit all of their Town Cards and to arrive
-at their final Entry/Exit Card.
+ The winner is the first person to visit all of their Town Cards and to arrive
+ at their final Entry/Exit Card.
 
-This solver finds the shortest possible route to visit all your dealt cards.
-This gives you the best chance of finishing before your opponent/s!
+ This solver finds the shortest possible route to visit all your dealt cards.
+ This gives you the best chance of finishing before your opponent/s!
 
-In order to use the solver, simply follow the prompts that appear on screen.
-The optimal route/s will be calculated and printed clearly for you.
+ In order to use the solver, simply follow the prompts that appear on screen.
+ The optimal route/s will be calculated and printed clearly for you.
 """
 
-instructions_2 = "Entry/Exit Cards: 5, 9, 31, 39, 47, 50\n"
+instructions_2 = "   Entry/Exit Cards: 5, 9, 31, 39, 47, 50\n"
 
-instructions_3 = "Town Cards: All other numbers from 1 to 52\n"
+instructions_3 = "   Town Cards: All other numbers from 1 to 52\n"
 
-instructions_4 = "Enjoy, and good luck!\n"
+instructions_4 = " Enjoy, and good luck!\n"
 
 # Nodes: town_cards, entry_cards. Edge weights: counted_distances.csv
 graph = nx.from_numpy_array(edge_weights_matrix)
@@ -152,33 +152,33 @@ max_entry = max(entry_cards)
 min_town = min(town_cards)
 max_town = max(town_cards)
 enter_entry = """
-Please enter your Entry/Exit Cards, separated by a space:
-"""
+  Please enter your Entry/Exit Cards, separated by a space:
+    """
 enter_town = """
-Please enter your Town Cards, separated by a space:
-"""
+  Please enter your Town Cards, separated by a space:
+    """
 invalid_spaces_intergers = """
-Invalid input. Input must only contain spaces and integers."""
+  Invalid input. Input must only contain spaces and integers."""
 invalid_entry_between = (
-                         f"\nInvalid input. Input musts be between"
+                         f"\n  Invalid input. Input musts be between"
                          f" {min_entry} and {max_entry} (inclusive)."
                          )
 invalid_town_between = (
-                         f"\nInvalid input. Inputs must be between"
+                         f"\n  Invalid input. Inputs must be between"
                          f" {min_town} and {max_town} (inclusive)."
                          )
 invalid_entry_not_town = """
-Invalid input. Please enter only your Entry/Exit Cards.
-Do not include any Town Cards."""
+  Invalid input. Please enter only your Entry/Exit Cards.
+  Do not include any Town Cards."""
 invalid_town_not_entry = """
-Invalid input. Please enter only your Town Cards.
-Do not include any Entry/Exit Cards."""
+  Invalid input. Please enter only your Town Cards.
+  Do not include any Entry/Exit Cards."""
 invalid_exactly_two = """
-Invalid input. Players must have exactly 2 Entry/Exit Cards."""
+  Invalid input. Players must have exactly 2 Entry/Exit Cards."""
 invalid_at_least_one = """
-Invalid input. Players must have at least 1 Town Card."""
+  Invalid input. Players must have at least 1 Town Card."""
 invalid_duplicates = """
-Invalid input. Duplicates found."""
+  Invalid input. Duplicates found."""
 
 
 def validate_inputs():
@@ -269,17 +269,17 @@ def print_cards():
     dealt_hand = np.hstack((assigned_entry_cards, assigned_town_cards))
 
     print(Style.RESET_ALL)
-    print("Assigned Entry/Exit Cards are:")
-    print(Fore.YELLOW + Style.BRIGHT + str(assigned_entry_cards))
+    print("  Assigned Entry/Exit Cards are:")
+    print("    ", Fore.YELLOW + Style.BRIGHT + str(assigned_entry_cards))
     
-    print("\nAssigned Town Cards are:")
-    print(Fore.GREEN + Style.BRIGHT + str(assigned_town_cards))
+    print("\n  Assigned Town Cards are:")
+    print("    ", Fore.GREEN + Style.BRIGHT + str(assigned_town_cards))
 
 
 def check_cards():
     while True:
         input_check = input(
-            "\nIs the above information correct? Please type YES or NO:\n")
+            "\n  Is the above information correct? Please type YES or NO:\n    ")
         if input_check.lower() in yes_inputs:
             return True
         elif input_check.lower() in no_inputs:
@@ -290,20 +290,20 @@ def check_cards():
 
 def too_many_cards():
     too_many_cards_warning = (
-                              f"\nYou have entered {len(assigned_town_cards)}"
-                              f" Town Cards.\nThis may result in a long"
-                              f" processing time and/or\nprogram"
+                              f"\n  You have entered {len(assigned_town_cards)}"
+                              f" Town Cards.\n  This may result in a long"
+                              f" processing time and/or\n  program"
                               f" termination/malfunction due to memory"
-                              f" issues.\nDo you wish to continue anyway?"
-                              f" Please type YES or NO:\n"
+                              f" issues.\n  Do you wish to continue anyway?"
+                              f" Please type YES or NO:\n    "
                               )
     env_limit_warning = (
-                         f"\nYou have entered {len(assigned_town_cards)}"
-                         f" Town Cards.\nThis exceeds the limit"
+                         f"\n  You have entered {len(assigned_town_cards)}"
+                         f" Town Cards.\n  This exceeds the limit"
                          f" of Town Cards for this environment"
-                         f" ({MAX_NUMBER_OF_TOWNS}).\nTo enter"
-                         f" a new selection of cards, enter 1.\nTo"
-                         f" restart the program, enter 2:\n"
+                         f" ({MAX_NUMBER_OF_TOWNS}).\n  To enter"
+                         f" a new selection of cards, enter 1.\n  To"
+                         f" restart the program, enter 2:\n    "
                          )
     
     if (not town_limit):
@@ -341,7 +341,7 @@ def calculate_route():
     start = timer()
 
     solver_ready = False
-    loading_animation = play_loading_animation("Calculating route/s")
+    loading_animation = play_loading_animation("  Calculating route/s")
 
     # List all permutations of assigned_town_cards
     possible_town_routes = list(itertools.permutations(assigned_town_cards))
@@ -385,8 +385,8 @@ def calculate_route():
     solver_ready = True
 
     # Printing the route length for the/se route/s.
-    print("\n\n\nOptimal route length:")
-    print(route_lengths[min_indices[0]])
+    print("\n\n\n  Optimal route length:")
+    print("  ", Style.BRIGHT + str(route_lengths[min_indices[0]]))
 
     # Compile all towns visited from all_shortest_paths and routes_to_take.
     results_list = [[assigned_entry_cards[0]] for _ in range(len(min_indices))]
@@ -407,7 +407,7 @@ def calculate_route():
                 del results_list[i]
                 break
 
-    print("\nOptimal route/s for dealt cards: ")
+    print("\n  Optimal route/s for dealt cards: ")
     
     print_coloured_routes(results_list, assigned_town_cards)
     
@@ -416,17 +416,17 @@ def calculate_route():
     # Time taken shown in seconds to 5sf
     time_taken = round((end - start), 5)
 
-    print("\nTime taken to calculate route/s:")
-    print(time_taken, "seconds\n")
-    print(Back.WHITE + Fore.BLACK + "Scroll up to see your optimal route/s!")
+    print("\n  Time taken to calculate route/s:")
+    print("  ", time_taken, "seconds\n")
+    print("  ", Back.WHITE + Fore.BLACK + " Scroll up to see your optimal route/s! ")
     
     while True:
         save_choice = input(
-                               f"\nWould you like to save your"
-                               f" route/s?\nThese can loaded at"
+                               f"\n  Would you like to save your"
+                               f" route/s?\n  These can loaded at"
                                f" a later time by following the relevant"
                                f" prompts."
-                               f"\nPlease type YES or NO:\n"
+                               f"\n  Please type YES or NO:\n    "
                                )
         if save_choice.lower() in yes_inputs:
             save_route_with_name(dealt_hand, results_list)
@@ -435,13 +435,13 @@ def calculate_route():
             break
         else:
             print(Fore.RED + Style.BRIGHT +
-                  "Invalid input. Please type YES or NO:\n") 
+                  "  Invalid input. Please type YES or NO:\n    ") 
 
     
 def restart_option():
     restart_choice = input(
-                            f"\nDo you want to continue using the solver?"
-                            f"\nPlease type YES or NO:\n"
+                            f"\n  Do you want to continue using the solver?"
+                            f"\n  Please type YES or NO:\n    "
                             )
     if restart_choice.lower() in yes_inputs:
         return True
@@ -449,7 +449,7 @@ def restart_option():
         return False
     else:
         print(Fore.RED + Style.BRIGHT +
-                "Invalid input. Please type YES or NO:\n")
+                "  Invalid input. Please type YES or NO:\n    ")
 
 
 # Function to save dealt hand and shortest route/s to new sheet
@@ -481,32 +481,36 @@ def save_routes_to_new_sheet(save_name, dealt_hand, results_list):
 def save_route_with_name(dealt_hand, results_list):
     global solver_ready
     while True:
-        save_name = input("\nPlease enter a name to save your route/s under:\n")
+        save_name = input("\n  Please enter a name to save your route/s under:\n    ")
         solver_ready = False
-        loading_animation = play_loading_animation("Saving route/s")
+        loading_animation = play_loading_animation("  Saving route/s")
         # Get list of existing save names
         existing_saves = [saved.title for saved in SHEET.worksheets()]
         if f"saved_routes_{save_name}" in existing_saves:
-            print("Saved route/s already exist with this name.")
+            # Stop loading_animation
+            solver_ready = True
+            print(Fore.RED + Style.BRIGHT + "\n\n  Saved route/s already exist with this name.")
             continue
         else:
             save_routes_to_new_sheet(save_name, dealt_hand, results_list)
+            # Stop loading_animation
             solver_ready = True
-            print(f"\n\n\nRoute/s saved with name: '{save_name}'.\n")
-            break # Exits once unique name is provuded
+            print(Style.BRIGHT + f"\n\n\n  Route/s saved with name: '{save_name}'.\n")
+            break # Exits once unique name is provided
 
 
 def recall_routes_by_save_name():
     global solver_ready
-    load_name = input("\nEnter the name used to save your calculated route/s:\n")
+    load_name = input("\n  Enter the name used to save your calculated route/s:\n    ")
     solver_ready = False
-    loading_animation = play_loading_animation("Loading route/s")
+    loading_animation = play_loading_animation("  Loading route/s")
     try:
         saved_sheet = SHEET.worksheet(f"saved_routes_{load_name}")
         saved_data = saved_sheet.get_all_values()
         if len(saved_data) == 0:
+            # Stop loading_animation
             solver_ready = True
-            print(f"No route/s found with saved name '{load_name}'.")
+            print(Fore.RED + Style.BRIGHT + f"  No saved route/s found with the name '{load_name}'.")
             return
         else:
             # Separate Entry/Exit and Town Cards
@@ -516,37 +520,40 @@ def recall_routes_by_save_name():
             saved_town_cards = saved_dealt[3:(len(saved_dealt))]
             saved_town_cards = [int(card) for card in saved_town_cards]
 
-            # Get the values from the second column onward (columns B, C, D, ...)
+            # Get the values from the second column onward
             all_saved_routes = []
             
-            # Iterate over each column starting from column B
-            for i in range(2, saved_sheet.col_count + 1):  # Assume the first column is 1
+            # Iterate over each column, starting from column B
+            for i in range(2, saved_sheet.col_count + 1):
                 next_route = saved_sheet.col_values(i)
-                # Remove the header, assuming it's in the first row
+                # Remove the header
                 next_route = next_route[1:]
                 all_saved_routes.append(next_route)
                 
+            # Stop loading_animation
             solver_ready = True
-            print("\n\n\nSaved route/s for name:", Back.WHITE + Fore.BLACK + f" {load_name} ")
-            print("\nEntry/Exit Cards:")
-            print(Fore.YELLOW + Style.BRIGHT + str(saved_entry_cards))
-            print("\nTown Cards:")
-            print(Fore.GREEN + Style.BRIGHT + str(saved_town_cards))     
+            print("\n\n\n  Saved route/s for name:", Back.WHITE + Fore.BLACK + f" {load_name} ")
+            print("\n  Entry/Exit Cards:")
+            print("  ", Fore.YELLOW + Style.BRIGHT + str(saved_entry_cards))
+            print("\n  Town Cards:")
+            print("  ", Fore.GREEN + Style.BRIGHT + str(saved_town_cards))     
             print_coloured_routes(all_saved_routes, saved_town_cards)
             print("\n")
-            print(Back.WHITE + Fore.BLACK + "Scroll up to see your loaded route/s!")
+            print("  ", Back.WHITE + Fore.BLACK + " Scroll up to see your loaded route/s! ")
             print()
             return
             
     except gspread.exceptions.WorksheetNotFound:
+        # Stop loading_animation
         solver_ready = True
         print("\n")
-        print(f"No saved route/s found with the name '{load_name}'.")
+        print(Fore.RED + Style.BRIGHT + f"  No saved route/s found with the name '{load_name}'.")
         
     except gspread.exceptions.APIError as e:
+        # Stop loading_animation
         solver_ready = True
         print("\n")
-        print(f"\nAn API error occurred: {e}")
+        print(Fore.RED + Style.BRIGHT + f"\n  An API error occurred: {e}")
         
 
 
@@ -605,15 +612,14 @@ def instructions_prompt():
     
 def options_prompt():
     print(Style.RESET_ALL)
-    options_prompt = """You now have the following options:
+    options_prompt = """  You now have the following options:
     
-  1. View Instructions.
-  2. Find your shortest route.
-  3. Load previously saved route/s.
-  4. Exit solver.
+          1. View Instructions.
+          2. Find your shortest route.
+          3. Load previously saved route/s.
+          4. Exit solver.
   
-Please type the number corresponding to your choice, followed by ENTER:\n
-"""
+  Please type the number corresponding to your choice, followed by ENTER:\n    """
     while True:
         try:
             welcome_choice = input(options_prompt)
@@ -622,21 +628,19 @@ Please type the number corresponding to your choice, followed by ENTER:\n
                 print(Fore.YELLOW + Style.BRIGHT + instructions_2)
                 print(Fore.GREEN + Style.BRIGHT + instructions_3)
                 print(instructions_4)
-                input("Press ENTER to continue:\n")
+                input("                            Press ENTER to continue\n")
                 return "one"
             elif welcome_choice == "2":
                 return "two"
             elif welcome_choice == "3":
-                # recall_routes_by_save_name()
                 return "three"
-                # THIS IS WHERE IT NEEDS TO BE CHANGED
             elif welcome_choice == "4":
                 break
             else:
-                print(Fore.RED + Style.BRIGHT + "\nInvalid input.")
+                print(Fore.RED + Style.BRIGHT + "\n  Invalid input.")
                 raise ValueError("Invalid input")
         except Exception:
-            print(Fore.RED + Style.BRIGHT + "Please enter 1, 2, 3 or 4:\n")
+            print(Fore.RED + Style.BRIGHT + "  Please enter 1, 2, 3 or 4:\n    ")
             continue  # Back to beginning of loop
 
 def setup():
