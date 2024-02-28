@@ -553,4 +553,4 @@ The main purpose of this is to ensure that all error validation steps work as in
 
 - The Slack community, for helping with minor queries as well as larger problems.
 - Tutor Assistance, for helping point me in the right direciton when discussing problems that I just couldn't get my head around.
-- Gosling Games, for sending me a high resolution image of the playing board.
+- [Gosling Games](https://goslinggames.ie/), for sending me a high resolution image of the playing board.
