@@ -14,7 +14,7 @@ The program is visually pleasing and evokes positive emotions in the user. Instr
   - [Game Theory](#game-theory)
   - [Noteworthy Comments](#noteworthy-comments)
 - [Aim](#aim)
-  - [Program Objective](#website-objective)
+  - [Program Objective](#program-objective)
   - [Key Features](#key-features)
 - [Potential Users](#potential-users)
   - [User Goals](#user-goals)
@@ -22,9 +22,9 @@ The program is visually pleasing and evokes positive emotions in the user. Instr
 - [Design \& Development](#design--development)
   - [Data Model](#data-model)
   - [Game Flow/Logic](#game-flow)
+  - [Banners](#banners) 
   - [Colour Scheme](#colour-scheme)
-  - [Banner](#banner) 
-  - [Features](#features)
+  - [Other Features](#other-features)
 - [Technology \& Resources](#technology--resources)
 - [Deployment](#deployment)
 - [Issues/Bugs](#issuesbugs)
@@ -40,9 +40,34 @@ The program is visually pleasing and evokes positive emotions in the user. Instr
 
 ### History
 
-Discovering Ireland is a board game originally released by Gosling Games in 1987, and has gone on to sell over 250,000 copies. The newer version (which this program was written with in mind) was releasd in 2018. The playing board consists of 52 towns, each connected to some of the other towns by a number of steps/blocks. Each player is dealt 2 Entry/Exit Cards: these indicate where they must start and finish their game/journey. They also receive a predesignated number of Town Cards, which they must visit in between the Entry/Exit Cards. The number of Town Cards chosen must be at least 5 and is most commonly around 6-8, as anymore than this can lead to a very long game, especially with a larger number of players.
+Discovering Ireland is a board game originally released by Gosling Games in 1987, and has gone on to sell over 250,000 copies. The newer version (which this program was written with in mind) was releasd in 2018. The playing board consists of 52 towns, each connected to some of the other towns by a number of steps/blocks.
+
+![Image of Board](/documents/readme-images/playing-board.webp)
+
+Each player is dealt 2 Entry/Exit Cards: these indicate where they must start and finish their game/journey. They also receive a predesignated number of Town Cards, which they must visit in between the Entry/Exit Cards. The number of Town Cards chosen must be at least 5 and is most commonly around 6-8, as more than this can lead to a very long game, especially with a larger number of players.
+
+![Entry/Exit Card - Back](/documents/readme-images/entry-exit-back.webp) ![Entry/Exit Card - Front](/documents/readme-images/entry-exit-front.webp)
+
+![Town Card - Back](/documents/readme-images/town-back.webp) ![Town Card - Front](/documents/readme-images/town-front.webp)
 
 The player who visits all of the towns on their Town Cards and ends at their final Entry/Exit card wins.
+
+An example of a dealt hand could be the following:
+
+Entry/Exit Cards: \
+**5 : Larne** \
+**47 : Rosslare Harbour**
+
+Town Cards: \
+**3 : Derry**\
+**14 : Belmullet** \
+**25 : Roscommon** \
+**40 : Limerick** \
+**51 : Bantry**
+
+An example of a route that the player might take for these cars would be the following:
+
+![Example Route](/documents/readme-images/example-game.webp)
 
 [The game can be seen on their website](https://goslinggames.ie/product/discovering-ireland-board-game/). [The rulebook can be viewed/downloaded here](https://goslinggames.ie/wp-content/uploads/2018/10/Rules-For-Discovering-Ireland-2018.pdf).
 
@@ -91,11 +116,11 @@ To create a program that, given a hand of cards a player is dealt, will create t
 
 ## User Testimonial
 
-Christina - aged 32 - Plays Discovering Ireland regularly
+*Christina - aged 32 - Plays Discovering Ireland regularly*
 
 "I was very interested to try out the program, but initially was a bit apprehensive as I am not the best when it comes to computers and programs. However, the program was very easy to follow and easy to understand. I liked the use of colour, and enjoyed the detailed results I got, this helped me create the oath taken during my game, which I ended up winning! I also like the timer function: although it's not a necessity, it's intreesting to see just how quickly the computer can calculate such a complicated problem!"
 
-Jens - 27 - Studying Graph Theory as part of his Maths degree
+*Jens - 27 - Studying Graph Theory as part of his Maths degree*
 
 "When I heard about the maths behind the program, I was interested, as I hadn't heard of this particular modified version of the Travelling Salesman Problem. After reading the instructions and having a look at the game board, I tried it out to see how well the program would perform. I also tried to trick it by giving an input I knew would confuse the program, but the error messages stopped any invalid input from being allowed. When I looked at the source code, I could see that the networkx module was incredibly easy to use, and the way the information is handled and laid out is very easy to make sense of. I'll be sure to explore networkx when I'm doing my projects in the future, and it's good to know I can refer back to this program to remind me how it works!"
 
@@ -150,7 +175,7 @@ Find the miniminum value/s in `route_lengths` and the corresponding entry in `al
 
 I wanted a large banner with the title of the program to be what greeted the user once the program was loaded. I also wanted there to be space underneath for a welcome message and initial prompt. Since I was limited to a $80 \times 24$ terminal, this meant there was some trial and error in getting the size right, but I am happy with the result.
 
-![Banner and Welcome Message](/documents/readme-images/banner-and-welcome.webp)
+![Banner and Welcome Message](/documents/readme-images/welcome-banner.png)
 
 Similarly, I created a goodbye banner for when the program was terminated.
 
@@ -160,7 +185,7 @@ Similarly, I created a goodbye banner for when the program was terminated.
 
 The yellow and green used in the prompts and printed result/s match the colour of the Entry/Exit and Town Cards respectively. I felt this was suitable to use, as it was another way of guiding the user through the program.
 
-![Coilorued Prompts](/documents/readme-images/coloured-prompts.webp)
+![Coilorued Prompts](/documents/readme-images/colour-coded-cards.png)
 
 I used red for error messages, as people often associate the colour red with warnings; errors; important information.
 
@@ -168,9 +193,25 @@ I used red for error messages, as people often associate the colour red with war
 
 ### Other Features
 
+- A clear list of options greets the user once they enter the program. This list also reappears once the user has finished each of the tasks the program can execute.
+
+![Options Menu](/documents/readme-images/options-menu.png)
+
 - Printing the users input directly after it is recieved in order to check that the information received is correct. This gives the user the chance to check for any mistakes, and to restart the input if that is the case.
 
-![Confirm Input](/documents/readme-images/confirm-input.webp)
+![Confirm Input](/documents/readme-images/confirming-input.png)
+
+- The user is asked to confirm their inputs at each stage of the program.
+
+![Rerun Program](/documents/readme-images/confirming-input-2.png)
+
+- Specific restrictions for the given environment (Heroku) based on memory limitations.
+
+![Environment Limitations Heroku](/documents/readme-images/environment-limitation-2.png)
+
+- Simple animations (loading dots) appear whilst the program is running the larger calculations. This shows the user that the program is still running/functioning, and that the slight time delay is an expected part of the program.
+
+![Loading Dots](/documents/readme-images/loading-dots.png)
 
 - Clearly printing the shortest route/s using colour. The coloured town names & numbers are the first instance that the user would reach that card in their hand. If they would need to travel through that town more than once, only the first time would be highlighted, as the player only 'plays' that card once. The 4 images below show all routes of equal length that the program returned for this particular hand. You can clearly see the Entry/Exit and Town Cards the player started with by which towns/numbers are coloured:
 
@@ -178,15 +219,31 @@ I used red for error messages, as people often associate the colour red with war
 
 - Timer: the user is shown how long the calculation has taken. This is purely to satisfy curiosity, and was a feature that I created during construction and testing, but users have responded well to it, so I left it in.
 
-![Time Taken](/documents/readme-images/time-taken.webp)
+![Time Taken](/documents/readme-images/timer-2.png)
 
 - A highlighted message appears instructing the user to scroll up to see their resulting route/s (which often don't fit entirely in the terminal).
 
-![Scroll](/documents/readme-images/scroll.webp)
+![Scroll](/documents/readme-images/scroll-up.png)
 
-- The user is asked if they would like to rerun the program with a different set of cards. This could be, for example, if several players about to start a game wanted to find their respective shortest route/s.
+- The user is asked if they would like to save their route/s. They are asked to input a name, which they can later use to load the saved route/s.
 
-![Rerun Program](/documents/readme-images/rerun-program.webp)
+![Save with name](/documents/readme-images/save-with-name.png)
+
+If a save with the entered name already exists, an error message appears and the user is asked to enter another name.
+
+![Save name exists error](/documents/readme-images/save-already-exists.png)
+
+When successfully saved, the saved route/s, along with the name and the dealt hand, are saved to a new google sheet, in the same location as the `counted_distances` and `town_names` data.
+
+![Saved name in Google Sheet](/documents/readme-images/example-saved-sheet.png)
+
+- By following the prompts in the options menu, the user can then load their saved route/s.
+
+![Loaded saved routes](/documents/readme-images/example-loaded-save.png)
+
+In the instance that a name not responding to saved route/s is entered, an error message appears.
+
+![Loading save error](/documents/readme-images/nonexistant-save.png)
 
 - Error validation: ensuring that the input is of exactly the correct form. This includes checking if input only contains spaces and integers (as requested); that the numbers are in the range 1 - 52; that Town Cards are entered when asked for Town Cards; that Entry/Exit cards anre entered when asked for Entry/Exit Cards; that no duplicate Town Cards are entered. Here, we note that duplicate Entry/Exit cards are allowed, as there are 2 of each in the game, whereas there is only 1 of each Town Card, so no Town Card duplicates are allowed. This also would be a trivial card, as any duplicates would just be a wasted card. I also created `yes_inputs` and `no_inputs`, which allow several variationns of `YES` and `NO` to be accepted, to allow for a missed letter/spelling mistake/lower case letters. It is also important to note that an incorrect input can often lead to more than 1 error (e.g. if, when prompted to enter Town Cards, the user enters a non-integer value as well as an Entry/Exit card). Rather than flooding the screen with several error messages, I decided to just print one. If the user then fixed this one error and not the other, another relevant error message would appear alerting them of the problem. More specifics can be seen in the [Functional Testing below](#functional-testing).
 
@@ -262,7 +319,7 @@ Allows the code to read the environment vairable `MAX_NUMBER_OF_TOWNS` for the p
 
 ### How to alter the Google API for a custom game
 
-Once the GitHub repo has been cloned, the user can set up their own `counted_distances` and `town_names`spreadsheets if they wish to modify the code to a different game/board/set up. For example, they might want to use the older version of the Discovering Ireland board which has a different layout and only 50 towns.
+Once the GitHub repo has been cloned, the user can set up their own `counted_distances` and `town_names` spreadsheets if they wish to modify the code to a different game/board/set up. For example, they might want to use the older version of the Discovering Ireland board which has a different layout and only 50 towns.
 
 **`counted_distances`**:
 The entries in each cell of row $a$ and column $a$ is $0$ if there is no direct path from $a$ to $b$ (without passing through at least 1 other town). Otherwise, if $a$ and $b$ are directly linked, it is the shortest distance from $a$ to $b$. For example, the entry in cell $AF39$ is $15$: $AF$ is the 32nd column; 32 - Tullamore and 39 - Shannon are directly linked, and the distance between them is $15$.
@@ -441,10 +498,12 @@ The main purpose of this is to ensure that all error validation steps work as in
 
 |Test Item|Test Carried Out|Result|Pass/Fail|
 |-------------|------------------|-----------|-------|
-|Run program|Open page containing program |Program loads. `Loading . . .` animation is shown. When program is ready to receive input, welcome banner and Instructions prompt appear.|PASS|
-|Instructions prompt|Enter any element from `yes_inputs`|Instructions appear, followed by the first prompt of the program|PASS|
-||Enter any element from `no_inputs`|The first prompt of the program appears|PASS|
-||Enter anything other than the elements in `no_inputs` or `yes_inputs`|Input is not accepted. `Invalid input. Please type YES or NO` appears.|PASS|
+|Run program|Open page containing program |Program loads. `Loading . . .` animation is shown. When program is ready to receive input, welcome banner and `Press ENTER` prompt appear.|PASS|
+|Options prompt|Enter `1`|Instructions appear, followed by a `Press ENTER` prompt |PASS|
+||Enter `2`|The user is asked to input their dealt cards|PASS|
+||Enter `3`|The user is asked to input the save name|PASS|
+||Enter `4`|The goodbye banner prints and the program terminates|PASS|
+||Enter anything other `1`, `2`, `3` or `4`|Input is not accepted. `Invalid input. Please enter 1, 2, 3 or 4:` appears.|PASS|
 |Entry/Exit Cards prompt|Enter nothing|Input is not accepted. `Invalid input. Players must have exactly 2 Entry/Exit cards.` appears. User is again asked to enter their Entry/Exit Cards.|PASS|
 ||Enter something other than spaces and integers, e.g. `5 i`; `5_9`; `4 a`; `five nine`; `YES`|Input is not accepted. `Invalid input. Input must only contain spaces and integers.` appears. User is again asked to enter their Entry/Exit Cards.|PASS|
 ||Enter `0` and/or an integer greater than the highest Entry/Exit Card ($50$), e.g. `0 5`; `39 51`; `88 5 39 65`|Input is not accepted. `Invalid input. Inputs must be between 5 and 50 (inclusive).` appears. User is again asked to enter their Entry/Exit Cards.|PASS|
@@ -468,14 +527,19 @@ The main purpose of this is to ensure that all error validation steps work as in
 ||Enter `2`|User returns to welcome banner and Instructions prompt appears|PASS|
 ||Enter anything other than `1` or `2`|Input is not accepted. Prompt reappears|PASS|
 |`calculate_route` execution|A valid collection of Entry/Exit Cards and Town Cards were given during the above stages|`Calculating roots . . .` animation appears, shortly followed by the `Optimal route length` and the list of all routes fo that length. These routes are labelled and colour coordinated for clarity to the user, with a prompt telling the user to scroll up to review their routes. `Do you want to run the program with another selection of cards? Please type YES or NO:` appears|PASS|
-|`Do you want to run the program with another selection of cards?` prompt|Enter any element from `yes_inputs`|User returns to welcome banner and Instructions prompt appears|PASS|
+|`Would you like to save your route/s?...` prompt|Enter any element from `yes_inputs`|User is asked to enter a name|PASS|
+||User enters the name of an existing save|`Saved route/s already exist with this name.` appears. The user can enter another name to save under|PASS|
+||User enters a unique (not pre-existing) save name|`Route/s saved with name: 'NAME'.` appears, with `NAME` replaced by user's enterred save name|PASS|
+|`Do you want to continue using the solver?` prompt|Enter any element from `yes_inputs`|User returns to welcome banner and Options prompt appears|PASS|
 ||Enter any element from `no_inputs`|Goodbye banner appears, program terminates|PASS|
+|Loading saved route|User inputs a name that *does not* correspond to a saved route|`No saved route/s found with the name 'NAME'.` appears, with `NAME` replaced by user's enterred load name. User can enter another name to try again|PASS|
+||User inputs a name that *does* correspond to a saved route|`Loading route/s . . .` animation appears, shortly followed by the loaded route/s, as well as the corresponding Entry/Exit Cards and Town Cards|PASS|
 
 ### PEP8 Validation
 
 `run.py` was checked using the [Code Institute Python Linter](https://pep8ci.herokuapp.com/). No errors were found.
 
-![PEP8 Validation Result](/documents/readme-images/linter-result.webp)
+![PEP8 Validation Result](/documents/readme-images/linter-result.png)
 
 ## Future Improvements/Developments
 
@@ -489,3 +553,4 @@ The main purpose of this is to ensure that all error validation steps work as in
 
 - The Slack community, for helping with minor queries as well as larger problems.
 - Tutor Assistance, for helping point me in the right direciton when discussing problems that I just couldn't get my head around.
+- Gosling Games, for sending me a high resolution image of the playing board.

@@ -7,9 +7,10 @@ import itertools
 import sys
 import time
 import threading
+import os
 from colorama import Fore, Back, Style, init
 init(autoreset=True)
-import os
+
 
 # Define global varibale used in loading_animation
 solver_ready = False
@@ -271,15 +272,14 @@ def print_cards():
     print(Style.RESET_ALL)
     print("  Assigned Entry/Exit Cards are:")
     print("    ", Fore.YELLOW + Style.BRIGHT + str(assigned_entry_cards))
-    
     print("\n  Assigned Town Cards are:")
     print("    ", Fore.GREEN + Style.BRIGHT + str(assigned_town_cards))
 
 
 def check_cards():
     while True:
-        input_check = input(
-            "\n  Is the above information correct? Please type YES or NO:\n    ")
+        input_check = input(f"\n  Is the above information correct?"
+                            f"Please type YES or NO:\n    ")
         if input_check.lower() in yes_inputs:
             return True
         elif input_check.lower() in no_inputs:
@@ -290,7 +290,8 @@ def check_cards():
 
 def too_many_cards():
     too_many_cards_warning = (
-                              f"\n  You have entered {len(assigned_town_cards)}"
+                              f"\n  You have entered "
+                              f"{len(assigned_town_cards)}"
                               f" Town Cards.\n  This may result in a long"
                               f" processing time and/or\n  program"
                               f" termination/malfunction due to memory"
@@ -305,10 +306,9 @@ def too_many_cards():
                          f" a new selection of cards, enter 1.\n  To"
                          f" restart the program, enter 2:\n    "
                          )
-    
     if (not town_limit):
         if len(assigned_town_cards) <= 9:
-            return "continue"   
+            return "continue"
         else:
             while True:
                 too_many_cards_check = input(
@@ -319,7 +319,6 @@ def too_many_cards():
                     return "restart program"
                 else:
                     continue
-    
     if town_limit:
         if len(assigned_town_cards) <= MAX_NUMBER_OF_TOWNS:
             return "continue"
@@ -333,7 +332,7 @@ def too_many_cards():
                     return "restart program"
                 else:
                     continue
-    
+
 
 def calculate_route():
     global solver_ready
@@ -408,9 +407,8 @@ def calculate_route():
                 break
 
     print("\n  Optimal route/s for dealt cards: ")
-    
     print_coloured_routes(results_list, assigned_town_cards)
-    
+
     end = timer()
 
     # Time taken shown in seconds to 5sf
@@ -418,8 +416,9 @@ def calculate_route():
 
     print("\n  Time taken to calculate route/s:")
     print("  ", time_taken, "seconds\n")
-    print("  ", Back.WHITE + Fore.BLACK + " Scroll up to see your optimal route/s! ")
-    
+    print("  ", Back.WHITE + Fore.BLACK +
+          " Scroll up to see your optimal route/s! ")
+
     while True:
         save_choice = input(
                                f"\n  Would you like to save your"
@@ -435,9 +434,9 @@ def calculate_route():
             break
         else:
             print(Fore.RED + Style.BRIGHT +
-                  "  Invalid input. Please type YES or NO:\n    ") 
+                  "  Invalid input. Please type YES or NO:\n    ")
 
-    
+
 def restart_option():
     restart_choice = input(
                             f"\n  Do you want to continue using the solver?"
@@ -449,20 +448,22 @@ def restart_option():
         return False
     else:
         print(Fore.RED + Style.BRIGHT +
-                "  Invalid input. Please type YES or NO:\n    ")
+              "  Invalid input. Please type YES or NO:\n    ")
 
 
 # Function to save dealt hand and shortest route/s to new sheet
 def save_routes_to_new_sheet(save_name, dealt_hand, results_list):
-    
+
     # Create a new sheet for each save
-    new_sheet = SHEET.add_worksheet(title=f"saved_routes_{save_name}", rows=100, cols=(len(results_list) + 1))
+    new_sheet = SHEET.add_worksheet(title=f"saved_routes_{save_name}",
+                                    rows=100, cols=(len(results_list) + 1))
 
     # Write deatl hand to the first column
     new_sheet.update(range_name="A1", values=[["Dealt Hand"]])
     dealt_hand_column = [[str(card)] for card in dealt_hand]
-    new_sheet.update(range_name=f"A2:A{len(dealt_hand_column) + 1}", values=dealt_hand_column)
-    
+    new_sheet.update(range_name=f"A2:A{len(dealt_hand_column) + 1}",
+                     values=dealt_hand_column)
+
     # Write routes to following columns
     for i in range(len(results_list)):
         # Using ASCII Unicode to translate index into corresponding column
@@ -481,7 +482,8 @@ def save_routes_to_new_sheet(save_name, dealt_hand, results_list):
 def save_route_with_name(dealt_hand, results_list):
     global solver_ready
     while True:
-        save_name = input("\n  Please enter a name to save your route/s under:\n    ")
+        save_name = input(f"\n  Please enter a name to"
+                          f" save your route/s under:\n    ")
         solver_ready = False
         loading_animation = play_loading_animation("  Saving route/s")
         # Get list of existing save names
@@ -489,19 +491,22 @@ def save_route_with_name(dealt_hand, results_list):
         if f"saved_routes_{save_name}" in existing_saves:
             # Stop loading_animation
             solver_ready = True
-            print(Fore.RED + Style.BRIGHT + "\n\n  Saved route/s already exist with this name.")
+            print(Fore.RED + Style.BRIGHT +
+                  "\n\n  Saved route/s already exist with this name.")
             continue
         else:
             save_routes_to_new_sheet(save_name, dealt_hand, results_list)
             # Stop loading_animation
             solver_ready = True
-            print(Style.BRIGHT + f"\n\n\n  Route/s saved with name: '{save_name}'.\n")
-            break # Exits once unique name is provided
+            print(Style.BRIGHT +
+                  f"\n\n\n  Route/s saved with name: '{save_name}'.\n")
+            break  # Breaks once a unique name is entered
 
 
 def recall_routes_by_save_name():
     global solver_ready
-    load_name = input("\n  Enter the name used to save your calculated route/s:\n    ")
+    load_name = input(f"\n  Enter the name used to"
+                      f" save your calculated route/s:\n    ")
     solver_ready = False
     loading_animation = play_loading_animation("  Loading route/s")
     try:
@@ -510,7 +515,8 @@ def recall_routes_by_save_name():
         if len(saved_data) == 0:
             # Stop loading_animation
             solver_ready = True
-            print(Fore.RED + Style.BRIGHT + f"  No saved route/s found with the name '{load_name}'.")
+            print(Fore.RED + Style.BRIGHT +
+                  f"  No saved route/s found with the name '{load_name}'.")
             return
         else:
             # Separate Entry/Exit and Town Cards
@@ -522,43 +528,41 @@ def recall_routes_by_save_name():
 
             # Get the values from the second column onward
             all_saved_routes = []
-            
+
             # Iterate over each column, starting from column B
             for i in range(2, saved_sheet.col_count + 1):
                 next_route = saved_sheet.col_values(i)
                 # Remove the header
                 next_route = next_route[1:]
                 all_saved_routes.append(next_route)
-                
+
             # Stop loading_animation
             solver_ready = True
-            print("\n\n\n  Saved route/s for name:", Back.WHITE + Fore.BLACK + f" {load_name} ")
+            print("\n\n\n  Saved route/s for name:",
+                  Back.WHITE + Fore.BLACK + f" {load_name} ")
             print("\n  Entry/Exit Cards:")
             print("  ", Fore.YELLOW + Style.BRIGHT + str(saved_entry_cards))
             print("\n  Town Cards:")
-            print("  ", Fore.GREEN + Style.BRIGHT + str(saved_town_cards))     
+            print("  ", Fore.GREEN + Style.BRIGHT + str(saved_town_cards))
             print_coloured_routes(all_saved_routes, saved_town_cards)
             print("\n")
-            print("  ", Back.WHITE + Fore.BLACK + " Scroll up to see your loaded route/s! ")
+            print("  ", Back.WHITE + Fore.BLACK +
+                  " Scroll up to see your loaded route/s! ")
             print()
             return
-            
+
     except gspread.exceptions.WorksheetNotFound:
         # Stop loading_animation
         solver_ready = True
         print("\n")
-        print(Fore.RED + Style.BRIGHT + f"  No saved route/s found with the name '{load_name}'.")
-        
+        print(Fore.RED + Style.BRIGHT +
+              f"  No saved route/s found with the name '{load_name}'.")
+
     except gspread.exceptions.APIError as e:
         # Stop loading_animation
         solver_ready = True
         print("\n")
         print(Fore.RED + Style.BRIGHT + f"\n  An API error occurred: {e}")
-        
-
-
-        
-    
 
 
 def print_coloured_routes(routes, relevant_towns_list):
@@ -592,7 +596,8 @@ def print_banner():
     banner_image = banner.read()
     print(banner_image)
     banner.close()
-    
+
+
 def print_goodbye():
     print(Style.RESET_ALL)
     goodbye = open('goodbye-text.txt', 'r')
@@ -606,20 +611,20 @@ def instructions_prompt():
 
     # Stop loading_animation
     solver_ready = True
-    
+
     input(welcome_message)
-    
-    
+
+
 def options_prompt():
     print(Style.RESET_ALL)
-    options_prompt = """  You now have the following options:
-    
-          1. View Instructions.
-          2. Find your shortest route.
-          3. Load previously saved route/s.
-          4. Exit solver.
-  
-  Please type the number corresponding to your choice, followed by ENTER:\n    """
+    options_prompt = (f"You now have the following options:\n\n"
+                      f"          1. View Instructions.\n"
+                      f"          2. Find your shortest route.\n"
+                      f"          3. Load previously saved route/s.\n"
+                      f"          4. Exit solver.\n\n"
+                      f"  Please type the number corresponding to"
+                      f" your choice, followed by ENTER:\n    ")
+
     while True:
         try:
             welcome_choice = input(options_prompt)
@@ -640,13 +645,16 @@ def options_prompt():
                 print(Fore.RED + Style.BRIGHT + "\n  Invalid input.")
                 raise ValueError("Invalid input")
         except Exception:
-            print(Fore.RED + Style.BRIGHT + "  Please enter 1, 2, 3 or 4:\n    ")
+            print(Fore.RED + Style.BRIGHT +
+                  "  Please enter 1, 2, 3 or 4:\n    ")
             continue  # Back to beginning of loop
+
 
 def setup():
     print_banner()
     instructions_prompt()
-        
+
+
 def solver():
     choice = options_prompt()
     if choice == "one":
@@ -679,5 +687,6 @@ def run_program():
     setup()
     solver()
     print_goodbye()
+
 
 run_program()
