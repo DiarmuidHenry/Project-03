@@ -400,11 +400,10 @@ def calculate_route():
             results_list[i] += next_result
 
     # Remove instances where card order is different but route is same.
-    for i in range(len(results_list)-1, 0, -1):
-        for j in range(len(results_list)-2, -1, -1):
-            if (i > j and results_list[i] == results_list[j]):
-                del results_list[i]
-                break
+    remove_duplicate_routes(results_list)
+            
+    # Remove symmetrical route if both Entry/Exit cards are the same
+    remove_symmetrical_routes(results_list)
 
     print("\n  Optimal route/s for dealt cards: ")
     print_coloured_routes(results_list, assigned_town_cards)
@@ -435,6 +434,25 @@ def calculate_route():
         else:
             print(Fore.RED + Style.BRIGHT +
                   "  Invalid input. Please type YES or NO:\n    ")
+            
+
+def remove_duplicate_routes(routes):
+    for i in range(len(routes)-1, 0, -1):
+            for j in range(len(routes)-2, -1, -1):
+                if (i > j and routes[i] == routes[j]):
+                    del routes[i]
+                    break
+                
+
+def remove_symmetrical_routes(routes):
+    if assigned_entry_cards[0] == assigned_entry_cards[1]:
+        for i in range(len(routes)-1, 0, -1):
+            for j in range(i-1, -1, -1):
+                reversed_route = list(reversed(routes[i]))
+                if reversed_route == routes[j]:
+                    del routes[i]
+                    break
+
 
 
 # Function to save dealt hand and shortest route/s to new sheet
@@ -653,6 +671,7 @@ def solver():
             too_many_cards_return = too_many_cards()
             if too_many_cards_return == "continue":
                 calculate_route()
+                solver()
             elif too_many_cards_return == "restart program":
                 solver()
             elif too_many_cards_return == "new cards":
