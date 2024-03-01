@@ -40,11 +40,11 @@ The program is visually pleasing and evokes positive emotions in the user. Instr
 
 ### History
 
-Discovering Ireland is a board game originally released by Gosling Games in 1987, and has gone on to sell over 250,000 copies. The newer version (which this program was written with in mind) was releasd in 2018. The playing board consists of 52 towns, each connected to some of the other towns by a number of steps/blocks.
+**Discovering Ireland** is a board game originally released by Gosling Games in 1987, and has gone on to sell over 250,000 copies. The newer version (which this program was written with in mind) was releasd in 2018. The playing board consists of 52 towns, each connected to some of the other towns by a number of steps/blocks.
 
 ![Image of Board](/documents/readme-images/playing-board.webp)
 
-Each player is dealt 2 Entry/Exit Cards: these indicate where they must start and finish their game/journey. They also receive a predesignated number of Town Cards, which they must visit in between the Entry/Exit Cards. The number of Town Cards chosen must be at least 5 and is most commonly around 6-8, as more than this can lead to a very long game, especially with a larger number of players.
+Each player is dealt 2 Entry/Exit Cards: these indicate where they must start and finish their game/journey. They also receive a predesignated number of Town Cards, which they must visit in between the Entry/Exit Cards. The number of Town Cards chosen must be at least 5 and is most commonly around 6-8, as more than this can lead to a very long game, especially with a larger number of players. An example of an Entry/Exit Card and a Town Card are shown below.
 
 ![Entry/Exit Card - Back](/documents/readme-images/entry-exit-back.webp) ![Entry/Exit Card - Front](/documents/readme-images/entry-exit-front.webp)
 
@@ -65,7 +65,7 @@ Town Cards: \
 **40 : Limerick** \
 **51 : Bantry**
 
-An example of a route that the player might take for these cars would be the following:
+An example of a route that the player might take for these cards would be the following:
 
 ![Example Route](/documents/readme-images/example-game.webp)
 
@@ -73,9 +73,9 @@ An example of a route that the player might take for these cars would be the fol
 
 ### Game Theory
 
-Whilst playing with my partner at home, we have often both been in the situation where it is unclear as to which route is the best/shortest to take. Since their is a relatively small number of towns, each connected to only a few other towns, it seemed apparent to me that one could create a graph that represents the game: each town being a node, and each pair of adjacent towns connected by an edge whose weight is the number of steps between said towns. From this, one could use `numpy` and `networkx` to find the shortest path. This means we can essentially reduce playing the game to a modified Travelling Salesman Problem (those unfamiliar with this problem can [read more about it here](https://en.wikipedia.org/wiki/Travelling_salesman_problem)). The modifications in this case are that we don't want to necessarily end where we started, and we only need to visit a subset of all vertices in the graph (but we may traverse all edges on the graph in our journey).
+Whilst playing with my partner at home, we have often both been in the situation where it is unclear as to which route is the best/shortest to take. Since there is a relatively small number of towns, each connected to only a few other towns, it seemed apparent to me that one could create a graph/network that represents the game: each town being represented by a node, and each pair of adjacent towns connected by an edge whose weight is the number of steps between said towns. From this, one could use `numpy` and `networkx` to find the shortest path. This means we can essentially reduce playing the game to a modified Travelling Salesman Problem (those unfamiliar with this problem can [read more about it here](https://en.wikipedia.org/wiki/Travelling_salesman_problem)). The modifications in this case are that we don't want to necessarily end where we started, and we only need to visit a subset of all vertices in the graph (but we may traverse all edges on the graph in our journey).
 
-By creating a graph of the game, I can exploit properties and algorithms used in Graph Theory to systematically explore any/all routes simply through for loops in code, thereby ensuring that the resulting path is the shortest that exists. Due to the relatively small number of towns and Town Cards, this problem can be solved in seconds. For larger numbers of Town Cards, more computing power (or a lot more time) would be needed.
+By creating a graph of the game, I can exploit properties and algorithms used in Graph Theory to systematically explore any/all routes simply through `for` loops in code, thereby ensuring that the resulting path is the shortest that exists. Due to the relatively small number of towns and Town Cards, this problem can be solved in (at most) a few seconds. For larger numbers of Town Cards, more computing power (or a lot more time) would be needed.
 
 The number of Town Cards can in theory be up to $\lfloor\frac{\text{Number of Town Cards}}{\text{Number of Players}}\rfloor$. For a 2 player game, this would be $\lfloor\frac{46}{2}\rfloor = 23$. For a 3 player game, this would be $\lfloor\frac{46}{3}\rfloor = \lfloor 15.\dot{3}\rfloor = 15$. Due to the memory restrictions on the Heroku hosting platform, I have limited the number of Town Cards to 9. Any more than this causes the memory quota to be exceeded. For further information, [see below in Issues/Bugs](#issuesbugs). On my own computer at home, I encountered a runtime of around 45 seconds for 10 Town Cards; 6 minutes for 11 Town Cards; 45 minutes for 12 Town Cards. After 6 hours running, the program didn't terminate when 13 Town Cards were entered (which is understandable, as it must iterate through over 6 billion possible routes). 
 
@@ -84,8 +84,8 @@ The number of Town Cards can in theory be up to $\lfloor\frac{\text{Number of To
 - All given shortest paths are symmetrical, i.e. if your given path is `[50, 52, 51, 48, 45, 40, 39]`, then this is the same length as `[39, 40, 45, 48, 51, 52, 50]`. Since this is always the case, I fixed the entry card (the starting point) and just created one order of each of these routes.
 - Chance Cards, road blocks, other players' decisions (e.g. to use their Chance Card to send you to a different location on the board) are not taken into account, as these cannot be accuratley accounted for. It would take more than 500 lines of code to correctly predict human psychology during a game.
 - Making a U-turn (i.e. visiting a town and then returning from the direction you came from) often includes wasted movements, since you can overshoot the town by $n$ steps, leading to you having to backtrack $n$ wasted steps again, adding a total of $2n$ steps to the path length. Compensating for this would lead to a much more in depth analysis of each route, as well as applying probability theory to the dice throws, so I chose therefore to ignore it in this case. In a future version, [I may come back to this](#future-improvementsdevelopment).
-- The output is basic, i.e. text on the console. To make it something that would be more appealing to most people, some sort of front end should be paired with it.
-- This program was made to be very adaptable/generic (as is the goal with writing code in general). If the towns on the board were moved around; a new list of towns was created; a new sublist of Entry/Exit Cards was created; then all that would need to be changed would be the construction of the lists `all_cards`, `entry_cards` and the `counted_distances` spreadsheet. Although this would still take some time, it would only be a matter of minutes to count the distances on a new board of a similar size, and mere seconds to recontruct the lists of cards. The code could also be adapted to other similar board games (such as [Ticket to Ride](https://www.daysofwonder.com/ticket-to-ride/)), although the slightly different rule set would require a slight change in the code's structure.
+- The output is basic, i.e. text on the console. To make it something that would be more appealing to most people, some sort of front end should be paired with it. However, since this project is solely about the Python coding, I have chosen to omit this.
+- This program was made to be very adaptable/generic (as is the goal with writing code in general). If the towns on the board were moved around; a new list of towns was created; a new sublist of Entry/Exit Cards was created; then all that would need to be changed would be the construction of the lists `all_cards`, `entry_cards`, and the `town_names` and `counted_distances` spreadsheet. Although this would still take some time, it would only be a matter of minutes to count the distances on a new board of a similar size, and mere seconds to recontruct the lists of cards. The code could also be adapted to other similar board games (such as [Ticket to Ride](https://www.daysofwonder.com/ticket-to-ride/)), although the slightly different rule set would require a slight change in the code's structure.
 
 ## Aim
 
@@ -94,16 +94,17 @@ To create a program that, given a hand of cards a player is dealt, will create t
 ### Program Objective
 
 - Grab the attention of the user with a pleasing initial welcome screen/message.
-- Give instructions explaining the program, and briefly explaining the rules of the game.
-- Get the user to input their given cards in an acceptable form, through the use of clear prompts and error validation.
-- Use this data as well as the data from the board itself (see [Data Model](#data-model)) to calculate the shortest possible route.
+- Give instructions explaining the program, and briefly explain the rules of the game to those less familiar.
+- Get the user to input their given cards in an acceptable form, through the use of clear prompts and data validation.
+- Use this data, as well as the data from the board itself (see [Data Model](#data-model)), to calculate the shortest possible route.
 - Print this route in a clear, visually pleasing manner for the user.
-- An attractive graphic shown to the user once the program terminates.
+- Give the user the option to save and later load their route/s.
+- An attractive graphic is shown to the user once the program terminates.
 
 ### Key Features
 
 - A large, eye-catching welcome message/banner and goodbye message/banner.
-- Instructions that fit well in the limiter terminal screen.
+- Instructions that fit well in the limited terminal screen.
 - Explanatory prompts.
 - Use of colours for clarity.
 - Use of animations to show activity on an otherwise inactive screen.
@@ -118,7 +119,7 @@ To create a program that, given a hand of cards a player is dealt, will create t
 
 *Christina - aged 32 - Plays Discovering Ireland regularly*
 
-"I was very interested to try out the program, but initially was a bit apprehensive as I am not the best when it comes to computers and programs. However, the program was very easy to follow and easy to understand. I liked the use of colour, and enjoyed the detailed results I got, this helped me create the oath taken during my game, which I ended up winning! I also like the timer function: although it's not a necessity, it's intreesting to see just how quickly the computer can calculate such a complicated problem!"
+"I was very interested to try out the program, but initially was a bit apprehensive as I am not the best when it comes to computers and programs. However, the program was very easy to follow and easy to understand. I liked the use of colour, and enjoyed the detailed results I got, this helped me create the path taken during my game, which I ended up winning! I also like the timer function: although it's not a necessity, it's interesting to see just how quickly the computer can calculate such a complicated problem!"
 
 *Jens - 27 - Studying Graph Theory as part of his Maths degree*
 
@@ -128,33 +129,33 @@ To create a program that, given a hand of cards a player is dealt, will create t
 
 ### Data Model
 
-This part contains some mathematical terminology that might not be familiar to many. If you are interested, here is a [brief introduction of Graph Theory](https://en.wikipedia.org/wiki/Graph_theory).
+This part contains some mathematical terminology that might not be familiar to many. If you are interested, here is [a brief introduction of Graph Theory](https://en.wikipedia.org/wiki/Graph_theory).
 
 Here is a breakdown of how the program runs its calculations:
 
 1. *Create an adjacency matrix, containing the number of steps between all pairs of adjacent towns*
 
-The only direct data input for this was `counted_distances`, which is a Google Sheet with the distances between adjacent towns. For example, the value of the cell indexed $(41,47)$ is 13, as there **is** a direct path between 42 - Tipperary and 48 - Killarney, and the length of this path is 13. Here, we note that indexing starts at 0, but the town numbers start at 1. (I later rename the vertices in the graph to fix this discrepency). The value in cell indexed $(6,8)$ is 0, since ther **is not** a direct path between 7 - Strabane and 9 - Belfast that doesn't go through another town.
+The only direct data input for this was `counted_distances`, which is a Google Sheet with the distances between adjacent towns. For example, the value of the cell indexed $(41,47)$ is 13, as there **is** a direct path between $42$: Tipperary and $48$: Killarney, and the length of this path is $13$. Here, it important to remember that indexing starts at $0$, hence the difference of $1$ between town number and corresponding index. (I later rename the vertices in the graph to fix this discrepency). The value in cell indexed $(6,8)$ is $0$, since ther **is not** a direct path between $7$: Strabane and $9$: Belfast that doesn't go through another town.
 
-Since `counted_distances` is symmetrical (the shortest distance from town A to town B is the same as from town B to town A), I actually only counted half of the entries and then created a symmetrical spreadsheet from that. This drastically descreased the amount of manual counting needed in order to set up the model.
+Since `counted_distances` is symmetrical (the shortest distance from town A to town B is the same as from town B to town A), I actually only counted half of the entries and then created a symmetrical spreadsheet from that. This halved the amount of manual counting needed in order to set up the model.
 
-2. *Use this alongside `networkx` to create a graph (commonly called a network) of the game board, where each node/vertex represents a town (indexed by the town number) and each edge represents the number of steps between adjacent towns*
+2. *Use this matrix alongside `networkx` to create a graph (commonly called a network) of the game board, where each node/vertex represents a town (indexed by the town number) and each edge represents the number of steps between adjacent towns*
 
-Thanks to [networkx](https://networkx.org/), this was very straightforward. After using `numpy` to create an array from the data imported from `counted_distances`, I then used this array to create the graph of the board. I then relabelled all vertices of the graph starting at index 1. This means the label of each vertex would match the number of the town it represents.
+Thanks to [networkx](https://networkx.org/), this was very straightforward. After using `numpy` to create an array from the data imported from `counted_distances`, I then used this array to create the graph of the board. I then relabelled all vertices of the graph starting at index $1$. This means the label of each vertex would match the number of the town it represents.
 
 3. *Using this graph, create 2 objects `all_shortest_paths` and `distances`, respectively containing the shortest path between every pair of towns on the board and the distances between these two towns*
 
 These arrays were created one entry at a time, with each new entry being appended once calculated. The `distances` array was reshaped into a square array. Since `all_shortest_paths` is a list of lists, I struggled to find a way to reshape this into a square array, so it remained as a list. I refer to this later in [Issues/Bugs: Unresolved](#unresolved).
 
-For example, the entry in index $(5,12)$ of `distances` is the length of the path from 6 - Ballymena to 13 - Sligo, which is 16. The corresponding entry in `all_shortest_paths` is the shortest path from Ballymena to Sligo, which is `[6, 10, 12, 13]`. 
+For example, the entry in index $(5,12)$ of `distances` is the length of the path from $6$: Ballymena to $13$: Sligo, which is $16$. The corresponding entry in `all_shortest_paths` is the shortest path from Ballymena to Sligo, which is `[6, 10, 12, 13]`. 
 
 4. *User inputs their assigned cards*
 
 Note: During construction, I randomly assignned a valid dealt hand of cards in order to sidestep this in the early stages. This was removed in later commits.
 
-It's here that data validation is crucial, since the input must be in exactly the correct format, in the correct place.
+It's here that data validation is crucial, since the input must be in exactly the correct format, in the correct place. [You can read more about the data validation here](#other-features)
 
-5. *Create a list of all possible routes to visit these towns (whilst abiding by the rules of the game, i.e. starting and finishing on an Entry/Exit Card)*
+5. *Create a list of all possible routes that visit these towns (whilst abiding by the rules of the game, i.e. starting and finishing on an Entry/Exit Card)*
 
 Use `itertools` to create a list of all permutations of `assigned_town_cards`. This list is then stacked with the 2 Entry/Exit Cards to give `all_routes`: every legal way of completing the game with the users given cards.
 
@@ -169,13 +170,13 @@ Find the miniminum value/s in `route_lengths` and the corresponding entry in `al
 
 ### Game Flow/Logic
 
-![Game Flow Chart](/documents/readme-images/game-flow.webp)
+![Game Flow Chart](/documents/readme-images/game-flowchart.webp)
 
 ### Banners
 
 I wanted a large banner with the title of the program to be what greeted the user once the program was loaded. I also wanted there to be space underneath for a welcome message and initial prompt. Since I was limited to a $80 \times 24$ terminal, this meant there was some trial and error in getting the size right, but I am happy with the result.
 
-![Banner and Welcome Message](/documents/readme-images/welcome-banner.png)
+![Banner and Welcome Message](/documents/readme-images/welcome-banner.webp)
 
 Similarly, I created a goodbye banner for when the program was terminated.
 
@@ -185,7 +186,7 @@ Similarly, I created a goodbye banner for when the program was terminated.
 
 The yellow and green used in the prompts and printed result/s match the colour of the Entry/Exit and Town Cards respectively. I felt this was suitable to use, as it was another way of guiding the user through the program.
 
-![Coilorued Prompts](/documents/readme-images/colour-coded-cards.png)
+![Coilorued Prompts](/documents/readme-images/colour-coded-cards.webp)
 
 I used red for error messages, as people often associate the colour red with warnings; errors; important information.
 
@@ -195,23 +196,23 @@ I used red for error messages, as people often associate the colour red with war
 
 - A clear list of options greets the user once they enter the program. This list also reappears once the user has finished each of the tasks the program can execute.
 
-![Options Menu](/documents/readme-images/options-menu.png)
+![Options Menu](/documents/readme-images/options-menu.webp)
 
-- Printing the users input directly after it is recieved in order to check that the information received is correct. This gives the user the chance to check for any mistakes, and to restart the input if that is the case.
+- Printing the user's input directly after it is recieved in order to check that the information received is correct. This gives the user the chance to check for any mistakes, and to restart the input if that is the case.
 
-![Confirm Input](/documents/readme-images/confirming-input.png)
+![Confirm Input](/documents/readme-images/confirming-input.webp)
 
-- The user is asked to confirm their inputs at each stage of the program.
+- The user is asked to confirm their inputs at each stage of the program. Variations of YES and NO are accepted, as defined by the lists `yes_inputs` and `no_inputs`.
 
-![Rerun Program](/documents/readme-images/confirming-input-2.png)
+![Rerun Program](/documents/readme-images/confirming-input-2.webp)
 
 - Specific restrictions for the given environment (Heroku) based on memory limitations.
 
-![Environment Limitations Heroku](/documents/readme-images/environment-limitation-2.png)
+![Environment Limitations Heroku](/documents/readme-images/environment-limitation-2.webp)
 
 - Simple animations (loading dots) appear whilst the program is running the larger calculations. This shows the user that the program is still running/functioning, and that the slight time delay is an expected part of the program.
 
-![Loading Dots](/documents/readme-images/loading-dots.png)
+![Loading Dots](/documents/readme-images/loading-dots.webp)
 
 - Clearly printing the shortest route/s using colour. The coloured town names & numbers are the first instance that the user would reach that card in their hand. If they would need to travel through that town more than once, only the first time would be highlighted, as the player only 'plays' that card once. The 4 images below show all routes of equal length that the program returned for this particular hand. You can clearly see the Entry/Exit and Town Cards the player started with by which towns/numbers are coloured:
 
@@ -219,33 +220,34 @@ I used red for error messages, as people often associate the colour red with war
 
 - Timer: the user is shown how long the calculation has taken. This is purely to satisfy curiosity, and was a feature that I created during construction and testing, but users have responded well to it, so I left it in.
 
-![Time Taken](/documents/readme-images/timer-2.png)
+![Time Taken](/documents/readme-images/timer-2.webp)
 
 - A highlighted message appears instructing the user to scroll up to see their resulting route/s (which often don't fit entirely in the terminal).
 
-![Scroll](/documents/readme-images/scroll-up.png)
+![Scroll](/documents/readme-images/scroll-up.webp)
 
 - The user is asked if they would like to save their route/s. They are asked to input a name, which they can later use to load the saved route/s.
 
-![Save with name](/documents/readme-images/save-with-name.png)
+![Save with name](/documents/readme-images/save-with-name.webp)
 
 If a save with the entered name already exists, an error message appears and the user is asked to enter another name.
 
-![Save name exists error](/documents/readme-images/save-already-exists.png)
+![Save name exists error](/documents/readme-images/save-already-exists.webp)
 
-When successfully saved, the saved route/s, along with the name and the dealt hand, are saved to a new google sheet, in the same location as the `counted_distances` and `town_names` data.
+When successfully saved, the saved route/s, along with the name and the dealt hand, are saved to a new google sheet, in the same location as the `counted_distances` and `town_names`.
 
-![Saved name in Google Sheet](/documents/readme-images/example-saved-sheet.png)
+![Saved name in Google Sheet](/documents/readme-images/example-saved-sheet.webp)
 
 - By following the prompts in the options menu, the user can then load their saved route/s.
 
-![Loaded saved routes](/documents/readme-images/example-loaded-save.png)
+![Loaded saved routes](/documents/readme-images/example-loaded-save.webp)
 
 In the instance that a name not responding to saved route/s is entered, an error message appears.
 
-![Loading save error](/documents/readme-images/nonexistant-save.png)
+![Loading save error](/documents/readme-images/nonexistant-save.webp)
 
-- Error validation: ensuring that the input is of exactly the correct form. This includes checking if input only contains spaces and integers (as requested); that the numbers are in the range 1 - 52; that Town Cards are entered when asked for Town Cards; that Entry/Exit cards anre entered when asked for Entry/Exit Cards; that no duplicate Town Cards are entered. Here, we note that duplicate Entry/Exit cards are allowed, as there are 2 of each in the game, whereas there is only 1 of each Town Card, so no Town Card duplicates are allowed. This also would be a trivial card, as any duplicates would just be a wasted card. I also created `yes_inputs` and `no_inputs`, which allow several variationns of `YES` and `NO` to be accepted, to allow for a missed letter/spelling mistake/lower case letters. It is also important to note that an incorrect input can often lead to more than 1 error (e.g. if, when prompted to enter Town Cards, the user enters a non-integer value as well as an Entry/Exit card). Rather than flooding the screen with several error messages, I decided to just print one. If the user then fixed this one error and not the other, another relevant error message would appear alerting them of the problem. More specifics can be seen in the [Functional Testing below](#functional-testing).
+- Data validation: ensuring that the input is of exactly the correct form. This includes checking if Town Card and Entry/Exit Card input only contains spaces and integers (as requested); that the numbers are in the range $1$ - $52$; that Town Cards are entered when asked for Town Cards; that Entry/Exit cards anre entered when asked for Entry/Exit Cards; that no duplicate Town Cards are entered; that the save name is unique; that the load name corresponds to a previous save.
+I also created `yes_inputs` and `no_inputs`, which allow several variationns of `YES` and `NO` to be accepted, to allow for a missed letter/spelling mistake/lower case letters. It is also important to note that an incorrect input can often lead to more than one error (e.g. if, when prompted to enter Town Cards, the user enters a non-integer value as well as an Entry/Exit card, such as `r 5`). Rather than flooding the screen with several error messages, I decided to just print one. If the user then fixed this one error and not the other, another relevant error message would appear alerting them of the problem. More specifics can be seen in the [Functional Testing below](#functional-testing).
 
 ## Technology \& Resources
 
@@ -254,8 +256,8 @@ In the instance that a name not responding to saved route/s is entered, an error
 - **Template** : The CodeInstitute template was used in order to install all the relevant tools for the code to function.
 - [Github](https://github.com/) was used to host the project. I used `git commit` regularly to create versions of the project at regular intervals. This meant that I could be more precise if I needed to `git reset`.
 - [Heroku](https://www.heroku.com/) was used to deploy the program.
-- [draw.io](https://app.diagrams.net/) was used to create the flowcharts.
-- [fsymbols](https://fsymbols.com/generators/carty/) was used to create the banner.
+- [draw.io](https://app.diagrams.net/) was used to create the flowchart.
+- [fsymbols](https://fsymbols.com/generators/carty/) was used to create the banners.
 - [Code Institute Python Linter](https://pep8ci.herokuapp.com/) was used for PEP8 validation.
 - [MDN Web Docs](https://developer.mozilla.org/en-US/docs/Glossary/Python) was used for further information on different Python modules/properties.
 - [Stack Overflow](https://stackoverflow.com/) for general troubleshooting.
@@ -268,7 +270,7 @@ Importing/reading data from Google Sheets into code.
 
 **`google.oauth2.service_account`**
 
-Used with `creds.json` to ensure the security and privacy of the location/address of the source data. Although in this instance, the data is not sensitive, it is  good practice.
+Used with `creds.json` to ensure the security and privacy of the location/address of the source data. Although in this instance, the data is not sensitive, it is good practice.
 
 **`numpy`**
 
@@ -280,7 +282,7 @@ Arguably the module doing the most 'work'. Used to create the graph/network of t
 
 **`timeit`**
 
-`timer` function, acts as a stopwatch starting when the user confirms their valid input is correct, stops when shortest route/s are printed. Not vital to function of program, was mainly put in for my own curiosity during constructions, but it tested positively with users so I left it in.
+`timer` function, acts as a stopwatch starting when the user confirms their valid input is correct, stops when shortest route/s are printed. Not vital to function of program, was mainly put in for my own curiosity during construction, but it tested positively with users so I left it in.
 
 **`ìtertools`**
 
@@ -288,7 +290,7 @@ Used to cycle through `dots` in the `loading_animation`. Also used to find all p
 
 **`sys`**
 
-`sys.stdout.write()` was used in `laoding_animation` so that the line where `Loading . . .` appeared was rewritten, rather than the standard `print()` which would have printed on a new line.
+`sys.stdout.write()` was used in `laoding_animation` so that the line where `Loading . . .` appeared was rewritten, rather than the standard `print()` which would have printed each iteration on a new line.
 
 **`time`**
 
@@ -390,9 +392,9 @@ When initially testing with [PEP8 Validator](#technology--resources), I got a lo
 
 After reformatting how I wrote longer lines of text (using f-strings; using more line breaks in code without it meaning a new line of text; declaring variables for text) I was able to fix all of these errors. 
 
-#### <u>Error validation for Town Cards not detecting all errors</u>
+#### <u>Data validation for Town Cards not detecting all errors</u>
 
-Error validation for Town Cards was not catching all errors. I firstly saw that due to copying and pasting similar variable declarations, I have forgotten to change `entry` to `town`, which I fixed, but this didn't solve the issue.
+Data validation for Town Cards was not catching all errors. I firstly saw that due to copying and pasting similar variable declarations, I have forgotten to change `entry` to `town`, which I fixed, but this didn't solve the issue.
 
 ![Validation Copy Error](/documents/readme-images/validation-copy-error.webp)
 
@@ -496,7 +498,7 @@ I had intended on reshaping `all_shortest_paths` into a 3d array, rather than a 
 
 ### Functional Testing
 
-The main purpose of this is to ensure that all error validation steps work as intended, and that any invalid inputs are detected before being accepted by the program.
+The main purpose of this is to ensure that all data validation steps work as intended, and that any invalid inputs are detected before being accepted by the program.
 
 |Test Item|Test Carried Out|Result|Pass/Fail|
 |-------------|------------------|-----------|-------|
@@ -539,7 +541,7 @@ The main purpose of this is to ensure that all error validation steps work as in
 
 `run.py` was checked using the [Code Institute Python Linter](https://pep8ci.herokuapp.com/). No errors were found.
 
-![PEP8 Validation Result](/documents/readme-images/linter-result.png)
+![PEP8 Validation Result](/documents/readme-images/linter-result.webp)
 
 ## Future Improvements/Developments
 

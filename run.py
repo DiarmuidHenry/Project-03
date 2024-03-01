@@ -604,7 +604,7 @@ def instructions_prompt():
 
 def options_prompt():
     print(Style.RESET_ALL)
-    options_prompt = (f"You now have the following options:\n\n"
+    options_prompt = (f"  You now have the following options:\n\n"
                       f"          1. View Instructions.\n"
                       f"          2. Find your shortest route.\n"
                       f"          3. Load previously saved route/s.\n"
