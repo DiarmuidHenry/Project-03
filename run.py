@@ -279,7 +279,7 @@ def print_cards():
 def check_cards():
     while True:
         input_check = input(f"\n  Is the above information correct?"
-                            f"Please type YES or NO:\n    ")
+                            f" Please type YES or NO:\n    ")
         if input_check.lower() in yes_inputs:
             return True
         elif input_check.lower() in no_inputs:
@@ -437,20 +437,6 @@ def calculate_route():
                   "  Invalid input. Please type YES or NO:\n    ")
 
 
-def restart_option():
-    restart_choice = input(
-                            f"\n  Do you want to continue using the solver?"
-                            f"\n  Please type YES or NO:\n    "
-                            )
-    if restart_choice.lower() in yes_inputs:
-        return True
-    elif restart_choice.lower() in no_inputs:
-        return False
-    else:
-        print(Fore.RED + Style.BRIGHT +
-              "  Invalid input. Please type YES or NO:\n    ")
-
-
 # Function to save dealt hand and shortest route/s to new sheet
 def save_routes_to_new_sheet(save_name, dealt_hand, results_list):
 
@@ -549,6 +535,7 @@ def recall_routes_by_save_name():
             print("  ", Back.WHITE + Fore.BLACK +
                   " Scroll up to see your loaded route/s! ")
             print()
+            input("                            Press ENTER to continue\n")
             return
 
     except gspread.exceptions.WorksheetNotFound:
@@ -646,7 +633,7 @@ def options_prompt():
                 raise ValueError("Invalid input")
         except Exception:
             print(Fore.RED + Style.BRIGHT +
-                  "  Please enter 1, 2, 3 or 4:\n    ")
+                  "\n  Please enter 1, 2, 3 or 4:\n    ")
             continue  # Back to beginning of loop
 
 
@@ -672,10 +659,6 @@ def solver():
                 solver()
         else:
             solver()
-        if restart_option():
-            solver()
-        else:
-            pass
     elif choice == "three":
         recall_routes_by_save_name()
         solver()
