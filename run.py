@@ -161,13 +161,13 @@ enter_town = """
 invalid_spaces_intergers = """
   Invalid input. Input must only contain spaces and integers."""
 invalid_entry_between = (
-                         f"\n  Invalid input. Input musts be between"
-                         f" {min_entry} and {max_entry} (inclusive)."
-                         )
+    f"\n  Invalid input. Input musts be between"
+    f" {min_entry} and {max_entry} (inclusive)."
+)
 invalid_town_between = (
-                         f"\n  Invalid input. Inputs must be between"
-                         f" {min_town} and {max_town} (inclusive)."
-                         )
+    f"\n  Invalid input. Inputs must be between"
+    f" {min_town} and {max_town} (inclusive)."
+)
 invalid_entry_not_town = """
   Invalid input. Please enter only your Entry/Exit Cards.
   Do not include any Town Cards."""
@@ -290,22 +290,22 @@ def check_cards():
 
 def too_many_cards():
     too_many_cards_warning = (
-                              f"\n  You have entered "
-                              f"{len(assigned_town_cards)}"
-                              f" Town Cards.\n  This may result in a long"
-                              f" processing time and/or\n  program"
-                              f" termination/malfunction due to memory"
-                              f" issues.\n  Do you wish to continue anyway?"
-                              f" Please type YES or NO:\n    "
-                              )
+        f"\n  You have entered "
+        f"{len(assigned_town_cards)}"
+        f" Town Cards.\n  This may result in a long"
+        f" processing time and/or\n  program"
+        f" termination/malfunction due to memory"
+        f" issues.\n  Do you wish to continue anyway?"
+        f" Please type YES or NO:\n    "
+    )
     env_limit_warning = (
-                         f"\n  You have entered {len(assigned_town_cards)}"
-                         f" Town Cards.\n  This exceeds the limit"
-                         f" of Town Cards for this environment"
-                         f" ({MAX_NUMBER_OF_TOWNS}).\n  To enter"
-                         f" a new selection of cards, enter 1.\n  To"
-                         f" restart the program, enter 2:\n    "
-                         )
+        f"\n  You have entered {len(assigned_town_cards)}"
+        f" Town Cards.\n  This exceeds the limit"
+        f" of Town Cards for this environment"
+        f" ({MAX_NUMBER_OF_TOWNS}).\n  To enter"
+        f" a new selection of cards, enter 1.\n  To"
+        f" restart the program, enter 2:\n    "
+    )
     if (not town_limit):
         if len(assigned_town_cards) <= 9:
             return "continue"
@@ -401,7 +401,7 @@ def calculate_route():
 
     # Remove instances where card order is different but route is same.
     remove_duplicate_routes(results_list)
-            
+
     # Remove symmetrical route if both Entry/Exit cards are the same
     remove_symmetrical_routes(results_list)
 
@@ -420,12 +420,12 @@ def calculate_route():
 
     while True:
         save_choice = input(
-                               f"\n  Would you like to save your"
-                               f" route/s?\n  These can loaded at"
-                               f" a later time by following the relevant"
-                               f" prompts."
-                               f"\n  Please type YES or NO:\n    "
-                               )
+            f"\n  Would you like to save your"
+            f" route/s?\n  These can loaded at"
+            f" a later time by following the relevant"
+            f" prompts."
+            f"\n  Please type YES or NO:\n    "
+        )
         if save_choice.lower() in yes_inputs:
             save_route_with_name(dealt_hand, results_list)
             break
@@ -434,15 +434,15 @@ def calculate_route():
         else:
             print(Fore.RED + Style.BRIGHT +
                   "  Invalid input. Please type YES or NO:\n    ")
-            
+
 
 def remove_duplicate_routes(routes):
     for i in range(len(routes)-1, 0, -1):
-            for j in range(len(routes)-2, -1, -1):
-                if (i > j and routes[i] == routes[j]):
-                    del routes[i]
-                    break
-                
+        for j in range(len(routes)-2, -1, -1):
+            if (i > j and routes[i] == routes[j]):
+                del routes[i]
+                break
+
 
 def remove_symmetrical_routes(routes):
     if assigned_entry_cards[0] == assigned_entry_cards[1]:
@@ -452,7 +452,6 @@ def remove_symmetrical_routes(routes):
                 if reversed_route == routes[j]:
                     del routes[i]
                     break
-
 
 
 # Function to save dealt hand and shortest route/s to new sheet
