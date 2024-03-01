@@ -438,9 +438,11 @@ When testing in the early stages, I used `random` to create a hand, which I coul
 
 #### <u>Getting stuck in loops</u>
 
-When including error messages, I found myself either getting stuck in loops, or jumping over some checks, depending on what/how many loops I was repeating. The first example below shows the welcome message being shown repeatedly:
+When including error messages, I found myself either getting stuck in loops, or jumping over some checks, depending on what/how many loops I was repeating. The first example below shows the welcome message being shown repeatedly, and the following shows an unnecessary message following the user requesting to exit the program.
 
 ![Stuck in Loop 1](/documents/readme-images/stuck-in-loop-1.webp)
+
+![Stuck in Loop 4](/documents/readme-images/stuck-in-loop-4.webp)
 
 I solved this breaking the program down into functions, then creating a `run_program()` function that would neatly organise the logic/flow through the solver. Although this caused errors at first (like the image above), closer examination of the code and the logic led me to the correct order/solution.
 
@@ -530,8 +532,6 @@ The main purpose of this is to ensure that all error validation steps work as in
 |`Would you like to save your route/s?...` prompt|Enter any element from `yes_inputs`|User is asked to enter a name|PASS|
 ||User enters the name of an existing save|`Saved route/s already exist with this name.` appears. The user can enter another name to save under|PASS|
 ||User enters a unique (not pre-existing) save name|`Route/s saved with name: 'NAME'.` appears, with `NAME` replaced by user's enterred save name|PASS|
-|`Do you want to continue using the solver?` prompt|Enter any element from `yes_inputs`|User returns to welcome banner and Options prompt appears|PASS|
-||Enter any element from `no_inputs`|Goodbye banner appears, program terminates|PASS|
 |Loading saved route|User inputs a name that *does not* correspond to a saved route|`No saved route/s found with the name 'NAME'.` appears, with `NAME` replaced by user's enterred load name. User can enter another name to try again|PASS|
 ||User inputs a name that *does* correspond to a saved route|`Loading route/s . . .` animation appears, shortly followed by the loaded route/s, as well as the corresponding Entry/Exit Cards and Town Cards|PASS|
 
