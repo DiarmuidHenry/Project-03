@@ -1,6 +1,6 @@
 # Discovering Ireland Solver - PP3<!-- omit from toc -->
 
-This project is a Python program where users who are playing the board game Discovering Ireland can enter their dealt cards and find out the shortest route to take in the game, thereby greatly increasing their chances of winning.
+This project is a Python program where users who are playing the board game 'Discovering Ireland' can enter their dealt cards and find out the shortest route to take in the game, thereby greatly increasing their chances of winning.
 
 The program is visually pleasing and evokes positive emotions in the user. Instructions, colours and clear prompts make the program simple to follow.
 
@@ -17,11 +17,10 @@ The program is visually pleasing and evokes positive emotions in the user. Instr
   - [Program Objective](#program-objective)
   - [Key Features](#key-features)
 - [Potential Users](#potential-users)
-  - [User Goals](#user-goals)
   - [User Testimonials](#user-testimonials)
 - [Design \& Development](#design--development)
   - [Data Model](#data-model)
-  - [Game Flow/Logic](#game-flow)
+  - [Game Flow/Logic](#game-flowlogic)
   - [Banners](#banners) 
   - [Colour Scheme](#colour-scheme)
   - [Other Features](#other-features)
@@ -33,14 +32,14 @@ The program is visually pleasing and evokes positive emotions in the user. Instr
 - [Testing \& Validation](#testing--validation)
   - [Functional Testing](#functional-testing)
   - [PEP8 Validation](#pep8-validation)
-- [Future Improvements/Development](#future-improvementsdevelopment)
+- [Future Improvements/Development](#future-improvementsdevelopments)
 - [Acknowledgments](#acknowledgments)
 
 ## Introduction
 
 ### History
 
-**Discovering Ireland** is a board game originally released by Gosling Games in 1987, and has gone on to sell over 250,000 copies. The newer version (which this program was written with in mind) was releasd in 2018. The playing board consists of 52 towns, each connected to some of the other towns by a number of steps/blocks.
+'Discovering Ireland' is a board game originally released by Gosling Games in 1987, and has gone on to sell over 250,000 copies. The newer version (which this program was written with in mind) was releasd in 2018. The playing board consists of 52 towns, each connected to some of the other towns by a number of steps/blocks. Below is an image of the playing board, kindly sent to me by [Gosling Games](#acknowledgments).
 
 ![Image of Board](/documents/readme-images/playing-board.webp)
 
@@ -73,7 +72,7 @@ An example of a route that the player might take for these cards would be the fo
 
 ### Game Theory
 
-Whilst playing with my partner at home, we have often both been in the situation where it is unclear as to which route is the best/shortest to take. Since there is a relatively small number of towns, each connected to only a few other towns, it seemed apparent to me that one could create a graph/network that represents the game: each town being represented by a node, and each pair of adjacent towns connected by an edge whose weight is the number of steps between said towns. From this, one could use `numpy` and `networkx` to find the shortest path. This means we can essentially reduce playing the game to a modified Travelling Salesman Problem (those unfamiliar with this problem can [read more about it here](https://en.wikipedia.org/wiki/Travelling_salesman_problem)). The modifications in this case are that we don't want to necessarily end where we started, and we only need to visit a subset of all vertices in the graph (but we may traverse all edges on the graph in our journey).
+Whilst playing with my partner at home, we have often both been in the situation where it is unclear as to which route is the best/shortest to take. Since there is a relatively small number of towns, each connected to only a few other towns, it seemed apparent to me that one could create a graph/network that represents the game: each town being represented by a node/vertex, and each pair of adjacent towns connected by an edge whose weight is the number of steps between said towns. From this, one could use `numpy` and `networkx` to find the shortest path. This means we can essentially reduce playing the game to a modified Travelling Salesman Problem (those unfamiliar with this problem can [read more about it here](https://en.wikipedia.org/wiki/Travelling_salesman_problem)). The modifications in this case are that we don't want to necessarily end where we started, and we only need to visit a subset of all vertices in the graph (but we may traverse all edges of the graph in our journey).
 
 By creating a graph of the game, I can exploit properties and algorithms used in Graph Theory to systematically explore any/all routes simply through `for` loops in code, thereby ensuring that the resulting path is the shortest that exists. Due to the relatively small number of towns and Town Cards, this problem can be solved in (at most) a few seconds. For larger numbers of Town Cards, more computing power (or a lot more time) would be needed.
 
@@ -119,11 +118,11 @@ To create a program that, given a hand of cards a player is dealt, will create t
 
 *Christina - aged 32 - Plays Discovering Ireland regularly*
 
-"I was very interested to try out the program, but initially was a bit apprehensive as I am not the best when it comes to computers and programs. However, the program was very easy to follow and easy to understand. I liked the use of colour, and enjoyed the detailed results I got, this helped me create the path taken during my game, which I ended up winning! I also like the timer function: although it's not a necessity, it's interesting to see just how quickly the computer can calculate such a complicated problem!"
+"I was very interested to try out the program, but initially was a bit apprehensive as I am not the best when it comes to computers and programs. However, the program was very easy to follow and easy to understand. I liked the use of colour, and enjoyed the detailed results I got. This helped me create the path taken during my game, which I ended up winning! I also like the timer function: although it's not a necessity, it's interesting to see just how quickly the computer can calculate such a complicated problem!"
 
-*Jens - 27 - Studying Graph Theory as part of his Maths degree*
+*Jens - 27 - Studying Graph Theory as part of his Mathematics degree*
 
-"When I heard about the maths behind the program, I was interested, as I hadn't heard of this particular modified version of the Travelling Salesman Problem. After reading the instructions and having a look at the game board, I tried it out to see how well the program would perform. I also tried to trick it by giving an input I knew would confuse the program, but the error messages stopped any invalid input from being allowed. When I looked at the source code, I could see that the networkx module was incredibly easy to use, and the way the information is handled and laid out is very easy to make sense of. I'll be sure to explore networkx when I'm doing my projects in the future, and it's good to know I can refer back to this program to remind me how it works!"
+"When I heard about the maths behind the program, I was interested, as I hadn't heard of this particular modified version of the Travelling Salesman Problem. After reading the instructions and having a look at the game board, I tried it out to see how well the program would perform. I also tried to trick it by giving an input I knew would confuse the program, but the error messages stopped any invalid input from being allowed. When I looked at the source code, I could see that the networkx module was easy to use, and the way the information is handled and laid out is very easy to make sense of. I'll be sure to explore networkx when I'm doing my projects in the future, and it's good to know I can refer back to this program to remind me how it works!"
 
 ## Design & Development
 
@@ -135,7 +134,7 @@ Here is a breakdown of how the program runs its calculations:
 
 1. *Create an adjacency matrix, containing the number of steps between all pairs of adjacent towns*
 
-The only direct data input for this was `counted_distances`, which is a Google Sheet with the distances between adjacent towns. For example, the value of the cell indexed $(41,47)$ is 13, as there **is** a direct path between $42$: Tipperary and $48$: Killarney, and the length of this path is $13$. Here, it important to remember that indexing starts at $0$, hence the difference of $1$ between town number and corresponding index. (I later rename the vertices in the graph to fix this discrepency). The value in cell indexed $(6,8)$ is $0$, since ther **is not** a direct path between $7$: Strabane and $9$: Belfast that doesn't go through another town.
+The main data input for this was `counted_distances`, which is a Google Sheet with the distances between adjacent towns. For example, the value of the cell indexed $(41,47)$ is $13$, as there **is** a direct path between $42$: Tipperary and $48$: Killarney, and the length of this path is $13$. Here, it important to remember that indexing starts at $0$, hence the difference of $1$ between town number and corresponding index. (I later rename the vertices in the graph to fix this discrepency). The value in cell indexed $(6,8)$ is $0$, since ther **is not** a direct path between $7$: Strabane and $9$: Belfast that doesn't go through another town.
 
 Since `counted_distances` is symmetrical (the shortest distance from town A to town B is the same as from town B to town A), I actually only counted half of the entries and then created a symmetrical spreadsheet from that. This halved the amount of manual counting needed in order to set up the model.
 
@@ -151,22 +150,21 @@ For example, the entry in index $(5,12)$ of `distances` is the length of the pat
 
 4. *User inputs their assigned cards*
 
-Note: During construction, I randomly assignned a valid dealt hand of cards in order to sidestep this in the early stages. This was removed in later commits.
+[Note: During construction, I randomly assignned a valid dealt hand of cards in order to sidestep this in the early stages. This was removed in later commits].
 
-It's here that data validation is crucial, since the input must be in exactly the correct format, in the correct place. [You can read more about the data validation here](#other-features)
+It's here that data validation is crucial, since the input must be in exactly the correct format, in the correct place. [You can read more about the data validation here](#other-features).
 
 5. *Create a list of all possible routes that visit these towns (whilst abiding by the rules of the game, i.e. starting and finishing on an Entry/Exit Card)*
 
-Use `itertools` to create a list of all permutations of `assigned_town_cards`. This list is then stacked with the 2 Entry/Exit Cards to give `all_routes`: every legal way of completing the game with the users given cards.
+Use `itertools` to create a list of all permutations of `assigned_town_cards`. This list is then stacked with the 2 Entry/Exit Cards to give `all_routes`: every legal way of completing the game with the user's given cards.
 
 6. *Calculate the length of all of these possible routes*
 
 `route_lengths` is constructed by finding the corresponding entry in `distances` for each consecutive pair of towns in a given permutation, and adding them together to give the length of that particular path.
 
-7. *Find the shortest route length value/s, and print the corresponding route that the player should take, including all towns they will visit along their journey*
+7. *Find the shortest route length value/s, and print the corresponding route/s that the player should take, including all towns they will visit along their journey/s*
 
 Find the miniminum value/s in `route_lengths` and the corresponding entry in `all_routes` for this/these. These will then be printed clearly for the user, highlighting when they visit one of the towns corresponding to one of their cards. 
-
 
 ### Game Flow/Logic
 
@@ -218,7 +216,7 @@ I used red for error messages, as people often associate the colour red with war
 
 ![Result 1](/documents/readme-images/result-1.webp) ![Result 2](/documents/readme-images/result-2.webp) ![Result 3](/documents/readme-images/result-3.webp) ![Result 4](/documents/readme-images/result-4.webp)
 
-- Timer: the user is shown how long the calculation has taken. This is purely to satisfy curiosity, and was a feature that I created during construction and testing, but users have responded well to it, so I left it in.
+- Timer: the user is shown how long the calculation has taken. This is purely to satisfy curiosity, and was a feature that I created during construction and testing. Users have responded well to it, so I left it in.
 
 ![Time Taken](/documents/readme-images/timer-2.webp)
 
@@ -230,7 +228,11 @@ I used red for error messages, as people often associate the colour red with war
 
 ![Save with name](/documents/readme-images/save-with-name.webp)
 
-If a save with the entered name already exists, an error message appears and the user is asked to enter another name.
+To avoid naming errors in the created sheets, names that begin or end with a space are not accepted. If the user enters such a name, they see the following warning.
+
+![Save name with spaces](/documents/readme-images/save-with-spaces.webp)
+
+Similarly, if a save with the entered name already exists, an error message appears and the user is asked to enter another name.
 
 ![Save name exists error](/documents/readme-images/save-already-exists.webp)
 
@@ -242,11 +244,11 @@ When successfully saved, the saved route/s, along with the name and the dealt ha
 
 ![Loaded saved routes](/documents/readme-images/example-loaded-save.webp)
 
-In the instance that a name not responding to saved route/s is entered, an error message appears.
+In the instance that a name not correlating to a previous save is entered, an error message appears.
 
 ![Loading save error](/documents/readme-images/nonexistant-save.webp)
 
-- Data validation: ensuring that the input is of exactly the correct form. This includes checking if Town Card and Entry/Exit Card input only contains spaces and integers (as requested); that the numbers are in the range $1$ - $52$; that Town Cards are entered when asked for Town Cards; that Entry/Exit cards anre entered when asked for Entry/Exit Cards; that no duplicate Town Cards are entered; that the save name is unique; that the load name corresponds to a previous save.
+- Data validation: ensuring that the input is in exactly the correct form. This includes checking if Town Card and Entry/Exit Card input only contains spaces and integers (as requested); that the numbers are in the range $1$ - $52$; that Town Cards are entered when asked for Town Cards; that Entry/Exit cards are entered when asked for Entry/Exit Cards; that no duplicate Town Cards are entered; that the save name is unique; that the load name corresponds to a previous save.
 I also created `yes_inputs` and `no_inputs`, which allow several variationns of `YES` and `NO` to be accepted, to allow for a missed letter/spelling mistake/lower case letters. It is also important to note that an incorrect input can often lead to more than one error (e.g. if, when prompted to enter Town Cards, the user enters a non-integer value as well as an Entry/Exit card, such as `r 5`). Rather than flooding the screen with several error messages, I decided to just print one. If the user then fixed this one error and not the other, another relevant error message would appear alerting them of the problem. More specifics can be seen in the [Functional Testing below](#functional-testing).
 
 ## Technology \& Resources
@@ -290,13 +292,13 @@ Used to cycle through `dots` in the `loading_animation`. Also used to find all p
 
 **`sys`**
 
-`sys.stdout.write()` was used in `laoding_animation` so that the line where `Loading . . .` appeared was rewritten, rather than the standard `print()` which would have printed each iteration on a new line.
+`sys.stdout.write()` was used in `loading_animation` so that the line where `Loading . . .` appeared was rewritten, rather than the standard `print()` which would have printed each iteration on a new line.
 
 **`time`**
 
 To create a pause during  `loading_animation`.
 
-`threading`
+**`threading`**
 
 Allows the `loading_animation` to run simultaneously with the rest of the code.
 
@@ -308,6 +310,9 @@ Adding colour to text, prompts, error messages.
 
 Allows the code to read the environment vairable `MAX_NUMBER_OF_TOWNS` for the particular environment that the program is being deployed on.
 
+**`re`**
+
+Allows the code to check that the form of the `save_name` input is a specific regular expression, to avoid different inputs being saved as a sheet with the same name.
 
 ## Deployment
 
@@ -324,7 +329,7 @@ Allows the code to read the environment vairable `MAX_NUMBER_OF_TOWNS` for the p
 Once the GitHub repo has been cloned, the user can set up their own `counted_distances` and `town_names` spreadsheets if they wish to modify the code to a different game/board/set up. For example, they might want to use the older version of the Discovering Ireland board which has a different layout and only 50 towns.
 
 **`counted_distances`**:
-The entries in each cell of row $a$ and column $a$ is $0$ if there is no direct path from $a$ to $b$ (without passing through at least 1 other town). Otherwise, if $a$ and $b$ are directly linked, it is the shortest distance from $a$ to $b$. For example, the entry in cell $AF39$ is $15$: $AF$ is the 32nd column; 32 - Tullamore and 39 - Shannon are directly linked, and the distance between them is $15$.
+The entry in row $a$ and column $b$ is $0$ if there is no direct path from $a$ to $b$ (without passing through at least 1 other town). Otherwise, if $a$ and $b$ are directly linked, it is the shortest distance from $a$ to $b$. For example, the entry in cell $AF39$ is $15$: $AF$ is the 32nd column; $32$: Tullamore and $39$: Shannon are directly linked, and the distance between them is $15$.
 
 **`town_names`**:
 This is a simply a list of all town names in order , starting in cell $A1$. For example, the entry in cell $A37$ is `Tullamore`, since this is town number `37`.
@@ -364,11 +369,11 @@ The `loading_dots` animation wasn't working as expected: when it cycled back to 
 
 ![Loading dots problem](/documents/readme-images/dots-problem.webp)
 
-After reading up about `sys.stdout.write()` on [Stack Overflow](#technology--resources), I discovered the issue. `sys.stdout.write()` wasn’t rewriting the line (as in erasing and then writing a new thing on top). It was simply putting the new input on top of the old: like putting a sticker on something. If the sticker behind is larger, it still can be seen even though there is a newer one on top.
+After reading up about `sys.stdout.write()` on [Stack Overflow](#technology--resources), I discovered the issue. `sys.stdout.write()` wasn’t rewriting the line (it wasn't erasing and then writing a new thing on top). It was simply putting the new input on top of the old: like putting a sticker on something. If the sticker behind is larger, it still can be seen even though there is a newer one on top.
 
 ![Loading dots code before](/documents/readme-images/dots-before.webp)
 
-I solved this by changing the list of objects to be written, adding blank spaces to the earlier ones that will ‘block’ the dots when the cycle restarts.
+I solved this by changing the list of objects to be written, adding blank spaces to the earlier ones that will ‘block’ the previous dots when the cycle restarts.
 
 ![Loading dots code after](/documents/readme-images/dots-after.webp)
 
@@ -532,7 +537,8 @@ The main purpose of this is to ensure that all data validation steps work as int
 ||Enter anything other than `1` or `2`|Input is not accepted. Prompt reappears|PASS|
 |`calculate_route` execution|A valid collection of Entry/Exit Cards and Town Cards were given during the above stages|`Calculating roots . . .` animation appears, shortly followed by the `Optimal route length` and the list of all routes fo that length. These routes are labelled and colour coordinated for clarity to the user, with a prompt telling the user to scroll up to review their routes. `Do you want to run the program with another selection of cards? Please type YES or NO:` appears|PASS|
 |`Would you like to save your route/s?...` prompt|Enter any element from `yes_inputs`|User is asked to enter a name|PASS|
-||User enters the name of an existing save|`Saved route/s already exist with this name.` appears. The user can enter another name to save under|PASS|
+||User enters the name of an existing save|`Invalid name. Name must not start or end with a space.` appears. The user can enter another name to save under|PASS|
+||User enters a name beginning/ending with a space|`Saved route/s already exist with this name.` appears. The user can enter another name to save under|PASS|
 ||User enters a unique (not pre-existing) save name|`Route/s saved with name: 'NAME'.` appears, with `NAME` replaced by user's enterred save name|PASS|
 |Loading saved route|User inputs a name that *does not* correspond to a saved route|`No saved route/s found with the name 'NAME'.` appears, with `NAME` replaced by user's enterred load name. User can enter another name to try again|PASS|
 ||User inputs a name that *does* correspond to a saved route|`Loading route/s . . .` animation appears, shortly followed by the loaded route/s, as well as the corresponding Entry/Exit Cards and Town Cards|PASS|
@@ -543,7 +549,7 @@ The main purpose of this is to ensure that all data validation steps work as int
 
 ![PEP8 Validation Result](/documents/readme-images/linter-result.webp)
 
-## Future Improvements/Developments
+## Future Improvements/Development
 
 - Add a front end, to improve the overall look and emotional response of the user. A lot of peolpe would be turned away by a terminal as they might be worried that it is 'too technical', so making it look more like a regular website, and having the input being through an input form using JavaScript would make it more accessible to most people.
 
