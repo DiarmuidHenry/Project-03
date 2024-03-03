@@ -8,6 +8,7 @@ import sys
 import time
 import threading
 import os
+import re
 from colorama import Fore, Back, Style, init
 init(autoreset=True)
 
@@ -488,6 +489,11 @@ def save_route_with_name(dealt_hand, results_list):
     while True:
         save_name = input(f"\n  Please enter a name to"
                           f" save your route/s under:\n    ")
+        # Check if save_name starts or ends with whitespace
+        if not re.match(r'^(?!\s).+(?<!\s)$', save_name):
+            print(Fore.RED + Style.BRIGHT +
+                   "\n  Invalid name. Name must not start or end with a space.")
+            continue
         # Start loading_animation
         solver_ready = False
         loading_animation = play_loading_animation("  Saving route/s")
