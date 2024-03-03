@@ -339,30 +339,31 @@ def calculate_route():
     # Start timer
     start = timer()
 
+    # Start loading_animation
     solver_ready = False
     loading_animation = play_loading_animation("  Calculating route/s")
 
     # List all permutations of assigned_town_cards
     possible_town_routes = list(itertools.permutations(assigned_town_cards))
 
-    # Create start and end card arrays,
+    # Create start and end card arrays
     start_entry = np.full((len(possible_town_routes), 1),
                           assigned_entry_cards[0])
     end_entry = np.full((len(possible_town_routes), 1),
                         assigned_entry_cards[1])
 
-    # Stacking the previous to get all possible valid routes.
+    # Stacking the previous to get all possible valid routes
     all_routes = np.hstack(
         (start_entry, possible_town_routes, end_entry))
 
-    # Calculate total route length for each route.
+    # Calculate total route length for each route
     route_lengths = []
     for i in range(all_routes.shape[0]):
         for j in range(all_routes.shape[1]-1):
             route_lengths.append(
                 distances[all_routes[i, j]-1, all_routes[i, (j+1)]-1])
 
-    # Reshaping route lengths into an array, one row for each route.
+    # Reshaping route lengths into an array, one row for each route
     route_lengths = np.reshape(route_lengths, newshape=(
         (all_routes.shape[0]), all_routes.shape[1]-1))
 
@@ -373,7 +374,7 @@ def calculate_route():
     min_length = np.min(route_lengths)
     min_indices = [i for i, x in enumerate(route_lengths) if x == min_length]
 
-    # Find shortest route/s in all_routes using min_indicies.
+    # Find shortest route/s in all_routes using min_indicies
     routes_to_take = []
     for i in range(len(min_indices)):
         routes_to_take.append(all_routes[min_indices[i]])
@@ -383,23 +384,23 @@ def calculate_route():
     # Stop loading_animation
     solver_ready = True
 
-    # Printing the route length for the/se route/s.
+    # Printing the route length for the/se route/s
     print("\n\n\n  Optimal route length:")
     print("  ", Style.BRIGHT + str(route_lengths[min_indices[0]]))
 
-    # Compile all towns visited from all_shortest_paths and routes_to_take.
+    # Compile all towns visited from all_shortest_paths and routes_to_take
     results_list = [[assigned_entry_cards[0]] for _ in range(len(min_indices))]
     for i in range(len(min_indices)):
         for j in range(len(routes_to_take[i])-1):
-            # .copy() so no changes are made to all_shortest_paths.
+            # .copy() used so that no changes are made to all_shortest_paths
             next_result = all_shortest_paths[(
                 (routes_to_take[i][j] - 1) * len(all_cards)) + (
                     routes_to_take[i][j+1] - 1)].copy()
-            # pop to remove starting town to avoid duplication in list
+            # pop(0) to remove starting town, to avoid duplication in list
             next_result.pop(0)
             results_list[i] += next_result
 
-    # Remove instances where card order is different but route is same.
+    # Remove instances where card order is different but route is same
     remove_duplicate_routes(results_list)
 
     # Remove symmetrical route if both Entry/Exit cards are the same
@@ -454,14 +455,14 @@ def remove_symmetrical_routes(routes):
                     break
 
 
-# Function to save dealt hand and shortest route/s to new sheet
+# Saves dealt hand and shortest route/s to new sheet
 def save_routes_to_new_sheet(save_name, dealt_hand, results_list):
 
     # Create a new sheet for each save
     new_sheet = SHEET.add_worksheet(title=f"saved_routes_{save_name}",
                                     rows=100, cols=(len(results_list) + 1))
 
-    # Write deatl hand to the first column
+    # Write dealt hand to the first column
     new_sheet.update(range_name="A1", values=[["Dealt Hand"]])
     dealt_hand_column = [[str(card)] for card in dealt_hand]
     new_sheet.update(range_name=f"A2:A{len(dealt_hand_column) + 1}",
@@ -487,6 +488,7 @@ def save_route_with_name(dealt_hand, results_list):
     while True:
         save_name = input(f"\n  Please enter a name to"
                           f" save your route/s under:\n    ")
+        # Start loading_animation
         solver_ready = False
         loading_animation = play_loading_animation("  Saving route/s")
         # Get list of existing save names
@@ -510,6 +512,7 @@ def recall_routes_by_save_name():
     global solver_ready
     load_name = input(f"\n  Enter the name used to"
                       f" save your calculated route/s:\n    ")
+    # Start loading_animation
     solver_ready = False
     loading_animation = play_loading_animation("  Loading route/s")
     try:
@@ -622,10 +625,10 @@ def instructions_prompt():
 def options_prompt():
     print(Style.RESET_ALL)
     options_prompt = (f"  You now have the following options:\n\n"
-                      f"          1. View Instructions.\n"
-                      f"          2. Find your shortest route.\n"
-                      f"          3. Load previously saved route/s.\n"
-                      f"          4. Exit solver.\n\n"
+                      f"          1. View Instructions\n"
+                      f"          2. Find your shortest route\n"
+                      f"          3. Load previously saved route/s\n"
+                      f"          4. Exit solver\n\n"
                       f"  Please type the number corresponding to"
                       f" your choice, followed by ENTER:\n    ")
 
