@@ -17,7 +17,7 @@ init(autoreset=True)
 solver_ready = False
 
 
-# Cycles between 1, 2 and 3 dots printed after word
+# Cycle between 1, 2 and 3 dots printed after word
 def loading_dots(word):
     print()
     print()
@@ -36,10 +36,10 @@ def play_loading_animation(word):
     return loading_animation
 
 
-# Loading prints on program startup
+# Loading dots print on program startup
 loading_animation = play_loading_animation(" Loading")
 
-# Setting up API from Google Sheet
+# Set up API from Google Sheet
 SCOPE = [
     "https://www.googleapis.com/auth/spreadsheets",
     "https://www.googleapis.com/auth/drive.file",
@@ -51,19 +51,19 @@ SCOPED_CREDS = CREDS.with_scopes(SCOPE)
 GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 SHEET = GSPREAD_CLIENT.open("discovering_ireland")
 
-# Extracting data from counted_distances worksheet
+# Extract data from counted_distances worksheet
 distance_data = SHEET.worksheet("counted_distances")
 counted_distances = distance_data.get_all_values()
 
 # Convert values from counted_distances to a NumPy array with integer values
 edge_weights_matrix = np.array(counted_distances, dtype=np.int32)
 
-# Extracting town names from town_names, convert to list of strings
+# Extract town names from town_names, convert to list of strings
 town_data = SHEET.worksheet("town_names")
 town_names = town_data.get_all_values()
 town_names = [town[0] for town in town_names]
 
-# Getting value of MAX_NUMBER_OF_TOWNS from environment variables
+# Get value of MAX_NUMBER_OF_TOWNS from environment variables
 MAX_NUMBER_OF_TOWNS = os.environ.get("MAX_NUMBER_OF_TOWNS")
 
 # Check if MAX_NUMBER_OF_TOWNS exists
@@ -76,7 +76,7 @@ else:
     town_limit = False
 
 
-# Getting number of Town Cards from length of town_names
+# Gett number of Town Cards from length of town_names
 number_of_towns = len(town_names)
 
 # Construct list of all cards, labelled by their corresponding numbers
@@ -94,7 +94,7 @@ assigned_town_cards = []
 assigned_entry_cards = []
 dealt_hand = []
 
-# Welcome message greeting user at start of program
+# Welcome message greet user at start of program
 welcome_message = """
                    Welcome to the Discovering Ireland Solver!
                               Press ENTER to begin
@@ -129,10 +129,10 @@ instructions_4 = " Enjoy, and good luck!\n"
 # Nodes: town_cards, entry_cards. Edge weights: counted_distances.csv
 graph = nx.from_numpy_array(edge_weights_matrix)
 
-# Reindexing so that town number matches index
+# Reindex so that town number matches index
 graph = nx.convert_node_labels_to_integers(graph, 1)
 
-# Lists all pairs of nodes; length of path between them; route taken.
+# List all pairs of nodes; length of path between them; route taken.
 distances = []
 all_shortest_paths = []
 for i in graph.nodes:
@@ -148,7 +148,7 @@ distances = np.reshape(distances, newshape=(len(all_cards), len(all_cards)))
 yes_inputs = ["yes", "ye", "y"]
 no_inputs = ["no", "n"]
 
-# Possible error messages. Written here due to exceeding line length
+# Possible error messages. Written here due to exceeding line length.
 min_entry = min(entry_cards)
 max_entry = max(entry_cards)
 min_town = min(town_cards)
@@ -353,7 +353,7 @@ def calculate_route():
     end_entry = np.full((len(possible_town_routes), 1),
                         assigned_entry_cards[1])
 
-    # Stacking the previous to get all possible valid routes
+    # Stack the previous to get all possible valid routes
     all_routes = np.hstack(
         (start_entry, possible_town_routes, end_entry))
 
@@ -364,14 +364,14 @@ def calculate_route():
             route_lengths.append(
                 distances[all_routes[i, j]-1, all_routes[i, (j+1)]-1])
 
-    # Reshaping route lengths into an array, one row for each route
+    # Reshape route lengths into an array, one row for each route
     route_lengths = np.reshape(route_lengths, newshape=(
         (all_routes.shape[0]), all_routes.shape[1]-1))
 
-    # Summing each row to get route length for each route
+    # Sum each row to get route length for each route
     route_lengths = np.sum(route_lengths, axis=1)
 
-    # Finding the minimum route length, and its corresponding index
+    # Find the minimum route length, and its corresponding index
     min_length = np.min(route_lengths)
     min_indices = [i for i, x in enumerate(route_lengths) if x == min_length]
 
@@ -385,7 +385,7 @@ def calculate_route():
     # Stop loading_animation
     solver_ready = True
 
-    # Printing the route length for the/se route/s
+    # Print the route length for the/se route/s
     print("\n\n\n  Optimal route length:")
     print("  ", Style.BRIGHT + str(route_lengths[min_indices[0]]))
 
@@ -471,7 +471,7 @@ def save_routes_to_new_sheet(save_name, dealt_hand, results_list):
 
     # Write routes to following columns
     for i in range(len(results_list)):
-        # Using ASCII Unicode to translate index into corresponding column
+        # Use ASCII Unicode to translate index into corresponding column
         column_index = chr(ord('B') + i)
         title_range = f"{column_index}1"
         route_name = f"Route {i+1}"
@@ -538,7 +538,7 @@ def recall_routes_by_save_name():
             saved_town_cards = saved_dealt[3:(len(saved_dealt))]
             saved_town_cards = [int(card) for card in saved_town_cards]
 
-            # Get the values from the second column onward
+            # Get values from the second column onward
             all_saved_routes = []
 
             # Iterate over each column, starting from column B
