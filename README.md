@@ -236,7 +236,7 @@ Similarly, if a save with the entered name already exists, an error message appe
 
 ![Save name exists error](/documents/readme-images/save-already-exists.webp)
 
-When successfully saved, the saved route/s, along with the name and the dealt hand, are saved to a new google sheet, in the same location as the `counted_distances` and `town_names`.
+When successfully saved, the saved route/s, along with the name and the dealt hand, are saved to a new google sheet, in the same location as the `counted_distances` and `town_names`. By choosing an external location to save the routes data (as opposed to creating an array/class in the program itself), having a large number of saves will not impact the RAM of the program.
 
 ![Saved name in Google Sheet](/documents/readme-images/example-saved-sheet.webp)
 
