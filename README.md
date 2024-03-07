@@ -130,6 +130,8 @@ To create a program that, given a hand of cards a player is dealt, will create t
 
 This part contains some mathematical terminology that might not be familiar to many. If you are interested, here is [a brief introduction of Graph Theory](https://en.wikipedia.org/wiki/Graph_theory).
 
+The worksheet used with this program [can be seen here](https://docs.google.com/spreadsheets/d/1dxX1XMsDKUnLq9WSDydtrouFlmyunowCWq1XvjX2YH0/edit?usp=sharing) ('Viewer' mode).
+
 Here is a breakdown of how the program runs its calculations:
 
 1. *Create an adjacency matrix, containing the number of steps between all pairs of adjacent towns*
